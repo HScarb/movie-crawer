@@ -71,12 +71,14 @@ def crawActor(actorID):
     :param actorID:
     :return:
     '''
+    pass
 
 def main():
     list = crawCurrentMovie()
     moveDataList = []
     for movieID in list:
         moveDataList.append(crawMovie(movieID))
+        crawMovie(movieID)
     return list
 
 if __name__ == '__main__':
