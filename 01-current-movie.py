@@ -127,6 +127,9 @@ def crawMovie(movieID):
     return movieDataDict
 
 def saveMovieInDatabase(movieDataDict):
+    print('Saving movie # ', movieDataDict['id'], ' into data base...')
+    cursor.execute('SET FOREIGN_KEY_CHECKS=0')      # 关闭外键检测
+    conn.commit()
     try:
         cursor.execute(
             'replace into movie'
@@ -138,8 +141,59 @@ def saveMovieInDatabase(movieDataDict):
         )
         conn.commit()
     except Exception as e:
-        print('Error in saveMovieInDatabase.')
+        print('Error in saveMovieInDatabase Step 1.')
         print(e)
+    for person in movieDataDict['director']:
+        try:
+            cursor.execute(
+                'replace into movie_actor'
+                '(MovieID, ActorID, Rank, Role)'
+                'values (%s, %s, %s, %s)',
+                [movieDataDict['id'], person['id'], person['rank'], 'director']
+            )
+            conn.commit()
+        except Exception as e:
+            print('Error in saveMovieInDatabase Step 2 director.')
+            print(e)
+    for person in movieDataDict['actor']:
+        try:
+            cursor.execute(
+                'replace into movie_actor'
+                '(MovieID, ActorID, Rank, Role)'
+                'values (%s, %s, %s, %s)',
+                [movieDataDict['id'], person['id'], person['rank'], 'actor']
+            )
+            conn.commit()
+        except Exception as e:
+            print('Error in saveMovieInDatabase Step 3 actor.')
+            print(e)
+    for person in movieDataDict['producer']:
+        try:
+            cursor.execute(
+                'replace into movie_company'
+                '(MovieID, CompanyID, Rank, Role)'
+                'values (%s, %s, %s, %s)',
+                [movieDataDict['id'], person['id'], person['rank'], 'producer']
+            )
+            conn.commit()
+        except Exception as e:
+            print('Error in saveMovieInDatabase Step 4 producer.')
+            print(e)
+    for person in movieDataDict['publisher']:
+        try:
+            cursor.execute(
+                'replace into movie_company'
+                '(MovieID, CompanyID, Rank, Role)'
+                'values (%s, %s, %s, %s)',
+                [movieDataDict['id'], person['id'], person['rank'], 'publisher']
+            )
+            conn.commit()
+        except Exception as e:
+            print('Error in saveMovieInDatabase Step 5 publisher.')
+            print(e)
+    cursor.execute('SET FOREIGN_KEY_CHECKS=1')      # 重新开启外键检测
+    conn.commit()
+
 
 def crawActor(actorID):
     '''
