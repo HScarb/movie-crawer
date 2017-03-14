@@ -1,10 +1,14 @@
+import MovieUtils
 import requests
 import re
 import random
 from time import sleep
 from bs4 import BeautifulSoup
+import mysql.connector
 
 DEFAULT_TIMEOUT = 10                # 默认等待时间
+conn = mysql.connector.connect(user='root', password='621374as', database='movie')
+cursor = conn.cursor()
 
 def crawCurrentMovie():
     '''
@@ -45,14 +49,16 @@ def crawMovie(movieID):
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
         }
     text = ''
-    movieDataDict = {'cname':None,
+    movieDataDict = {'id':movieID,
+                     'cname':None,
                      'ename':None,
                      'type':None,
                      'length':None,
                      'releasetime':None,
                      'standard':None,
                      'director':None,
-                     'productioncompany':None,
+                     'actor':None,
+                     'producer':None,
                      'publisher':None,
                      'sumboxoffice':None}
     print('Crawing movie info ', url)
@@ -83,9 +89,8 @@ def crawMovie(movieID):
         elif element[0] == '片':
             movieDataDict['length'] = element.replace('\r','').replace('\n','').replace(' ', '')[3:-3]
         elif element[0] == '上':
-            dateStr = element[5:-6]
             # 需要处理字符串成日期的形式
-            movieDataDict['releasetime'] = element[5:-4]
+            movieDataDict['releasetime'] = MovieUtils.str2date(element[5:-4])
         elif element[0] == '制':
             movieDataDict['standard'] = element[3:]
         elif element[0] == '累':
@@ -93,7 +98,6 @@ def crawMovie(movieID):
         i = i + 1
 
     i = 0
-    print(movieDataDict)
     for element in result2:
         '''
         i = 0: 导演
@@ -101,13 +105,41 @@ def crawMovie(movieID):
             2: 制作公司
             3: 发行公司
         '''
+        memberList = []
+        rank = 0
         links = element.find_all('a')
         for link in links:
-            print(link)
+            rank = rank + 1
+            idMatched = re.match(r'^(http://www.cbooo.cn/(p|c)/)(\d+)$', link['href'])
+            if idMatched:
+                memberList.append({'id':int(idMatched.group(3)), 'rank':rank})
 
+        if i == 0:
+            movieDataDict['director'] = memberList
+        elif i == 1:
+            movieDataDict['actor'] = memberList
+        elif i == 2:
+            movieDataDict['producer'] = memberList
+        elif i == 3:
+            movieDataDict['publisher'] = memberList
         i = i + 1
+    print(movieDataDict)
+    return movieDataDict
 
-    pass
+def saveMovieInDatabase(movieDataDict):
+    try:
+        cursor.execute(
+            'replace into movie'
+            '(MovieID, CName, EName, Type, Length, ReleaseTime, Standard, SumBoxOffice)'
+            'values (%s, %s, %s, %s, %s, %s, %s, %s)',
+            [movieDataDict['id'], movieDataDict['cname'], movieDataDict['ename'],
+             movieDataDict['type'], movieDataDict['length'], movieDataDict['releasetime'],
+             movieDataDict['standard'], movieDataDict['sumboxoffice']]
+        )
+        conn.commit()
+    except Exception as e:
+        print('Error in saveMovieInDatabase.')
+        print(e)
 
 def crawActor(actorID):
     '''
@@ -119,12 +151,18 @@ def crawActor(actorID):
     pass
 
 def main():
-    list = crawCurrentMovie()
-    moveDataList = []
-    for movieID in list:
-        moveDataList.append(crawMovie(movieID))
-        crawMovie(movieID)
-    return list
+    # get movie IDs
+    movieIDList = crawCurrentMovie()
+    # get movie data
+    movieDataList = []
+    for movieID in movieIDList:
+        movieDataList.append(crawMovie(movieID))
+    # save movie data into data base
+    for movieData in movieDataList:
+        saveMovieInDatabase(movieData)
+    cursor.close()
+    conn.close()
+    return
 
 if __name__ == '__main__':
     main()
