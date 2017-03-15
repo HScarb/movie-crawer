@@ -52,8 +52,8 @@ def main():
     downloadImg('http://img.58921.com/sites/all/movie/files/protec/56153c5cd7384803a2f16bfcd7bd720d.png', 'Img1.png')   # 60506
     downloadImg('http://img.58921.com/sites/all/movie/files/protec/1821c285e91bc945269941b32f5e0fe5.png', 'Img2.png')   # 30934
 
-    print(parseImg('01.png'))
-    print(parseImg('02.png'))
+    print(parseImg('Img1.png'))
+    print(parseImg('Img2.png'))
 
 if __name__ == '__main__':
     main()
