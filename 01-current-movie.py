@@ -5,9 +5,11 @@ import random
 from time import sleep      #from。。import。。实际上只是导入了两个函数
 from bs4 import BeautifulSoup
 import mysql.connector
+import json
+from datetime import datetime, timedelta
 
 DEFAULT_TIMEOUT = 10                # 默认等待时间
-conn = mysql.connector.connect(user='movie', password='621374as')
+conn = mysql.connector.connect(user='root', password='password', database='movie')
 cursor = conn.cursor()
 
 def crawCurrentMovie():
@@ -203,6 +205,44 @@ def crawActor(actorID):
     :return:
     '''
     pass
+def crawDailyBoxOffice(i):
+    url = 'http://www.cbooo.cn/BoxOffice/GetDayBoxOffice?num=' + str(i)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    }
+    json_data = ''
+    #print('Crawing movie Booking', url)
+    # 抓取整个网页# 抓取整个网页
+    current_Date = datetime.now() - timedelta(days=abs(i))
+    #print(current_Date.strftime('%Y-%m-%d'))
+    try:
+        json_data = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
+    except:
+        print('Error when request url=', url)
+        return None
+    list_mov = json.loads(json_data)['data1']
+    for i in range(0,10):
+        list_mov[i]['Date'] = MovieUtils.str2date(current_Date.strftime('%Y-%m-%d'))
+        del list_mov[i]['MovieImg']
+    return list_mov
+
+def saveBoxOfficeInDataBase(boxOffice):
+    print('Saving movie box office # ', boxOffice['Date'], boxOffice['MovieName'], ' into data base...')
+    cursor.execute('SET FOREIGN_KEY_CHECKS=0')  # 关闭外键检测
+    conn.commit()
+    try:
+        cursor.execute(
+            'replace into movie_boxoffice'
+            '(MovieID, Date, BoxOffice, AvgPeople)'
+            'values (%s, %s, %s, %s)',
+            [boxOffice['MovieID'], boxOffice['Date'], boxOffice['BoxOffice'], boxOffice['AvpPeoPle']]
+        )
+        conn.commit()
+    except Exception as e:
+        print('Error in saveMovieInDatabase Step 1.')
+        print(e)
+    cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
+    conn.commit()
 
 def main():
     # get movie IDs
@@ -211,9 +251,18 @@ def main():
     movieDataList = []
     for movieID in movieIDList:
         movieDataList.append(crawMovie(movieID))
+    dailyMovieBoxOfficeList = []
+    for i in range(-8, 1):
+        dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
+    for dailyBoxOffice in dailyMovieBoxOfficeList:
+        for boxOffice in dailyBoxOffice:
+            print(boxOffice)
     # save movie data into data base
     for movieData in movieDataList:
         saveMovieInDatabase(movieData)
+    for dailyBoxOffice in dailyMovieBoxOfficeList:
+        for boxOffice in dailyBoxOffice:
+            saveBoxOfficeInDataBase(boxOffice)
     cursor.close()
     conn.close()
     return
