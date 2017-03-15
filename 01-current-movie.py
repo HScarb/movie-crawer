@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import mysql.connector
 
 DEFAULT_TIMEOUT = 10                # 默认等待时间
-conn = mysql.connector.connect(user='movie', password='movie', database='movie', host='106.14.26.144')
+conn = mysql.connector.connect(user='movie', password='621374as')
 cursor = conn.cursor()
 
 def crawCurrentMovie():
