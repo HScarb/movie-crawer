@@ -135,11 +135,11 @@ def saveMovieInDatabase(movieDataDict):
     try:
         cursor.execute(
             'replace into movie'
-            '(MovieID, CName, EName, Type, Length, ReleaseTime, Standard, SumBoxOffice)'
-            'values (%s, %s, %s, %s, %s, %s, %s, %s)',
+            '(MovieID, CName, EName, Type, Length, ReleaseTime, Standard, SumBoxOffice, AvgPrice, AvgPeople, WomIndex)'
+            'values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
             [movieDataDict['id'], movieDataDict['cname'], movieDataDict['ename'],
              movieDataDict['type'], movieDataDict['length'], movieDataDict['releasetime'],
-             movieDataDict['standard'], movieDataDict['sumboxoffice']]
+             movieDataDict['standard'], movieDataDict['sumboxoffice'], movieDataDict['AvgPrice'], movieDataDict['AvgPeople'], movieDataDict['WomIndex']]
         )
         conn.commit()
     except Exception as e:
@@ -249,15 +249,20 @@ def main():
     movieIDList = crawCurrentMovie()
     # get movie data
     movieDataList = []
+    movieAvgList = []
     for movieID in movieIDList:
         movieDataList.append(crawMovie(movieID))
     dailyMovieBoxOfficeList = []
-    for i in range(-8, 1):
+    for i in range(-8, 0):
         dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
-    for dailyBoxOffice in dailyMovieBoxOfficeList:
-        for boxOffice in dailyBoxOffice:
-            print(boxOffice)
+    movieAvgList = MovieUtils.movieAvg(dailyMovieBoxOfficeList)
     # save movie data into data base
+    for movieData in movieDataList:
+        for avg in movieAvgList:
+            if movieData['id'] == avg['id']:
+                movieData['AvgPrice'] = avg['avgPrice']
+                movieData['AvgPeople'] = avg['avgPeople']
+                movieData['WomIndex'] = avg['womIndex']
     for movieData in movieDataList:
         saveMovieInDatabase(movieData)
     for dailyBoxOffice in dailyMovieBoxOfficeList:

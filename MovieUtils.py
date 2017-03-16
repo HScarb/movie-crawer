@@ -44,6 +44,61 @@ def parseImg(imgPath):
     return pytesseract.image_to_string(Image.open(imgPath))
     pytesseract.image_to_string(Image.open())
 
+def movieAvg(dailyMovieBoxOfficeList):
+    movieAvgList = []
+    for dailyBoxOffice in dailyMovieBoxOfficeList:
+        for boxOffice in dailyBoxOffice:
+            flag = 0
+            movieAvgDict = {'id': None,
+                            'avgPrice': None,
+                            'avgPeople': None,
+                            'movieDay': None,
+                            'womIndex': None}
+            if movieAvgList :
+                for avg in movieAvgList:
+                    if boxOffice['MovieID'] == avg['id']:
+                        flag = 1
+                        break
+                if flag == 0:
+                    movieAvgDict['id'] = boxOffice['MovieID']
+                    movieAvgDict['avgPrice'] = boxOffice['AvgPrice']
+                    movieAvgDict['avgPeople'] = boxOffice['AvpPeoPle']
+                    movieAvgDict['movieDay'] = boxOffice['MovieDay']
+                    movieAvgDict['womIndex'] = boxOffice['WomIndex']
+                    movieAvgList.append(movieAvgDict)
+            else:
+                movieAvgDict['id'] = boxOffice['MovieID']
+                movieAvgDict['avgPrice'] = boxOffice['AvgPrice']
+                movieAvgDict['avgPeople'] = boxOffice['AvpPeoPle']
+                movieAvgDict['movieDay'] = boxOffice['MovieDay']
+                movieAvgDict['womIndex'] = boxOffice['WomIndex']
+                movieAvgList.append(movieAvgDict)
+    for dailyBoxOffice in dailyMovieBoxOfficeList:
+        for boxOffice in dailyBoxOffice:
+            for avg in movieAvgList:
+                if boxOffice['MovieID'] == avg['id']:
+                    if boxOffice['AvgPrice'] is not avg['avgPrice']:
+                        if avg['avgPeople'] is not boxOffice['AvpPeoPle']:
+                            avg['avgPrice'] = int(avg['avgPrice']) + int(boxOffice['AvgPrice'])
+                            avg['avgPeople'] = int(avg['avgPeople']) + int(boxOffice['AvpPeoPle'])
+                            avg['womIndex'] = float(avg['womIndex']) + float(boxOffice['WomIndex'])
+    #for i in range(-2,0):
+    #    for avg in movieAvgList:
+    #        if dailyMovieBoxOfficeList[i]['MovieID'] == avg['id']:
+    #            if dailyMovieBoxOfficeList[i]['MovieDay'] is not avg['movieDay']:
+    #                avg['movieDay'] = dailyMovieBoxOfficeList[i]['MovieDay']
+    for avg in movieAvgList:
+        print(avg)
+        if int(avg['movieDay']) < 8 and int(avg['movieDay']) >0:
+            avg['avgPrice'] = round(int(avg['avgPrice']) / int(avg['movieDay']), 2)
+            avg['avgPeople'] = round(int(avg['avgPeople']) / int(avg['movieDay']), 2)
+            avg['womIndex'] = round(float(avg['womIndex']) / int(avg['movieDay']), 2)
+        elif int(avg['movieDay']) >= 9:
+            avg['avgPrice'] = round(int(avg['avgPrice']) / 8, 2)
+            avg['avgPeople'] = round(int(avg['avgPeople']) / 8, 2)
+            avg['womIndex'] = round(float(avg['womIndex']) / 8, 2)
+        print(avg)
+    return movieAvgList
 def main():
     print(str2date('2017-3-3'))
     print(str2date('2017-3-13'))
