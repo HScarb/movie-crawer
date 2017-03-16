@@ -214,7 +214,7 @@ def crawDailyBoxOffice(i):
     #print('Crawing movie Booking', url)
     # 抓取整个网页# 抓取整个网页
     current_Date = datetime.now() - timedelta(days=abs(i))
-    #print(current_Date.strftime('%Y-%m-%d'))
+    print(current_Date.strftime('%Y-%m-%d'))
     try:
         json_data = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
     except:

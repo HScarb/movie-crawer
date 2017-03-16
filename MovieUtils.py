@@ -57,6 +57,12 @@ def movieAvg(dailyMovieBoxOfficeList):
             if movieAvgList :
                 for avg in movieAvgList:
                     if boxOffice['MovieID'] == avg['id']:
+                        if boxOffice['AvgPrice'] is not avg['avgPrice']:
+                            if avg['avgPeople'] is not boxOffice['AvpPeoPle']:
+                                avg['avgPrice'] = int(avg['avgPrice']) + int(boxOffice['AvgPrice'])
+                                avg['avgPeople'] = int(avg['avgPeople']) + int(boxOffice['AvpPeoPle'])
+                                if int(avg['movieDay']) < int(boxOffice['MovieDay']):
+                                    avg['movieDay'] = boxOffice['MovieDay']
                         flag = 1
                         break
                 if flag == 0:
@@ -73,30 +79,15 @@ def movieAvg(dailyMovieBoxOfficeList):
                 movieAvgDict['movieDay'] = boxOffice['MovieDay']
                 movieAvgDict['womIndex'] = boxOffice['WomIndex']
                 movieAvgList.append(movieAvgDict)
-    for dailyBoxOffice in dailyMovieBoxOfficeList:
-        for boxOffice in dailyBoxOffice:
-            for avg in movieAvgList:
-                if boxOffice['MovieID'] == avg['id']:
-                    if boxOffice['AvgPrice'] is not avg['avgPrice']:
-                        if avg['avgPeople'] is not boxOffice['AvpPeoPle']:
-                            avg['avgPrice'] = int(avg['avgPrice']) + int(boxOffice['AvgPrice'])
-                            avg['avgPeople'] = int(avg['avgPeople']) + int(boxOffice['AvpPeoPle'])
-                            avg['womIndex'] = float(avg['womIndex']) + float(boxOffice['WomIndex'])
-    #for i in range(-2,0):
-    #    for avg in movieAvgList:
-    #        if dailyMovieBoxOfficeList[i]['MovieID'] == avg['id']:
-    #            if dailyMovieBoxOfficeList[i]['MovieDay'] is not avg['movieDay']:
-    #                avg['movieDay'] = dailyMovieBoxOfficeList[i]['MovieDay']
+
     for avg in movieAvgList:
         print(avg)
         if int(avg['movieDay']) < 8 and int(avg['movieDay']) >0:
             avg['avgPrice'] = round(int(avg['avgPrice']) / int(avg['movieDay']), 2)
             avg['avgPeople'] = round(int(avg['avgPeople']) / int(avg['movieDay']), 2)
-            avg['womIndex'] = round(float(avg['womIndex']) / int(avg['movieDay']), 2)
         elif int(avg['movieDay']) >= 9:
             avg['avgPrice'] = round(int(avg['avgPrice']) / 8, 2)
             avg['avgPeople'] = round(int(avg['avgPeople']) / 8, 2)
-            avg['womIndex'] = round(float(avg['womIndex']) / 8, 2)
         print(avg)
     return movieAvgList
 def main():
