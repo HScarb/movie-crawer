@@ -2,12 +2,12 @@ import MovieUtils
 import requests
 import re
 import random
-from time import sleep      #from。。import。。实际上只是导入了两个函数
+from time import sleep
 from bs4 import BeautifulSoup
 import mysql.connector
 
 DEFAULT_TIMEOUT = 10                # 默认等待时间
-conn = mysql.connector.connect(user='movie', password='621374as')
+conn = mysql.connector.connect(user='root', password='3347689',database = 'movie')
 cursor = conn.cursor()
 
 def crawCurrentMovie():
@@ -15,12 +15,12 @@ def crawCurrentMovie():
     获取当前正在上映的电影
     :return: 返回一组正在上映电影的ID  List格式
     '''
-    url = 'http://www.cbooo.cn/'            # 要爬的URL地址，网站地址
+    url = 'http://www.cbooo.cn/'
     headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
-        }                                   #headers这一段不需要改动
+        }
     text = ''
-    movieIDList = []        #什么情况下要用List[]，好像下面都默认设置   //如果是数字的情况，用[]数组。
+    movieIDList = []
     print('Crawing current movie...')
     # 抓取整个网页
     try:
@@ -33,7 +33,7 @@ def crawCurrentMovie():
     soup = BeautifulSoup(text, "lxml")                      # 把网页保存为一个BeautifulSoup对象
     results = soup.find_all('tr', class_='trtop', onmouseover='ChangeTopR(this.id)')
     for result in results:
-        print(result['id'])         #字典的内容
+        print(result['id'])
         movieIDList.append(result['id'])
     return movieIDList
 
