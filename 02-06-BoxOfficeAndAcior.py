@@ -17,7 +17,7 @@ def crawCurrentMovie():
     print('Crawing current movie...: ')
     try:
         print('Requesting url: ',url)
-        text = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
+        text = requests.get(url, headers=headers).text
     except:
         print('Error when request url=',url)
         return None
@@ -37,24 +37,32 @@ def pictureofMovie():
     print('Now crawName...:')
     try:
         print('Request url: ',url)
-        text = requests.get(url,headers=headers, timeout=DEFAULT_TIMEOUT).text
+        text = requests.get(url,headers=headers).text
     except:
         print('Error when request url=',url)
         return None
 
     soup = BeautifulSoup(text,'lxml')
-    odd = soup.find_all('tr',class_='odd')
-    even = soup.find_all('tr',class_='even')
-    # for element in odd:
-    #     odd_img = element.find('img').get('src')
-    #     print(odd_img)
-    for element in even:
-        even_img = element.find('img').get('src')
-        if even_img is None:
-            pass
-        else:
-            print(even_img)
-    pass
+    tab = soup.find('div',class_='table-responsive')        #不是一般的标签，比如table，是找不到的
+    odds = tab.find_all('tr',class_='odd')                   #table-responsive的Tag内容中的中文显示乱码
+    evens = tab.find_all('tr',class_='even')
+    # for odd in odds:
+        # odd_city = odd.find('a').get('href')
+        # if odd_city is not None:
+        #     print(odd_city)
+        # odd_img = element.find('img').get('src')
+        # print(odd_img)
+    # pass
+
+    # for even in evens:
+        # even_city = even.find('a').get('href')       #还有一个问题。href最好用table-responsive,而img最好用长的那个
+        # print(even_city)
+    # pass
+        # even_img = element.find('img').get('src')
+        # if even_img is None:
+        #     pass
+        # else:
+        #     print(even_img)
     print('***********************************************************************************')  #分不清楚谁是谁
 
 def ActorsOfMovies():
@@ -69,18 +77,14 @@ def ActorsOfMovies():
     except:
         print('Error when request url=', url)
         return None
-    print('Favorite Actor ...:')
     soup = BeautifulSoup(text, "lxml")
     taxi = soup.find('div', class_='cont')
     for taxi in taxi.stripped_strings:
         print(taxi.replace('\r','').replace('\n','').replace(' ', ''))
     pass
-    print('\n已发布作品：')
-    cars = soup.find('ul',id='ulperm',class_='ulzx ulzx01').find_all('li')
-    for element in cars:
-        bike = element.find('a')
-        for element in bike.stripped_strings:
-            print(element)
+    cars = soup.find('div',class_='ziliaofr').find('div',class_='starring')
+    for car in cars.stripped_strings:
+        print(car)
 
 def crawActorID():
     pass

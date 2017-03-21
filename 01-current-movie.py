@@ -69,8 +69,8 @@ def crawMovie(movieID):
         print('Error when request url=', url)
         return None
     # 解析电影的信息
-    soup = BeautifulSoup(text, "lxml")          #这个函数是指提取当前url的文本
-    result1 = soup.find('div', class_='cont')               # 标题等信息         #这里说明标题是div,cont为关键字查找的
+    soup = BeautifulSoup(text, "lxml")
+    result1 = soup.find('div', class_='cont')               # 标题等信息
     result2 = soup.find('dl', class_='dltext')
     result2 = result2.find_all('dd')
     #print(result1.h2.text)
@@ -206,11 +206,11 @@ def crawActor(actorID):
 
 def main():
     # get movie IDs
-    movieIDList = crawCurrentMovie()
+    movieIDList = crawCurrentMovie()  #返回的是一个影片ID的字典
     # get movie data
     movieDataList = []
     for movieID in movieIDList:
-        movieDataList.append(crawMovie(movieID))
+        movieDataList.append(crawMovie(movieID))    #append得到的是影片的数据
     # save movie data into data base
     for movieData in movieDataList:
         saveMovieInDatabase(movieData)
