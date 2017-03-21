@@ -5,9 +5,15 @@ import random
 from time import sleep
 from bs4 import BeautifulSoup
 import mysql.connector
+import json
+from datetime import datetime, timedelta
 
 DEFAULT_TIMEOUT = 10                # 默认等待时间
+<<<<<<< HEAD
 conn = mysql.connector.connect(user='root', password='3347689',database = 'movie')
+=======
+conn = mysql.connector.connect(user='root', password='password', database='movie')
+>>>>>>> b60f0ce963689a5766a602ad10216ecb5a922657
 cursor = conn.cursor()
 
 def crawCurrentMovie():
@@ -133,11 +139,11 @@ def saveMovieInDatabase(movieDataDict):
     try:
         cursor.execute(
             'replace into movie'
-            '(MovieID, CName, EName, Type, Length, ReleaseTime, Standard, SumBoxOffice)'
-            'values (%s, %s, %s, %s, %s, %s, %s, %s)',
+            '(MovieID, CName, EName, Type, Length, ReleaseTime, Standard, SumBoxOffice, AvgPrice, AvgPeople, WomIndex)'
+            'values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
             [movieDataDict['id'], movieDataDict['cname'], movieDataDict['ename'],
              movieDataDict['type'], movieDataDict['length'], movieDataDict['releasetime'],
-             movieDataDict['standard'], movieDataDict['sumboxoffice']]
+             movieDataDict['standard'], movieDataDict['sumboxoffice'], movieDataDict['AvgPrice'], movieDataDict['AvgPeople'], movieDataDict['WomIndex']]
         )
         conn.commit()
     except Exception as e:
@@ -203,15 +209,54 @@ def crawActor(actorID):
     :return:
     '''
     pass
+def crawDailyBoxOffice(i):
+    url = 'http://www.cbooo.cn/BoxOffice/GetDayBoxOffice?num=' + str(i)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    }
+    json_data = ''
+    #print('Crawing movie Booking', url)
+    # 抓取整个网页# 抓取整个网页
+    current_Date = datetime.now() - timedelta(days=abs(i))
+    #print(current_Date.strftime('%Y-%m-%d'))
+    try:
+        json_data = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
+    except:
+        print('Error when request url=', url)
+        return None
+    movieBoxOfficeList = json.loads(json_data)['data1']
+    for movieBoxOfficeDict in movieBoxOfficeList:
+        movieBoxOfficeDict['Date'] = MovieUtils.str2date(current_Date.strftime('%Y-%m-%d'))
+        del movieBoxOfficeDict['MovieImg']
+        #print(movieBoxOfficeDict)
+    return movieBoxOfficeList
 
+def movieBoxOffice():
+    dailyMovieBoxOfficeList = []
+    for i in range(-8, 0):
+        dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
+    return dailyMovieBoxOfficeList
 def main():
     # get movie IDs
     movieIDList = crawCurrentMovie()  #返回的是一个影片ID的字典
     # get movie data
     movieDataList = []
     for movieID in movieIDList:
+<<<<<<< HEAD
         movieDataList.append(crawMovie(movieID))    #append得到的是影片的数据
+=======
+        movieDataList.append(crawMovie(movieID))
+    movieAvgList = MovieUtils.movieAvg(movieBoxOffice())
+>>>>>>> b60f0ce963689a5766a602ad10216ecb5a922657
     # save movie data into data base
+    for movieData in movieDataList:
+        for avg in movieAvgList:
+            if avg['womIndex'] == '':
+                avg['womIndex'] = 0
+            if movieData['id'] == avg['id']:
+                movieData['AvgPrice'] = avg['avgPrice']
+                movieData['AvgPeople'] = avg['avgPeople']
+                movieData['WomIndex'] = avg['womIndex']
     for movieData in movieDataList:
         saveMovieInDatabase(movieData)
     cursor.close()
