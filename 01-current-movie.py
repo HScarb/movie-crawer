@@ -214,60 +214,43 @@ def crawDailyBoxOffice(i):
     #print('Crawing movie Booking', url)
     # 抓取整个网页# 抓取整个网页
     current_Date = datetime.now() - timedelta(days=abs(i))
-    print(current_Date.strftime('%Y-%m-%d'))
+    #print(current_Date.strftime('%Y-%m-%d'))
     try:
         json_data = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
     except:
         print('Error when request url=', url)
         return None
-    list_mov = json.loads(json_data)['data1']
-    for i in range(0,10):
-        list_mov[i]['Date'] = MovieUtils.str2date(current_Date.strftime('%Y-%m-%d'))
-        del list_mov[i]['MovieImg']
-    return list_mov
+    movieBoxOfficeList = json.loads(json_data)['data1']
+    for movieBoxOfficeDict in movieBoxOfficeList:
+        movieBoxOfficeDict['Date'] = MovieUtils.str2date(current_Date.strftime('%Y-%m-%d'))
+        del movieBoxOfficeDict['MovieImg']
+        #print(movieBoxOfficeDict)
+    return movieBoxOfficeList
 
-def saveBoxOfficeInDataBase(boxOffice):
-    print('Saving movie box office # ', boxOffice['Date'], boxOffice['MovieName'], ' into data base...')
-    cursor.execute('SET FOREIGN_KEY_CHECKS=0')  # 关闭外键检测
-    conn.commit()
-    try:
-        cursor.execute(
-            'replace into movie_boxoffice'
-            '(MovieID, Date, BoxOffice, AvgPeople)'
-            'values (%s, %s, %s, %s)',
-            [boxOffice['MovieID'], boxOffice['Date'], boxOffice['BoxOffice'], boxOffice['AvpPeoPle']]
-        )
-        conn.commit()
-    except Exception as e:
-        print('Error in saveMovieInDatabase Step 1.')
-        print(e)
-    cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
-    conn.commit()
-
+def movieBoxOffice():
+    dailyMovieBoxOfficeList = []
+    for i in range(-8, 0):
+        dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
+    return dailyMovieBoxOfficeList
 def main():
     # get movie IDs
     movieIDList = crawCurrentMovie()
     # get movie data
     movieDataList = []
-    movieAvgList = []
     for movieID in movieIDList:
         movieDataList.append(crawMovie(movieID))
-    dailyMovieBoxOfficeList = []
-    for i in range(-8, 0):
-        dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
-    movieAvgList = MovieUtils.movieAvg(dailyMovieBoxOfficeList)
+    movieAvgList = MovieUtils.movieAvg(movieBoxOffice())
     # save movie data into data base
     for movieData in movieDataList:
         for avg in movieAvgList:
+            if avg['womIndex'] == '':
+                avg['womIndex'] = 0
             if movieData['id'] == avg['id']:
                 movieData['AvgPrice'] = avg['avgPrice']
                 movieData['AvgPeople'] = avg['avgPeople']
                 movieData['WomIndex'] = avg['womIndex']
     for movieData in movieDataList:
         saveMovieInDatabase(movieData)
-    for dailyBoxOffice in dailyMovieBoxOfficeList:
-        for boxOffice in dailyBoxOffice:
-            saveBoxOfficeInDataBase(boxOffice)
     cursor.close()
     conn.close()
     return
