@@ -4,6 +4,7 @@ import re
 from bs4 import BeautifulSoup
 import mysql.connector
 import sys
+import MovieUtils
 
 # 默认等待时间
 DEFAULT_TIMEOUT = 10
@@ -27,15 +28,18 @@ def crawSchedule():
         print('Error when request url=', url)
         return None
     # 解析电影的ID
-    print(text.encode('latin1').decode('utf-8'))
+    text = text.encode('latin1').decode('utf-8')
     soup = BeautifulSoup(text, "lxml")
     results = soup.find_all('tr')
     for result in results:
         td_list = result.find_all('td')
         for td in td_list:
             if td.img is not None:
-                print(td.img['src'])
-            print(td.get_text())
+                # print(td.img['src'])
+                MovieUtils.downloadImg(td.img['src'], 'img.png')
+                print(MovieUtils.parseImg('img.png'))
+            else:
+                print(td.get_text())
 
 
 def main():
