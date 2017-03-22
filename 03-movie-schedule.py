@@ -13,8 +13,8 @@ DEFAULT_TIMEOUT = 10
 # conn = mysql.connector.connect(user='movie', password='movie', database='movie', host='106.14.26.144')
 # cursor = conn.cursor()
 
-def crawSchedule():
-    url = 'http://pp.58921.com/film/6189'
+def crawSchedule(movieID):
+    url = 'http://pp.58921.com/film/' + str(movieID)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/48.0.2564.116 Safari/537.36 '
@@ -43,7 +43,8 @@ def crawSchedule():
 
 
 def main():
-    crawSchedule()
+    # todo
+    crawSchedule(6189)
     return
 
 
