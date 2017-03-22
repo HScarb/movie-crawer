@@ -20,6 +20,16 @@ def crawSchedule(movieID):
                       'Chrome/48.0.2564.116 Safari/537.36 '
     }
     text = ''
+    cityList = []
+    for i in range(0, 15):
+        movieSceneDict = {'movieid': None,
+                          'moviename': None,
+                          'cityid': None,
+                          'date': None,
+                          'scene': None
+                          }
+        cityList.append(movieSceneDict)
+
     # 抓取整个网页
     try:
         print('Requesting url: ', url)
