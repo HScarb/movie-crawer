@@ -27,9 +27,18 @@ def crawSchedule(movieID):
     except:
         print('Error when request url=', url)
         return None
-    # 解析电影的ID
+
     text = text.encode('latin1').decode('utf-8')
     soup = BeautifulSoup(text, "lxml")
+
+    # 将表头存到list中，这里先不考虑不是城市的情况，最后统一处理删去无用数据
+    i = 0
+    theadResults = soup.find_all('thead')
+    for theadResult in theadResults:
+        th_list = theadResult.find_all('th')
+        for th in th_list:
+            cityList[i]['city'] = th.get_text()
+            i += 1
     results = soup.find_all('tr')
     for result in results:
         td_list = result.find_all('td')
