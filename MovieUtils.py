@@ -1,11 +1,19 @@
 import re
-import subprocess
+import subprocess           # for jar
 from urllib import request
-try:
-    import Image
-except ImportError:
-    from PIL import Image
-import pytesseract
+# try:
+#     import Image
+# except ImportError:
+#     from PIL import Image
+# import pytesseract
+DBCONFIG = {
+    'host': '115.28.48.229',
+    'user': 'root',
+    'password': 'cnscarb',
+    'port':3306,
+    'database': 'movie',
+    'charset': 'utf8'
+}
 
 
 def str2date(str):
@@ -44,7 +52,7 @@ def parseImg(imgPath):
     '''
     result = None
     try:
-        result = subprocess.check_output("java -jar ImageRecognize.jar " + imgPath, shell=True).splitlines()[0].decode()
+        result = subprocess.check_output("java -jar ImageRecognize.jar " + imgPath, shell=True).splitlines()[0].decode('gb2312')
     except Exception as e:
         print('Parse image error: ', e)
         result = None
@@ -101,11 +109,11 @@ def main():
     print(str2date('2017-3-13'))
     print(str2date('2017-03-3'))
 
-    downloadImg('http://img.58921.com/sites/all/movie/files/protec/56153c5cd7384803a2f16bfcd7bd720d.png', 'Img1.png')   # 60506
-    downloadImg('http://img.58921.com/sites/all/movie/files/protec/1821c285e91bc945269941b32f5e0fe5.png', 'Img2.png')   # 30934
+    #downloadImg('http://img.58921.com/sites/all/movie/files/protec/56153c5cd7384803a2f16bfcd7bd720d.png', 'Img1.png')   # 60506
+    #downloadImg('http://img.58921.com/sites/all/movie/files/protec/1821c285e91bc945269941b32f5e0fe5.png', 'Img2.png')   # 30934
 
-    #print(parseImg('Img1.png'))
-    #print(parseImg('Img2.png'))
+    print(parseImg('Img4.png'))
+    print(parseImg('Img5.png'))
 
 if __name__ == '__main__':
     main()

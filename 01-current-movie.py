@@ -9,15 +9,8 @@ import json
 from datetime import datetime, timedelta
 
 DEFAULT_TIMEOUT = 10                # 默认等待时间
-config = {
-    'host': '115.28.48.229',
-    'user': 'root',
-    'password': 'cnscarb',
-    'port':3306,
-    'database': 'movie',
-    'charset': 'utf8'
-}
-conn = mysql.connector.connect(**config)
+
+conn = mysql.connector.connect(**MovieUtils.DBCONFIG)
 cursor = conn.cursor()
 
 def crawCurrentMovie():

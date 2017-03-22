@@ -5,7 +5,7 @@ import json
 from datetime import datetime, timedelta
 
 DEFAULT_TIMEOUT = 10                # 默认等待时间
-conn = mysql.connector.connect(user='root', password='password', database='movie')
+conn = mysql.connector.connect(**MovieUtils.DBCONFIG)
 cursor = conn.cursor()
 
 def crawDailyBoxOffice(i):

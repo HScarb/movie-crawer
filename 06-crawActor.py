@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 import mysql.connector
 
 DEFAULT_TIMEOUT = 10
-conn = mysql.connector.connect(user='root', password='3347689',database = 'movie')
+conn = mysql.connector.connect(**MovieUtils.DBCONFIG)
 cursor = conn.cursor()
 
 
