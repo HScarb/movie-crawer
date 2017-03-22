@@ -9,11 +9,15 @@ import json
 from datetime import datetime, timedelta
 
 DEFAULT_TIMEOUT = 10                # 默认等待时间
-<<<<<<< HEAD
-conn = mysql.connector.connect(user='root', password='3347689',database = 'movie')
-=======
-conn = mysql.connector.connect(user='root', password='password', database='movie')
->>>>>>> b60f0ce963689a5766a602ad10216ecb5a922657
+config = {
+    'host': '115.28.48.229',
+    'user': 'root',
+    'password': 'cnscarb',
+    'port':3306,
+    'database': 'movie',
+    'charset': 'utf8'
+}
+conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
 def crawCurrentMovie():
@@ -200,15 +204,6 @@ def saveMovieInDatabase(movieDataDict):
     cursor.execute('SET FOREIGN_KEY_CHECKS=1')      # 重新开启外键检测
     conn.commit()
 
-
-def crawActor(actorID):
-    '''
-    根据演员的ID,爬取演员信息
-    包括 名称,已发布作品,未发布作品
-    :param actorID:
-    :return:
-    '''
-    pass
 def crawDailyBoxOffice(i):
     url = 'http://www.cbooo.cn/BoxOffice/GetDayBoxOffice?num=' + str(i)
     headers = {
@@ -242,12 +237,9 @@ def main():
     # get movie data
     movieDataList = []
     for movieID in movieIDList:
-<<<<<<< HEAD
         movieDataList.append(crawMovie(movieID))    #append得到的是影片的数据
-=======
-        movieDataList.append(crawMovie(movieID))
+
     movieAvgList = MovieUtils.movieAvg(movieBoxOffice())
->>>>>>> b60f0ce963689a5766a602ad10216ecb5a922657
     # save movie data into data base
     for movieData in movieDataList:
         for avg in movieAvgList:

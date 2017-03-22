@@ -1,4 +1,5 @@
 import re
+import subprocess
 from urllib import request
 try:
     import Image
@@ -41,8 +42,13 @@ def parseImg(imgPath):
     :param imgPath: 图片在本地的地址
     :return: 一个字符串，存储图片中的数字
     '''
-    return pytesseract.image_to_string(Image.open(imgPath))
-    pytesseract.image_to_string(Image.open())
+    result = None
+    try:
+        result = subprocess.check_output("java -jar ImageRecognize.jar " + imgPath, shell=True).splitlines()[0].decode()
+    except Exception as e:
+        print('Parse image error: ', e)
+        result = None
+    return result
 
 def movieAvg(dailyMovieBoxOfficeList):
     movieAvgList = []
