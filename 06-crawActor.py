@@ -1,10 +1,4 @@
 import requests
-import MovieUtils
-import re
-import random
-import chardet
-from urllib.request import urlopen
-from time import sleep
 from bs4 import BeautifulSoup
 import mysql.connector
 
@@ -13,14 +7,14 @@ conn = mysql.connector.connect(**MovieUtils.DBCONFIG)
 cursor = conn.cursor()
 
 
-def crawActor(actorID):     #获得演员的数据，返回一个字典
+def crawActor(actorID):
     '''
         根据演员的ID,爬取演员信息
         包括 名称,已发布作品,未发布作品
         :param actorID:
         :return:
         '''
-    url = 'http://www.cbooo.cn/p/' + str(actorID) # 周杰伦1893
+    url = 'http://www.cbooo.cn/p/' + str(actorID)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
     }
@@ -40,9 +34,8 @@ def crawActor(actorID):     #获得演员的数据，返回一个字典
     taxi = soup.find('div', class_='cont')
     i = 0
     isActorReady = False
-    if str(actorID) != 2265340:
+    try:
         for element in taxi.stripped_strings:
-            #print(element.replace('\r', '').replace('\n', '').replace(' ', ''))
             if isActorReady == True:
                 isActorReady = False
             elif i == 0:
@@ -54,19 +47,10 @@ def crawActor(actorID):     #获得演员的数据，返回一个字典
             elif element[0] == '生':
                 isActorReady = True
             i = i + 1
-    i = 0
+        i = 0
+    except Exception as a:
+        print('Error in CRAWING # ' + str(actorID) ,'into data base')
     pass
-    cars = soup.find('div', class_='ziliaofr').find('div', class_='starring')
-    for car in cars.stripped_strings:
-        #print(car)
-        pass
-    pass
-    # soup_IO = BeautifulSoup(text_IO, "lxml")
-    # buses = soup_IO.find('p')
-    # for bus in buses:
-    #     print(bus['MovieName'])
-    # pass
-    #添加把这里得到的东西移入到actorDataDict字典里面
     return actorDataDict
 
 def saveActorInDatabase(actorDataDict):
@@ -87,14 +71,11 @@ def saveActorInDatabase(actorDataDict):
     conn.commit()
 
 def main():
-    #ID = 1893
-    #saveActorInDatabase(crawActor(ID))          #参数是字典
     cursor.execute('select ActorID from movie.movie_actor')
     val = cursor.fetchall()
     for element in val:
         for value in element:
-            if(value != 2265340):
-                saveActorInDatabase(crawActor(value))
+            saveActorInDatabase(crawActor(value))
     cursor.close()
     conn.close()
 
