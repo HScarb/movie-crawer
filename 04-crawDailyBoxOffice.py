@@ -27,6 +27,7 @@ def crawDailyBoxOffice(i):
     for movieBoxOfficeDict in movieBoxOfficeList:
         movieBoxOfficeDict['Date'] = MovieUtils.str2date(current_Date.strftime('%Y-%m-%d'))
         del movieBoxOfficeDict['MovieImg']
+        movieBoxOfficeDict['BoxOffice'] = 10000 * int(movieBoxOfficeDict['BoxOffice'])
         print(movieBoxOfficeDict)
     return movieBoxOfficeList
 
@@ -48,13 +49,46 @@ def saveBoxOfficeInDataBase(boxOffice):
     cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
     conn.commit()
 
+def flashBoxOfficeInDataBase(boxOffice):
+    print('Saving movie box office # ', boxOffice['date'], boxOffice['id'], ' into data base...')
+    cursor.execute('SET FOREIGN_KEY_CHECKS=0')  # 关闭外键检测
+    conn.commit()
+    try:
+        cursor.execute(
+            'replace into movie_boxoffice'
+            '(MovieID, Date, BoxOffice, AvgPeople)'
+            'values (%s, %s, %s, %s)',
+            [boxOffice['id'], boxOffice['date'], boxOffice['boxoffice'], boxOffice['avgpeople']]
+        )
+        conn.commit()
+    except Exception as e:
+        print('Error in saveMovieInDatabase Step 1.')
+        print(e)
+    cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
+    conn.commit()
+
 def getMovieBoxOfficeNewestDateInDatabase():
     cursor.execute("select * from movie_boxoffice")
     data1 = cursor.fetchall()
     newestData = int(data1[0][1])
+    flashMovieBoxOfficeList = []
     for da in data1:
+        flashMovieBoxOfficeDict = {'id': None,
+                        'date': None,
+                        'boxoffice': None,
+                        'avgpeople': None}
+        if int(da[2]) < 10000:
+            flashMovieBoxOfficeDict['boxoffice'] = int(da[2])*10000
+            flashMovieBoxOfficeDict['id'] = da[0]
+            flashMovieBoxOfficeDict['date'] = str(da[1])
+            flashMovieBoxOfficeDict['avgpeople'] = da[2]
+            flashMovieBoxOfficeList.append(flashMovieBoxOfficeDict)
+        #print(da)
         if int(da[1]) > newestData:
             newestData = int(da[1])
+    if flashMovieBoxOfficeList:
+        for boxOfficeDict in flashMovieBoxOfficeList:
+            flashBoxOfficeInDataBase(boxOfficeDict)
     currentDate = MovieUtils.str2date(datetime.now().strftime('%Y-%m-%d'))
     return (newestData - int(currentDate))
 
@@ -69,11 +103,9 @@ def movieBoxOffice():
             dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
     return dailyMovieBoxOfficeList
 def main():
-
     dailyMovieBoxOfficeList = movieBoxOffice()
     for dailyBoxOffice in dailyMovieBoxOfficeList:
         for boxOffice in dailyBoxOffice:
-            boxOffice['BoxOffice'] = 10000*int(boxOffice['BoxOffice'])
             saveBoxOfficeInDataBase(boxOffice)
     cursor.close()
     conn.close()
