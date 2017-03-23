@@ -48,15 +48,32 @@ def saveBoxOfficeInDataBase(boxOffice):
     cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
     conn.commit()
 
+def getMovieBoxOfficeNewestDateInDatabase():
+    cursor.execute("select * from movie_boxoffice")
+    data1 = cursor.fetchall()
+    newestData = int(data1[0][1])
+    for da in data1:
+        if int(da[1]) > newestData:
+            newestData = int(da[1])
+    currentDate = MovieUtils.str2date(datetime.now().strftime('%Y-%m-%d'))
+    return (newestData - int(currentDate))
+
 def movieBoxOffice():
     dailyMovieBoxOfficeList = []
-    for i in range(-8, 0):
-        dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
+    newestDay = getMovieBoxOfficeNewestDateInDatabase()
+    if newestDay <=-8:
+        for i in range(-8, 1):
+            dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
+    else:
+        for i in range(newestDay, 1):
+            dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
     return dailyMovieBoxOfficeList
 def main():
+
     dailyMovieBoxOfficeList = movieBoxOffice()
     for dailyBoxOffice in dailyMovieBoxOfficeList:
         for boxOffice in dailyBoxOffice:
+            boxOffice['BoxOffice'] = 10000*int(boxOffice['BoxOffice'])
             saveBoxOfficeInDataBase(boxOffice)
     cursor.close()
     conn.close()
