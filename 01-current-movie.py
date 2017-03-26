@@ -218,12 +218,57 @@ def crawDailyBoxOffice(i):
         del movieBoxOfficeDict['MovieImg']
         #print(movieBoxOfficeDict)
     return movieBoxOfficeList
+def movieAvg(dailyMovieBoxOfficeList):
+    movieAvgList = []
+    for dailyBoxOffice in dailyMovieBoxOfficeList:
+        for boxOffice in dailyBoxOffice:
+            flag = 0
+            movieAvgDict = {'id': None,
+                            'avgPrice': None,
+                            'avgPeople': None,
+                            'movieDay': None,
+                            'womIndex': None}
+            if movieAvgList :
+                for avg in movieAvgList:
+                    if boxOffice['MovieID'] == avg['id']:
+                        if boxOffice['AvgPrice'] is not avg['avgPrice']:
+                            if avg['avgPeople'] is not boxOffice['AvpPeoPle']:
+                                avg['avgPrice'] = int(avg['avgPrice']) + int(boxOffice['AvgPrice'])
+                                avg['avgPeople'] = int(avg['avgPeople']) + int(boxOffice['AvpPeoPle'])
+                                if int(avg['movieDay']) < int(boxOffice['MovieDay']):
+                                    avg['movieDay'] = boxOffice['MovieDay']
+                        flag = 1
+                        break
+                if flag == 0:
+                    movieAvgDict['id'] = boxOffice['MovieID']
+                    movieAvgDict['avgPrice'] = boxOffice['AvgPrice']
+                    movieAvgDict['avgPeople'] = boxOffice['AvpPeoPle']
+                    movieAvgDict['movieDay'] = boxOffice['MovieDay']
+                    movieAvgDict['womIndex'] = boxOffice['WomIndex']
+                    movieAvgList.append(movieAvgDict)
+            else:
+                movieAvgDict['id'] = boxOffice['MovieID']
+                movieAvgDict['avgPrice'] = boxOffice['AvgPrice']
+                movieAvgDict['avgPeople'] = boxOffice['AvpPeoPle']
+                movieAvgDict['movieDay'] = boxOffice['MovieDay']
+                movieAvgDict['womIndex'] = boxOffice['WomIndex']
+                movieAvgList.append(movieAvgDict)
 
+    for avg in movieAvgList:
+        print(avg)
+        if int(avg['movieDay']) < 8 and int(avg['movieDay']) >0:
+            avg['avgPrice'] = round(int(avg['avgPrice']) / int(avg['movieDay']), 2)
+            avg['avgPeople'] = round(int(avg['avgPeople']) / int(avg['movieDay']), 2)
+        elif int(avg['movieDay']) >= 9:
+            avg['avgPrice'] = round(int(avg['avgPrice']) / 8, 2)
+            avg['avgPeople'] = round(int(avg['avgPeople']) / 8, 2)
+        print(avg)
+    return movieAvgList
 def movieBoxOffice():
     dailyMovieBoxOfficeList = []
     for i in range(-8, 0):
         dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
-    return dailyMovieBoxOfficeList
+    return movieAvg(dailyMovieBoxOfficeList)
 def main():
     # get movie IDs
     movieIDList = crawCurrentMovie()  #返回的是一个影片ID的字典
@@ -232,7 +277,7 @@ def main():
     for movieID in movieIDList:
         movieDataList.append(crawMovie(movieID))    #append得到的是影片的数据
 
-    movieAvgList = MovieUtils.movieAvg(movieBoxOffice())
+    movieAvgList = movieBoxOffice()
     # save movie data into data base
     for movieData in movieDataList:
         for avg in movieAvgList:
