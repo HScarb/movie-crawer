@@ -1,9 +1,10 @@
+import MovieUtils
 import requests
 from bs4 import BeautifulSoup
 import mysql.connector
 
 DEFAULT_TIMEOUT = 10
-conn = mysql.connector.connect(user='root',password='3347689',database = 'movie')
+conn = mysql.connector.connect(**MovieUtils.DBCONFIG)
 cursor = conn.cursor()
 
 def crawCompany(companyID):
@@ -17,8 +18,6 @@ def crawCompany(companyID):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
     }
-    #爬取CompanyID,CName,EName,Nation
-    #CompanyID信息在movie_company里面
     text = ''
     companyDataDict = {     'CompanyID':companyID,
                             'CName':None,
@@ -36,7 +35,6 @@ def crawCompany(companyID):
     i = 0
     try:
         for apple in apples.stripped_strings:
-            #print(apple)        #属性是第一个是CName，第二个是Nation，第三个是EMame
             if i == 0:
                 companyDataDict['CName'] = apple
             elif i == 1:
@@ -46,7 +44,7 @@ def crawCompany(companyID):
             i = i + 1
         i = 0
     except Exception as a:
-        print('Error in CRAWING #' + str(companyID) ,'into data base')
+        print('Error in CRAWING #' + str(companyID) ,'into data base', + a)
     pass
     return companyDataDict
 
@@ -63,17 +61,20 @@ def saveCompanyDatabase(companyDataDict):
         )
         conn.commit()
     except Exception as b:
-        print('Error in saveCompanyDatabase: ', b)
+        print('Error in saveCompanyDatabase: ', + b)
     cursor.execute('SET FOREIGN_KEY_CHECKS=1')  #重新开启外键检测
     conn.commit()
 
 def main():
-    #crawCompany(6)
     cursor.execute('select CompanyID from movie.movie_company')
     val = cursor.fetchall()
     for element in val:
         for value in element:
-            saveCompanyDatabase(crawCompany(value))
+            cur = conn.cursor()
+            cur.execute('select ' + str(value) + ' from movie.company')
+            companyIDList = cur.fetchall()
+            if companyIDList == None:
+                saveCompanyDatabase(crawCompany(value))
     cursor.close()
     conn.close()
 

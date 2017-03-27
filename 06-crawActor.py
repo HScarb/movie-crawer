@@ -7,7 +7,6 @@ DEFAULT_TIMEOUT = 10
 conn = mysql.connector.connect(**MovieUtils.DBCONFIG)
 cursor = conn.cursor()
 
-
 def crawActor(actorID):
     '''
         根据演员的ID,爬取演员信息
@@ -23,7 +22,8 @@ def crawActor(actorID):
     actorDataDict = {  'ActorID':actorID,
                        'CName':None,
                        'EName':None,
-                       'Nation':None }
+                       'Nation':None,
+                       'IsLoad':None}
     print('Crawing actor info: ',url)
     #抓取整个网页
     try:
@@ -34,23 +34,21 @@ def crawActor(actorID):
     soup = BeautifulSoup(text, "lxml")
     taxi = soup.find('div', class_='cont')
     i = 0
-    isActorReady = False
     try:
         for element in taxi.stripped_strings:
-            if isActorReady == True:
-                isActorReady = False
-            elif i == 0:
+            actorDataDict['IsLoad'] = True
+            if i == 0:
                 actorDataDict['CName'] = element
             elif i == 1:
                 actorDataDict['EName'] = element
             elif element[0] == '国':
                 actorDataDict['Nation'] = element[3:]
             elif element[0] == '生':
-                isActorReady = True
+                pass
             i = i + 1
         i = 0
-    except Exception as a:
-        print('Error in CRAWING # ' + str(actorID) ,'into data base')
+    except Exception as e:
+        print('Error in CRAWING # ' + str(actorID) ,'into data base: ' + e)
     pass
     return actorDataDict
 
@@ -76,7 +74,11 @@ def main():
     val = cursor.fetchall()
     for element in val:
         for value in element:
-            saveActorInDatabase(crawActor(value))
+            cur = conn.cursor()
+            cur.execute('select ' + str(value) + ' from movie.actor')
+            actorIDList = cur.fetchall()
+            if actorIDList == None:
+                saveActorInDatabase(crawActor(value))
     cursor.close()
     conn.close()
 
