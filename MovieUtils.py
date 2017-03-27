@@ -7,9 +7,9 @@ from urllib import request
 #     from PIL import Image
 # import pytesseract
 DBCONFIG = {
-    'host': '115.28.48.229',
-    'user': 'root',
-    'password': 'cnscarb',
+    'host': '106.14.26.144',
+    'user': 'movie',
+    'password': 'movie',
     'port':3306,
     'database': 'movie',
     'charset': 'utf8'
