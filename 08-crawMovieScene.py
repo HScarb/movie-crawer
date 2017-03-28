@@ -37,13 +37,17 @@ def crawMovieScene(i):
 def getCrawedMovieSceneDate():
     cursor.execute("select * from movie_scene")
     data1 = cursor.fetchall()
-    #print(data1)
-    leastDate = int(data1[0][2])
-    for da in data1:
-        if int(da[2]) >leastDate:
-            leastDate = int(da[2])
-    currentDate = MovieUtils.str2date(datetime.now().strftime('%Y-%m-%d'))
-    return (leastDate - int(currentDate))
+    print(data1)
+    if data1 :
+        leastDate = int(data1[0][2])
+        for da in data1:
+            if int(da[2]) > leastDate:
+                leastDate = int(da[2])
+        print(len(data1))
+        currentDate = MovieUtils.str2date(datetime.now().strftime('%Y-%m-%d'))
+        return (leastDate - int(currentDate))
+    else:
+        return data1
 
 def saveMovieSceneInDatabase(cityMovieSceneDataDict):
     print('Saving movie scene # ', cityMovieSceneDataDict['date'],
@@ -68,15 +72,20 @@ def saveMovieSceneInDatabase(cityMovieSceneDataDict):
 def main():
     crawedDays = getCrawedMovieSceneDate()
     cityMovieSceneDataList = []
-    if crawedDays >= 2:
-        crawMovieScene(2)
-    elif crawedDays <= 0:
-        for i in range(0,3):
-            cityMovieSceneDataList.append(crawMovieScene(i))
+    if crawedDays:
+        if crawedDays >= 2:
+            cityMovieSceneDataList.append(crawMovieScene(2))
+        elif crawedDays <= 0:
+            for i in range(0, 3):
+                cityMovieSceneDataList.append(crawMovieScene(i))
+        else:
+            for i in range(crawedDays, 3):
+                cityMovieSceneDataList.append(crawMovieScene(i))
     else:
-        for i in range(crawedDays, 3):
+        for i in range(0, 3):
             cityMovieSceneDataList.append(crawMovieScene(i))
     for cityMovieSceneDailyDataList in cityMovieSceneDataList:
+        print(len(cityMovieSceneDailyDataList))
         for cityMovieSceneDataDict in cityMovieSceneDailyDataList:
             #print(cityMovieSceneDataDict)
             saveMovieSceneInDatabase(cityMovieSceneDataDict)
