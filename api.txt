@@ -1,0 +1,1 @@
+http://service.theater.mtime.com/Cinema.api?Ajax_CallBack=true&Ajax_CallBackType=Mtime.Cinema.Services&Ajax_CallBackMethod=GetShowtimesJsonObjectByCinemaId&Ajax_CrossDomain=1&Ajax_RequestUrl=http%3A%2F%2Ftheater.mtime.com%2FChina_Zhejiang_Province_Hangzhou_GongShuQu%2F3065%2F&t=20173291458283640&Ajax_CallBackArgument0=3065&Ajax_CallBackArgument1=20170329
