@@ -1,35 +1,22 @@
 # -*- coding: utf-8 -*-
 import requests
-import re
+import 
 from bs4 import BeautifulSoup
-import mysql.connector
-import sys
+
 import MovieUtils
 
 # 默认等待时间
 DEFAULT_TIMEOUT = 10
 
 
-# conn = mysql.connector.connect(user='movie', password='movie', database='movie', host='106.14.26.144')
-# cursor = conn.cursor()
-
-def crawSchedule(movieID):
-    url = 'http://pp.58921.com/film/' + str(movieID)
+# 爬虫
+def crawSchedule(movieId):
+    url = 'http://pp.58921.com/film/' + str(movieId)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/48.0.2564.116 Safari/537.36 '
     }
     text = ''
-    cityList = []
-    for i in range(0, 15):
-        movieSceneDict = {'movieid': None,
-                          'moviename': None,
-                          'cityid': None,
-                          'date': None,
-                          'scene': None
-                          }
-        cityList.append(movieSceneDict)
-
     # 抓取整个网页
     try:
         print('Requesting url: ', url)
@@ -38,32 +25,13 @@ def crawSchedule(movieID):
         print('Error when request url=', url)
         return None
 
+    # 编码修改，防止出现中文乱码
     text = text.encode('latin1').decode('utf-8')
     soup = BeautifulSoup(text, "lxml")
 
-    # 将表头存到list中，这里先不考虑不是城市的情况，最后统一处理删去无用数据
-    i = 0
-    theadResults = soup.find_all('thead')
-    for theadResult in theadResults:
-        th_list = theadResult.find_all('th')
-        for th in th_list:
-            cityList[i]['city'] = th.get_text()
-            i += 1
-    results = soup.find_all('tr')
-    for result in results:
-        td_list = result.find_all('td')
-        for td in td_list:
-            if td.img is not None:
-                # print(td.img['src'])
-                MovieUtils.downloadImg(td.img['src'], 'img.png')
-                print(MovieUtils.parseImg('img.png'))
-            else:
-                print(td.get_text())
-
-
+# 主函数
 def main():
-    # todo
-    crawSchedule(6189)
+    crawSchedule(6189)  # 这里因为movieID不一致，先做模拟测试
     return
 
 
