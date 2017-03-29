@@ -11,8 +11,8 @@ DEFAULT_TIMEOUT = 10
 
 
 # 爬虫
-def crawSchedule(movieId):
-    url = 'http://pp.58921.com/film/' + str(movieId)
+def craw_schedule(movie_id):
+    url = 'http://pp.58921.com/film/' + str(movie_id)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/48.0.2564.116 Safari/537.36 '
@@ -45,7 +45,7 @@ def crawSchedule(movieId):
 
 # 主函数
 def main():
-    crawSchedule(6189)  # 这里因为movieID不一致，先做模拟测试
+    craw_schedule(6189)  # 这里因为movieID不一致，先做模拟测试
     return
 
 
