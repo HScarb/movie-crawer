@@ -39,7 +39,7 @@ def craw_schedule(movie_id):
         html_text = re.sub('<img src="(http.*?)" />', img_urls[i], html_text, count=1)
 
     # 利用pandas的read_html函数获取到表格
-    table = pd.read_html(html_text, header=0)
+    table = pd.read_html(html_text, header=0)[0]
     return table
 
 
