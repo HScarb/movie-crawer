@@ -19,20 +19,21 @@ def crawDailyBoxOffice(i):
     print('Crawing movie Booking', url)
     # 抓取整个网页# 抓取整个网页
     try:
-        json_data = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
+        json_data = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text  #爬取json数据并转换类型
     except:
         print('Error when request url=', url)
         return None
-    movieBoxOfficeList = json.loads(json_data)['data1']
+    movieBoxOfficeList = json.loads(json_data)['data1']  #将json网页数据通过json库转换为list
     for movieBoxOfficeDict in movieBoxOfficeList:
-        movieBoxOfficeDict['Date'] = MovieUtils.str2date(current_Date.strftime('%Y-%m-%d'))
-        del movieBoxOfficeDict['MovieImg']
-        movieBoxOfficeDict['BoxOffice'] = 10000 * int(movieBoxOfficeDict['BoxOffice'])
+        movieBoxOfficeDict['Date'] = MovieUtils.str2date(current_Date.strftime('%Y-%m-%d'))  #在每日的票房Dict中添加日期
+        del movieBoxOfficeDict['MovieImg']   #删除Dict中的无效键值
+        movieBoxOfficeDict['BoxOffice'] = 10000 * int(movieBoxOfficeDict['BoxOffice'])   #票房数值单位转换
         print(movieBoxOfficeDict)
     return movieBoxOfficeList
 
 def saveBoxOfficeInDataBase(boxOffice):
-    print('Saving movie box office # ', boxOffice['Date'], boxOffice['MovieName'], ' into data base...')
+    print('Saving movie box office # ', boxOffice['Date'], boxOffice['MovieID'], boxOffice['MovieName'],
+          ' into data base...')
     cursor.execute('SET FOREIGN_KEY_CHECKS=0')  # 关闭外键检测
     conn.commit()
     try:
@@ -50,7 +51,7 @@ def saveBoxOfficeInDataBase(boxOffice):
     conn.commit()
 
 def flashBoxOfficeInDataBase(boxOffice):
-    print('Saving movie box office # ', boxOffice['date'], boxOffice['id'], ' into data base...')
+    print('Flash movie box office # ', boxOffice['date'], boxOffice['id'], ' into data base...')
     cursor.execute('SET FOREIGN_KEY_CHECKS=0')  # 关闭外键检测
     conn.commit()
     try:
@@ -70,36 +71,48 @@ def flashBoxOfficeInDataBase(boxOffice):
 def getMovieBoxOfficeNewestDateInDatabase():
     cursor.execute("select * from movie_boxoffice")
     data1 = cursor.fetchall()
-    newestData = int(data1[0][1])
-    flashMovieBoxOfficeList = []
-    for da in data1:
-        flashMovieBoxOfficeDict = {'id': None,
-                        'date': None,
-                        'boxoffice': None,
-                        'avgpeople': None}
-        if int(da[2]) < 10000:
-            flashMovieBoxOfficeDict['boxoffice'] = int(da[2])*10000
-            flashMovieBoxOfficeDict['id'] = da[0]
-            flashMovieBoxOfficeDict['date'] = str(da[1])
-            flashMovieBoxOfficeDict['avgpeople'] = da[2]
-            flashMovieBoxOfficeList.append(flashMovieBoxOfficeDict)
-        #print(da)
-        if int(da[1]) > newestData:
-            newestData = int(da[1])
-    if flashMovieBoxOfficeList:
-        for boxOfficeDict in flashMovieBoxOfficeList:
-            flashBoxOfficeInDataBase(boxOfficeDict)
-    currentDate = MovieUtils.str2date(datetime.now().strftime('%Y-%m-%d'))
-    return (newestData - int(currentDate))
+    if data1:
+        newestData = int(data1[0][1])
+        flashMovieBoxOfficeList = []
+        for da in data1:
+            flashMovieBoxOfficeDict = {'id': None,
+                                       'date': None,
+                                       'boxoffice': None,
+                                       'avgpeople': None}
+            if int(da[2]) < 10000:   #检查已经存在db的票房数据是否有未转换的Dict
+                flashMovieBoxOfficeDict['id'] = da[0]
+                flashMovieBoxOfficeDict['date'] = str(da[1])
+                flashMovieBoxOfficeDict['boxoffice'] = int(da[2]) * 10000
+                flashMovieBoxOfficeDict['avgpeople'] = da[3]
+                flashMovieBoxOfficeList.append(flashMovieBoxOfficeDict)
+                print(da)
+            if newestData < int(da[1]):
+                newestData = int(da[1])
+        if flashMovieBoxOfficeList:
+            for boxOfficeInDatabase in flashMovieBoxOfficeList:
+                flashBoxOfficeInDataBase(boxOfficeInDatabase)       #更新字典里面的票房数据
+        currentDate = MovieUtils.str2date(datetime.now().strftime('%Y-%m-%d'))
+        return (newestData - int(currentDate))  #如果db中的movie_boxoffice已有数据则返回db中的最新日期和当前日期的差值
+    else:
+        return data1   #如果服务器中没有数据则返回空
+
+
 
 def movieBoxOffice():
     dailyMovieBoxOfficeList = []
     newestDay = getMovieBoxOfficeNewestDateInDatabase()
-    if newestDay <=-8:
-        for i in range(-8, 1):
-            dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
+    print(newestDay)
+    if newestDay :
+        if newestDay <= -8:
+            for i in range(-8, 1):
+                dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
+        else:
+            for i in range(newestDay, 1):
+                dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
+    elif newestDay ==0:
+        dailyMovieBoxOfficeList.append(crawDailyBoxOffice(0))
     else:
-        for i in range(newestDay, 1):
+        for i in range(-8, 1):
             dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
     return dailyMovieBoxOfficeList
 def main():
