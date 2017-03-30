@@ -218,6 +218,7 @@ def crawDailyBoxOffice(i):
         del movieBoxOfficeDict['MovieImg']
         #print(movieBoxOfficeDict)
     return movieBoxOfficeList
+
 def movieAvg(dailyMovieBoxOfficeList):
     movieAvgList = []
     for dailyBoxOffice in dailyMovieBoxOfficeList:
@@ -264,11 +265,13 @@ def movieAvg(dailyMovieBoxOfficeList):
             avg['avgPeople'] = round(int(avg['avgPeople']) / 8, 2)
         print(avg)
     return movieAvgList
+
 def movieBoxOffice():
     dailyMovieBoxOfficeList = []
     for i in range(-8, 0):
         dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
     return movieAvg(dailyMovieBoxOfficeList)
+
 def main():
     # get movie IDs
     movieIDList = crawCurrentMovie()  #返回的是一个影片ID的字典

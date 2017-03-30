@@ -68,8 +68,7 @@ def saveMovieSceneInDatabase(cityMovieSceneDataDict):
         print(e)
     cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
     conn.commit()
-
-def main():
+def runCrawlMovieScene():
     crawedDays = getCrawedMovieSceneDate()
     cityMovieSceneDataList = []
     if crawedDays:
@@ -87,9 +86,13 @@ def main():
     for cityMovieSceneDailyDataList in cityMovieSceneDataList:
         print(len(cityMovieSceneDailyDataList))
         for cityMovieSceneDataDict in cityMovieSceneDailyDataList:
-            #print(cityMovieSceneDataDict)
+            # print(cityMovieSceneDataDict)
             saveMovieSceneInDatabase(cityMovieSceneDataDict)
 
+def main():
+    runCrawlMovieScene()
+    cursor.close()
+    conn.close()
 
 if __name__ == '__main__':
     main()
