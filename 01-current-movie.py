@@ -285,7 +285,7 @@ def main():
     for movieData in movieDataList:
         for avg in movieAvgList:
             if avg['womIndex'] == '':
-                avg['womIndex'] = 0
+                avg['womIndex'] = None
             if movieData['id'] == avg['id']:
                 movieData['AvgPrice'] = avg['avgPrice']
                 movieData['AvgPeople'] = avg['avgPeople']

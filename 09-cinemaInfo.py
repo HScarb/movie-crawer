@@ -35,28 +35,31 @@ def crawlCityCinema(cityCinemaDict):
     try:
         cityCinemaDict['hallsum'] = cinemaInner[0].get_text().split()[0]
     except Exception as e:
-        print(e)
-        cityCinemaDict['hallsum'] = '0'
+        print('hallsum', e)
+        cityCinemaDict['hallsum'] = None
     try:
         cityCinemaDict['sitsum'] = cinemaInner[1].get_text().split()[0]
     except Exception as e:
-        print(e)
-        cityCinemaDict['sitsum'] = '0'
+        print('sitsum', e)
+        cityCinemaDict['sitsum'] = None
     try:
         cityCinemaDict['address'] = cinemacinemaPhoneTimeAdd[0].get_text().split()[1]
     except Exception as e:
-        print(e)
-        cityCinemaDict['address'] = ''
+        print('address', e)
+        cityCinemaDict['address'] = None
     try:
         cityCinemaDict['tel'] = cinemacinemaPhoneTimeAdd[1].get_text().split()[0].split('：', 1)[1]
     except Exception as e:
-        print(e)
-        cityCinemaDict['tel'] = ''
+        print('tel', e)
+        cityCinemaDict['tel'] = None
     try:
-        cityCinemaDict['businesshour'] = cinemacinemaPhoneTimeAdd[1].get_text().split()[1].split('：',1)[1]
+        if len(cinemacinemaPhoneTimeAdd[1].get_text().split()[1].split('：',1)[1]) <= 50:
+            cityCinemaDict['businesshour'] = cinemacinemaPhoneTimeAdd[1].get_text().split()[1].split('：',1)[1]
+        else:
+            cityCinemaDict['businesshour'] = cinemacinemaPhoneTimeAdd[1].get_text().split()[1].split('：', 1)[1][:50]
     except Exception as e:
-        print(e)
-        cityCinemaDict['businesshour'] = ''
+        print('businesshour', e)
+        cityCinemaDict['businesshour'] = None
     print(cityCinemaDict)
     return cityCinemaDict
     #print(soup)
@@ -78,13 +81,13 @@ def saveCinemainfoIntoDatabase(cityCinemaDict):
     conn.commit()
 def runCrawlCinemaInfo():
     cursor.execute('select * from city')
-    data1 = cursor.fetchall()
+    cityDataList = cursor.fetchall()
     cursor.execute('select * from cinema')
-    data2 = cursor.fetchall()
+    cinemaDataList = cursor.fetchall()
     cityCinemaList = []
     crawlCinemaList = []
-    for da1 in data1:
-        for da2 in data2:
+    for cityData in cityDataList:
+        for cinemaData in cinemaDataList:
             cityCinemaDict = {'cinemaid': None,
                               'stringid': None,
                               'cityid': None,
@@ -95,42 +98,42 @@ def runCrawlCinemaInfo():
                               'address': None,
                               'tel': None,
                               'businesshour':None}
-            if da1[0] == da2[2]:
-                cityCinemaDict['stringid'] = da1[2]
-                cityCinemaDict['cinemaid'] = da2[0]
-                cityCinemaDict['cityid'] = da2[1]
-                cityCinemaDict['districtid'] = da2[2]
-                cityCinemaDict['name'] = da2[3]
-                if da2[4]:
-                    cityCinemaDict['hallsum'] = da2[4]
+            if cityData[0] == cinemaData[2] or (cinemaData[2] == 0 and cityData[0] == cinemaData[1]):
+                cityCinemaDict['stringid'] = cityData[2]
+                cityCinemaDict['cinemaid'] = cinemaData[0]
+                cityCinemaDict['cityid'] = cinemaData[1]
+                cityCinemaDict['districtid'] = cinemaData[2]
+                cityCinemaDict['name'] = cinemaData[3]
+                if cinemaData[4]:
+                    cityCinemaDict['hallsum'] = cinemaData[4]
                 else:
-                    cityCinemaDict['hallsum'] = ''
-                if da2[5]:
-                    cityCinemaDict['sitsum'] = da2[5]
+                    cityCinemaDict['hallsum'] = None
+                if cinemaData[5]:
+                    cityCinemaDict['sitsum'] = cinemaData[5]
                 else:
-                    cityCinemaDict['sitsum'] = ''
-                if da2[6]:
-                    cityCinemaDict['address'] = da2[6]
+                    cityCinemaDict['sitsum'] = None
+                if cinemaData[6]:
+                    cityCinemaDict['address'] = cinemaData[6]
                 else:
-                    cityCinemaDict['address'] = ''
-                if da2[7]:
-                    cityCinemaDict['tel'] = da2[7]
+                    cityCinemaDict['address'] = None
+                if cinemaData[7]:
+                    cityCinemaDict['tel'] = cinemaData[7]
                 else:
-                    cityCinemaDict['tel'] = ''
-                if da2[8]:
-                    cityCinemaDict['businesshour'] = da2[8]
+                    cityCinemaDict['tel'] = None
+                if cinemaData[8]:
+                    cityCinemaDict['businesshour'] = cinemaData[8]
                 else:
-                    cityCinemaDict['businesshour'] = ''
+                    cityCinemaDict['businesshour'] = None
                 cityCinemaList.append(cityCinemaDict)
 
     for cityCinemaDict in cityCinemaList:
-        if (cityCinemaDict['hallsum'] == ''
-            and cityCinemaDict['sitsum'] == ''
-            and cityCinemaDict['address'] == ''
-            and cityCinemaDict['tel'] == ''
-            and cityCinemaDict['businesshour'] == ''):
+        if (cityCinemaDict['hallsum'] == None
+            and cityCinemaDict['sitsum'] == None
+            and cityCinemaDict['address'] == None
+            and cityCinemaDict['tel'] == None
+            and cityCinemaDict['businesshour'] == None):
             saveCinemainfoIntoDatabase(crawlCityCinema(cityCinemaDict))
-
+        #saveCinemainfoIntoDatabase(crawlCityCinema(cityCinemaDict))
 def main():
     runCrawlCinemaInfo()
     cursor.close()
