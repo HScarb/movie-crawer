@@ -33,12 +33,18 @@ def crawlCityCinema(cityCinemaDict):
         return cityCinemaDict
 
     try:
-        cityCinemaDict['hallsum'] = cinemaInner[0].get_text().split()[0]
+        if (soup.find('table', class_='lovetable').find_all('p'))[0].get_text()[-2:] == '座位':
+            cityCinemaDict['hallsum'] = None
+        else:
+            cityCinemaDict['hallsum'] = cinemaInner[0].get_text().split()[0]
     except Exception as e:
         print('hallsum', e)
         cityCinemaDict['hallsum'] = None
     try:
-        cityCinemaDict['sitsum'] = cinemaInner[1].get_text().split()[0]
+        if (soup.find('table', class_='lovetable').find_all('p'))[0].get_text()[-2:] == '座位':
+            cityCinemaDict['sitsum'] = cinemaInner[0].get_text().split()[0]
+        else:
+            cityCinemaDict['sitsum'] = cinemaInner[1].get_text().split()[0]
     except Exception as e:
         print('sitsum', e)
         cityCinemaDict['sitsum'] = None
@@ -48,7 +54,10 @@ def crawlCityCinema(cityCinemaDict):
         print('address', e)
         cityCinemaDict['address'] = None
     try:
-        cityCinemaDict['tel'] = cinemacinemaPhoneTimeAdd[1].get_text().split()[0].split('：', 1)[1]
+        if cinemacinemaPhoneTimeAdd[1].get_text().split()[0].split('：', 1)[0] == '营业时间':
+            cityCinemaDict['tel'] = None
+        else:
+            cityCinemaDict['tel'] = cinemacinemaPhoneTimeAdd[1].get_text().split()[0].split('：', 1)[1]
     except Exception as e:
         print('tel', e)
         cityCinemaDict['tel'] = None
@@ -57,6 +66,8 @@ def crawlCityCinema(cityCinemaDict):
             cityCinemaDict['businesshour'] = cinemacinemaPhoneTimeAdd[1].get_text().split()[1].split('：',1)[1]
         else:
             cityCinemaDict['businesshour'] = cinemacinemaPhoneTimeAdd[1].get_text().split()[1].split('：', 1)[1][:50]
+        if cinemacinemaPhoneTimeAdd[1].get_text().split()[0].split('：', 1)[0] == '营业时间':
+            cityCinemaDict['businesshour'] = cinemacinemaPhoneTimeAdd[1].get_text().split()[0].split('：', 1)[1]
     except Exception as e:
         print('businesshour', e)
         cityCinemaDict['businesshour'] = None
