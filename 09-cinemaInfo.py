@@ -139,10 +139,10 @@ def runCrawlCinemaInfo():
 
     for cityCinemaDict in cityCinemaList:
         if (cityCinemaDict['hallsum'] == None
-            and cityCinemaDict['sitsum'] == None
-            and cityCinemaDict['address'] == None
-            and cityCinemaDict['tel'] == None
-            and cityCinemaDict['businesshour'] == None):
+            or cityCinemaDict['sitsum'] == None
+            or cityCinemaDict['address'] == None
+            or cityCinemaDict['tel'] == None
+            or cityCinemaDict['businesshour'] == None):
             saveCinemainfoIntoDatabase(crawlCityCinema(cityCinemaDict))
         #saveCinemainfoIntoDatabase(crawlCityCinema(cityCinemaDict))
 def main():
