@@ -2,6 +2,7 @@
 import requests
 import re
 import pandas as pd
+import mysql.connector
 from bs4 import BeautifulSoup
 
 import MovieUtils
@@ -47,14 +48,39 @@ def craw_schedule(movie_id):
     return table
 
 
-# 保存数据到数据库
-def save2db(table):
-    table.T
+# 保存数据到数据库,这里只是做一个简单的测试，确定用于工作时请将数据库连接写在配置文件中
+def save2db(table, movie_id):
+    # 打开数据库连接
+    conn = mysql.connector.connect(user='root', password='wanglixian', database='movie')
+    # 使用cursor()方法获取操作游标
+    cursor = conn.cursor()
+
+    # SQL 语句
+    sql = 'replace into movie_scene (movie_id, city, date, scene) values (%s, %s, %s, %s)'
+
+    # 按行插入数据库
+    for i in range(len(table.index)):
+        date = table.ix[i]['日期']
+        # 对每个城市操作
+        for j in range(1, len(table.columns)):
+            try:
+                # 执行sql语句
+                cursor.execute(sql, [movie_id, table.columns[j], date, table.ix[i][j]])
+                # 提交到数据库执行
+                conn.commit()
+            except:
+                # 发生错误时回滚
+                conn.rollback()
+
+    # 关闭数据库连接
+    cursor.close()
+    conn.close()
 
 
 # 主函数
 def main():
-    craw_schedule(6189)  # 这里因为movieID不一致，先做模拟测试
+    table = craw_schedule(6189)  # 这里因为movieID不一致，先做模拟测试
+    save2db(table=table, movie_id=6189)
     return
 
 
