@@ -45,18 +45,18 @@ def craw_schedule(movie_id):
 
     # 利用pandas的read_html函数获取到表格
     table = pd.read_html(html_text, header=0)[0]
-    return table
+    return table, movie_name
 
 
 # 保存数据到数据库,这里只是做一个简单的测试，确定用于工作时请将数据库连接写在配置文件中
-def save2db(table, movie_id):
+def save2db(table, movie_id, movie_name):
     # 打开数据库连接
     conn = mysql.connector.connect(user='root', password='wanglixian', database='movie')
     # 使用cursor()方法获取操作游标
     cursor = conn.cursor()
 
     # SQL 语句
-    sql = 'replace into movie_scene (movie_id, city, date, scene) values (%s, %s, %s, %s)'
+    sql = 'replace into movie_scene (movie_id, movie_name, city, date, scene) values (%s, %s, %s, %s, %s)'
 
     # 按行插入数据库
     for i in range(len(table.index)):
@@ -65,7 +65,7 @@ def save2db(table, movie_id):
         for j in range(1, len(table.columns)):
             try:
                 # 执行sql语句
-                cursor.execute(sql, [movie_id, table.columns[j], date, table.ix[i][j]])
+                cursor.execute(sql, [movie_id, movie_name, table.columns[j], date, table.ix[i][j]])
                 # 提交到数据库执行
                 conn.commit()
             except:
