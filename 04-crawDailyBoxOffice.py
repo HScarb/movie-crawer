@@ -98,7 +98,7 @@ def getMovieBoxOfficeNewestDateInDatabase():
 
 
 
-def movieBoxOffice():
+def runMovieBoxOffice():
     dailyMovieBoxOfficeList = []
     newestDay = getMovieBoxOfficeNewestDateInDatabase()
     print(newestDay)
@@ -114,12 +114,12 @@ def movieBoxOffice():
     else:
         for i in range(-8, 1):
             dailyMovieBoxOfficeList.append(crawDailyBoxOffice(i))
-    return dailyMovieBoxOfficeList
-def main():
-    dailyMovieBoxOfficeList = movieBoxOffice()
     for dailyBoxOffice in dailyMovieBoxOfficeList:
         for boxOffice in dailyBoxOffice:
             saveBoxOfficeInDataBase(boxOffice)
+
+def main():
+    runMovieBoxOffice()
     cursor.close()
     conn.close()
 
