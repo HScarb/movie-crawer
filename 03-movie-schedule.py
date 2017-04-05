@@ -48,6 +48,35 @@ def craw_schedule(movie_id):
     return table, movie_name
 
 
+# 获取首页热门影片列表的爬虫
+def craw_movie_list():
+    url = 'http://pp.58921.com'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/48.0.2564.116 Safari/537.36 '
+    }
+    html_text = ''
+    # 抓取整个网页
+    try:
+        print('Requesting url: ', url)
+        html_text = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
+    except:
+        print('Error when request url=', url)
+        return None
+
+    # 编码修改，防止出现中文乱码
+    html_text = html_text.encode('latin1').decode('utf-8')
+
+    soup = BeautifulSoup(html_text, "lxml")
+    links = soup.find_all('table', class_="table table-bordered table-condensed")[0].find_all('a')
+
+    # 当前热门影片id列表
+    movie_list = []
+    for link in links:
+        movie_list.append(str(link.get('href')).split('/film/')[1])
+    return movie_list
+
+
 # 保存数据到数据库,这里只是做一个简单的测试，确定用于工作时请将数据库连接写在配置文件中
 def save2db(table, movie_id, movie_name):
     # 打开数据库连接
@@ -79,8 +108,12 @@ def save2db(table, movie_id, movie_name):
 
 # 主函数
 def main():
-    table = craw_schedule(6189)  # 这里因为movieID不一致，先做模拟测试
-    save2db(table=table, movie_id=6189)
+    movie_list = craw_movie_list()
+
+    for i in range(len(movie_list)):
+        table, movie_name = craw_schedule(movie_list[i])  # 这里因为movieID不一致，先做模拟测试
+        save2db(table=table, movie_id=movie_list[i], movie_name=movie_name)
+
     return
 
 
