@@ -47,6 +47,11 @@ def craw_schedule(movie_id):
     return table
 
 
+# 保存数据到数据库
+def save2db(table):
+    table.T
+
+
 # 主函数
 def main():
     craw_schedule(6189)  # 这里因为movieID不一致，先做模拟测试
