@@ -15,6 +15,18 @@ DBCONFIG = {
     'charset': 'utf8'
 }
 
+FIRST_TIER_CITIES = [
+    290,    # 北京
+    292,    # shanghai
+    365,    # guangzhou
+    880,    # chengdu
+    974,    # hangzhou
+    293,    # tianjin
+    628,    # nanjing
+    291,    # chongqing
+    561,    # wuhan
+    791    # xian
+]
 
 def str2date(str):
     '''
@@ -57,7 +69,6 @@ def parseImg(imgPath):
         print('Parse image error: ', e)
         result = None
     return result
-
 
 def main():
     print(str2date('2017-3-3'))
