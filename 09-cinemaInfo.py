@@ -90,7 +90,7 @@ def saveCinemainfoIntoDatabase(cityCinemaDict):
         return None
     cursor.execute('SET FOREIGN_KEY_CHECKS=1')
     conn.commit()
-def runCrawlCinemaInfo():
+def excute():
     cursor.execute('select * from city')
     cityDataList = cursor.fetchall()
     cursor.execute('select * from cinema')
@@ -146,7 +146,7 @@ def runCrawlCinemaInfo():
             saveCinemainfoIntoDatabase(crawlCityCinema(cityCinemaDict))
         #saveCinemainfoIntoDatabase(crawlCityCinema(cityCinemaDict))
 def main():
-    runCrawlCinemaInfo()
+    excute()
     cursor.close()
     conn.close()
 
