@@ -38,8 +38,8 @@ def craw_schedule(movie_id):
 
     # 解析图片并将解析结果替换原来的html文本
     for i in range(len(img_urls)):
-        MovieUtils.downloadImg(img_urls[i], 'schedule.png')
-        img_urls[i] = MovieUtils.parseImg('schedule.png')
+        # MovieUtils.downloadImg(img_urls[i], 'schedule.png')
+        # img_urls[i] = MovieUtils.parseImg('schedule.png')
         html_text = re.sub('<img src="(http.*?)" />', img_urls[i], html_text, count=1)
 
     # 利用pandas的read_html函数获取到表格
