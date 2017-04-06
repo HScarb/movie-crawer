@@ -1,1 +1,21 @@
 http://service.theater.mtime.com/Cinema.api?Ajax_CallBack=true&Ajax_CallBackType=Mtime.Cinema.Services&Ajax_CallBackMethod=GetShowtimesJsonObjectByCinemaId&Ajax_CrossDomain=1&Ajax_RequestUrl=http%3A%2F%2Ftheater.mtime.com%2FChina_Zhejiang_Province_Hangzhou_GongShuQu%2F3065%2F&t=20173291458283640&Ajax_CallBackArgument0=3065&Ajax_CallBackArgument1=20170329
+
+北京 290
+上海 292
+广州 365
+深圳 366
+成都 880
+杭州 974
+天津 293
+南京 628
+重庆 291
+武汉 561
+西安 791
+长沙
+青岛
+沈阳
+大连
+厦门
+苏州
+宁波
+无锡

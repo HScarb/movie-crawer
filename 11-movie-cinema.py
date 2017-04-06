@@ -4,6 +4,7 @@ import re
 import execjs   # execute javascript from python
 import datetime #
 import mysql.connector
+from datetime import datetime
 
 DEFAULT_TIMEOUT = 10                # 默认等待时间
 
@@ -120,7 +121,20 @@ def saveShowtime(showtime, cinemaID):
 def carweAndSaveMtimeMovieInfo():
     cursor.execute('SELECT MtimeMovieID FROM showtime GROUP BY MtimeMovieID')
     movieIdList = cursor.fetchall()
-    print(movieIdList)
+    # craw
+    for tuple in movieIdList:
+        dict = getMovieInfoFromMtime(tuple[0])
+        try:
+            cursor.execute(
+                'replace into movie_mtime'
+                '(MtimeMovieID, EName, CName)'
+                'values (%s, %s, %s)',
+                [dict['MovieID'], dict['EName'], dict['CName']]
+            )
+            conn.commit()
+        except Exception as e:
+            print('Error in SaveMtimeMovieInfo.')
+            print(e)
 
 def saveShowtimes(cinemaShowtimes):
     # 截取showtimes
@@ -129,10 +143,26 @@ def saveShowtimes(cinemaShowtimes):
     for showtime in cinemaShowtimes:
         saveShowtime(showtime, cinemaId)
 
+def getCinemaList(cityID):
+    '''
+    返回一个list，每个成员是一个tuple
+    :param cityID:
+    :return:
+    '''
+    cursor.execute('SELECT CinemaID FROM cinema WHERE CityID = %s', (cityID,))
+    cinemaList = cursor.fetchall()
+    return cinemaList
+
 def main():
-    saveShowtimes(getCinemaShowtime(3065, 20170405))
-    getMovieInfoFromMtime(195064)
+    #saveShowtimes(getCinemaShowtime(3065, 20170406))
+    #getMovieInfoFromMtime(195064)
+    #carweAndSaveMtimeMovieInfo()
+    date = 20170407
+    cinemas = getCinemaList(974)
+    for cinema in cinemas:
+        saveShowtimes(getCinemaShowtime(cinema[0], date))
     carweAndSaveMtimeMovieInfo()
 
 if __name__ == '__main__':
-    main()
+    #main()
+    print(datetime.now())
