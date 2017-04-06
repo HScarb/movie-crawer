@@ -128,26 +128,23 @@ def saveCompanyDatabase(companyDataDict):
     conn.commit()
 
 def main():
-    cursor.execute('select ActorID from movie.movie_actor')
+    cursor.execute('select ActorID from movie_actor')
     val = cursor.fetchall()
-    for element in val:
-        for value in element:
-            cur = conn.cursor()
-            cur.execute('select ' + str(value) + ' from movie.actor')
-            actorIDList = cur.fetchall()
-            if actorIDList == None:
-                saveActorInDatabase(crawActor(value))
+    for tuple in val:
+        cur = conn.cursor()
+        cur.execute('select ' + str(tuple[0]) + ' from actor')
+        actorIDList = cur.fetchall()
+        if actorIDList == None:
+            saveActorInDatabase(crawActor(tuple[0]))
 
-    cursor.execute('select CompanyID from movie.movie_company')
+    cursor.execute('select CompanyID from movie_company')
     val = cursor.fetchall()
-    for element in val:
-        for value in element:
-            cur = conn.cursor()
-            cur.execute('select ' + str(value) + ' from movie.company')
-            companyIDList = cur.fetchall()
-            if companyIDList == None:
-                saveCompanyDatabase(crawCompany(value))
-
+    for tuple in val:
+        cur = conn.cursor()
+        cur.execute('select ' + str(tuple[0]) + ' from company')
+        companyIDList = cur.fetchall()
+        if companyIDList == None:
+            saveCompanyDatabase(crawCompany(tuple[0]))
     cursor.close()
     conn.close()
 

@@ -4,7 +4,7 @@ import re
 import execjs   # execute javascript from python
 import datetime #
 import mysql.connector
-from datetime import datetime
+from datetime import datetime, timedelta
 
 DEFAULT_TIMEOUT = 10                # 默认等待时间
 
@@ -153,16 +153,30 @@ def getCinemaList(cityID):
     cinemaList = cursor.fetchall()
     return cinemaList
 
-def main():
-    #saveShowtimes(getCinemaShowtime(3065, 20170406))
-    #getMovieInfoFromMtime(195064)
-    #carweAndSaveMtimeMovieInfo()
-    date = 20170407
-    cinemas = getCinemaList(974)
-    for cinema in cinemas:
-        saveShowtimes(getCinemaShowtime(cinema[0], date))
+def execute():
+    '''
+    执行函数
+    :return:
+    '''
+    # 获取要爬取的日期
+    now = datetime.now().date()             # 当前日期
+    next = now + timedelta(days=1)          # 明天
+    now = int(MovieUtils.str2date(str(now)))
+    next = int(MovieUtils.str2date(str(next)))
+    # 爬取
+    for date in [now, next]:
+        print('# Crawing date #', date)
+        for cityID in MovieUtils.CRAWING_CITIES:
+            print('## Crawing city #', cityID)
+            cinemas = getCinemaList(cityID)
+            for cinema in cinemas:
+                print('### Crawing cinema #', cinema[0])
+                saveShowtimes(getCinemaShowtime(cinema[0], date))
     carweAndSaveMtimeMovieInfo()
 
+    cursor.close()
+    conn.close()
+
 if __name__ == '__main__':
-    #main()
-    print(datetime.now())
+    execute()
+

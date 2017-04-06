@@ -262,15 +262,16 @@ def crawDailyBoxOffice(i):
     # 抓取整个网页# 抓取整个网页
     try:
         json_data = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text  #爬取json数据并转换类型
-    except:
+    except Exception as e:
         print('Error when request url=', url)
+        print(e)
         return None
     movieBoxOfficeList = json.loads(json_data)['data1']  #将json网页数据通过json库转换为list
     for movieBoxOfficeDict in movieBoxOfficeList:
         movieBoxOfficeDict['Date'] = MovieUtils.str2date(current_Date.strftime('%Y-%m-%d'))  #在每日的票房Dict中添加日期
         del movieBoxOfficeDict['MovieImg']   #删除Dict中的无效键值
         movieBoxOfficeDict['BoxOffice'] = 10000 * int(movieBoxOfficeDict['BoxOffice'])   #票房数值单位转换
-        print(movieBoxOfficeDict)
+        # print(movieBoxOfficeDict)
     return movieBoxOfficeList
 
 def saveBoxOfficeInDataBase(boxOffice):
@@ -341,7 +342,6 @@ def getMovieBoxOfficeNewestDateInDatabase():
 
 
 def excute():
-
     # get movie IDs
     movieIDList = crawCurrentMovie()  # 返回的是一个影片ID的字典
     # get movie data

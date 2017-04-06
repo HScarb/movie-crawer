@@ -15,8 +15,9 @@ DBCONFIG = {
     'charset': 'utf8'
 }
 
-FIRST_TIER_CITIES = [
-    290,    # 北京
+# 要爬的一线、二线城市
+CRAWING_CITIES = [
+    290,    # beijing
     292,    # shanghai
     365,    # guangzhou
     880,    # chengdu
@@ -25,7 +26,32 @@ FIRST_TIER_CITIES = [
     628,    # nanjing
     291,    # chongqing
     561,    # wuhan
-    791    # xian
+    791,    # xian
+    805,    # jibnan
+    829,    # qingdao
+    991,    # ningbo
+    323,    # xiamen
+    729,    # dalian
+    528,    # haerbin
+    722,    # shenyang
+    693,    # changchun
+    598,    # changsha
+    328,    # fuzhou
+    489,    # zhengzhou
+    453,    # shijiazhuang
+    1332,   # suzhou
+    373,    # foshan
+    843,    # yantai
+    371,    # dongguan
+    854,    # taiyuan
+    662,    # wuxi
+    295,    # hefei
+    674,    # nanchang
+    411,    # nanning
+    950,    # kunming
+    1001,   # wenzhou
+    851,    # zibo
+    480,    # tangshan
 ]
 
 def str2date(str):
