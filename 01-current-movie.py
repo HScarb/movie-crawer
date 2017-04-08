@@ -234,7 +234,7 @@ def getMovieAvg(dailyMovieBoxOfficeList):
                 movieAvgList.append(movieAvgDict)
 
     for avg in movieAvgList:
-        print(avg)
+        #print(avg)
         if int(avg['movieDay']) < 8 and int(avg['movieDay']) >0:
             avg['avgPrice'] = round(int(avg['avgPrice']) / int(avg['movieDay']), 2)
             avg['avgPeople'] = round(int(avg['avgPeople']) / int(avg['movieDay']), 2)
@@ -328,7 +328,7 @@ def getMovieBoxOfficeNewestDateInDatabase():
                 flashMovieBoxOfficeDict['boxoffice'] = int(da[2]) * 10000
                 flashMovieBoxOfficeDict['avgpeople'] = da[3]
                 flashMovieBoxOfficeList.append(flashMovieBoxOfficeDict)
-                print(da)
+                #print(da)
             if newestData < int(da[1]):
                 newestData = int(da[1])
         if flashMovieBoxOfficeList:
@@ -339,7 +339,65 @@ def getMovieBoxOfficeNewestDateInDatabase():
     else:
         return data1   #如果服务器中没有数据则返回空
 
+def crawMovieScene(i):
+    url = 'http://www.cbooo.cn/Screen/getScreenData?days=' + str(i)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    }  # headers这一段不需要改动
+    text = ''
+    try:
+        print('Requesting url: ', url)
+        text = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
+    except:
+        print('Error when request url=', url)
+        return None
 
+    current_Date = datetime.now() + timedelta(days=i)
+    print(current_Date.strftime('%Y-%m-%d'))
+    test_json = json.loads(text)
+    cityMovieData = test_json['data2']
+
+    for city in cityMovieData:
+        for id in test_json['data3']:
+            if city['cityname'] == id['name']:
+                city['cityid'] = id['id']
+        city['date'] = MovieUtils.str2date(current_Date.strftime('%Y-%m-%d'))
+    return cityMovieData
+
+def getCrawedMovieSceneDate():
+    cursor.execute("select * from movie_scene")
+    data1 = cursor.fetchall()
+    print(data1)
+    if data1 :
+        leastDate = int(data1[0][2])
+        for da in data1:
+            if int(da[2]) > leastDate:
+                leastDate = int(da[2])
+        print(len(data1))
+        currentDate = MovieUtils.str2date(datetime.now().strftime('%Y-%m-%d'))
+        return (leastDate - int(currentDate))
+    else:
+        return data1
+
+def saveMovieSceneInDatabase(cityMovieSceneDataDict):
+    print('Saving movie scene # ', cityMovieSceneDataDict['date'],
+          cityMovieSceneDataDict['cityname'], cityMovieSceneDataDict['cnName'], ' into data base...')
+    cursor.execute('SET FOREIGN_KEY_CHECKS=0')  # 关闭外键检测
+    conn.commit()
+    try:
+        cursor.execute(
+            'replace into movie_scene'
+            '(MovieID, CityId, Date, Scene)'
+            'values (%s, %s, %s, %s)',
+            [cityMovieSceneDataDict['movieid'], cityMovieSceneDataDict['cityid'],
+             cityMovieSceneDataDict['date'], cityMovieSceneDataDict['citynum']]
+        )
+        conn.commit()
+    except Exception as e:
+        print('Error in saveMovieInDatabase Step 1.')
+        print(e)
+    cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
+    conn.commit()
 
 def excute():
     # get movie IDs
@@ -360,7 +418,7 @@ def excute():
                 movieData['WomIndex'] = avg['womIndex']
     for movieData in movieDataList:
         saveMovieInDatabase(movieData)
-        # get Movie Box Office
+    # get Movie Box Office
     dailyMovieBoxOfficeList = []
     newestDay = getMovieBoxOfficeNewestDateInDatabase()
     print(newestDay)
@@ -379,6 +437,26 @@ def excute():
     for dailyBoxOffice in dailyMovieBoxOfficeList:
         for boxOffice in dailyBoxOffice:
             saveBoxOfficeInDataBase(boxOffice)
+    #getMovieScene
+    crawedDays = getCrawedMovieSceneDate()
+    cityMovieSceneDataList = []
+    if crawedDays:
+        if crawedDays >= 2:
+            cityMovieSceneDataList.append(crawMovieScene(2))
+        elif crawedDays <= 0:
+            for i in range(0, 3):
+                cityMovieSceneDataList.append(crawMovieScene(i))
+        else:
+            for i in range(crawedDays, 3):
+                cityMovieSceneDataList.append(crawMovieScene(i))
+    else:
+        for i in range(0, 3):
+            cityMovieSceneDataList.append(crawMovieScene(i))
+    for cityMovieSceneDailyDataList in cityMovieSceneDataList:
+        print(len(cityMovieSceneDailyDataList))
+        for cityMovieSceneDataDict in cityMovieSceneDailyDataList:
+            # print(cityMovieSceneDataDict)
+            saveMovieSceneInDatabase(cityMovieSceneDataDict)
 
 def main():
     excute()

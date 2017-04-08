@@ -7,6 +7,10 @@ DEFAULT_TIMEOUT = 10
 conn = mysql.connector.connect(**MovieUtils.DBCONFIG)
 cursor = conn.cursor()
 
+def diff(listA,listB):
+    retC = list(set(listB).difference(set(listA)))
+    return retC
+
 def crawActor(actorID):
     '''
         根据演员的ID,爬取演员信息
@@ -129,22 +133,23 @@ def saveCompanyDatabase(companyDataDict):
 
 def main():
     cursor.execute('select ActorID from movie_actor')
-    val = cursor.fetchall()
-    for tuple in val:
-        cur = conn.cursor()
-        cur.execute('select ' + str(tuple[0]) + ' from actor')
-        actorIDList = cur.fetchall()
-        if actorIDList == None:
-            saveActorInDatabase(crawActor(tuple[0]))
+    val_movie_actor = cursor.fetchall()
+    cursor.execute('select ActorID from actor')
+    val_actor = cursor.fetchall()
+    val_DiffenectAct_list = diff(val_actor,val_movie_actor)
+    for tuple in val_DiffenectAct_list:
+        saveActorInDatabase(crawActor(tuple[0]))
+    pass
 
     cursor.execute('select CompanyID from movie_company')
-    val = cursor.fetchall()
-    for tuple in val:
-        cur = conn.cursor()
-        cur.execute('select ' + str(tuple[0]) + ' from company')
-        companyIDList = cur.fetchall()
-        if companyIDList == None:
-            saveCompanyDatabase(crawCompany(tuple[0]))
+    val_movie_company = cursor.fetchall()
+    cursor.execute('select CompanyID from company')
+    val_company = cursor.fetchall()
+    val_DiffenectCom_list = diff(val_movie_company, val_company)
+    for tuple in val_DiffenectCom_list:
+        saveActorInDatabase(crawCompany(tuple[0]))
+    pass
+
     cursor.close()
     conn.close()
 
