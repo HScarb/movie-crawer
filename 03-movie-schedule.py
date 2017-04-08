@@ -43,6 +43,9 @@ def craw_schedule(movie_id):
         # img_urls[i] = MovieUtils.parseImg('schedule.png')
         html_text = re.sub('<img src="(http.*?)" />', img_urls[i], html_text, count=1)
 
+    # 用正则表达式提取出链接中的完整日期(带年份)
+    reg = r'<a href="/hour/film_' + movie_id + '_(.*)" .*</a>'
+    html_text = re.sub(reg, r'\1', html_text)
     # 利用pandas的read_html函数获取到表格
     table = pd.read_html(html_text, header=0)[0]
     return table, movie_name
