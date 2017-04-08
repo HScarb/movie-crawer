@@ -67,10 +67,13 @@ def getMovieInfoFromMtime(mtimeMovieID):
         var = execjs.eval(var)
     else:
         return dict
-    if 'titlecn' in var['value']:
-        dict['CName'] = var['value']['titlecn']
-    if 'titleen' in var['value']:
-        dict['EName'] = var['value']['titleen']
+    try:
+        if 'titlecn' in var['value']:
+            dict['CName'] = var['value']['titlecn']
+        if 'titleen' in var['value']:
+            dict['EName'] = var['value']['titleen']
+    except Exception as e:
+        print(e)
     return dict
 
 def saveShowtime(showtime, cinemaID):
@@ -117,14 +120,18 @@ def saveShowtime(showtime, cinemaID):
     except Exception as e:
         print('Error in saveShowtime.')
         print(e)
+    finally:
+        cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
+        conn.commit()
 
 def carweAndSaveMtimeMovieInfo():
-    cursor.execute('SELECT MtimeMovieID FROM showtime GROUP BY MtimeMovieID')
+    cursor.execute('SELECT DISTINCT MtimeMovieID FROM showtime')
     movieIdList = cursor.fetchall()
     # craw
     for tuple in movieIdList:
         dict = getMovieInfoFromMtime(tuple[0])
         try:
+            cursor.execute('SET FOREIGN_KEY_CHECKS=0')      # 关闭外键检测
             cursor.execute(
                 'replace into movie_mtime'
                 '(MtimeMovieID, EName, CName)'
@@ -135,8 +142,13 @@ def carweAndSaveMtimeMovieInfo():
         except Exception as e:
             print('Error in SaveMtimeMovieInfo.')
             print(e)
+        finally:
+            cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
+            conn.commit()
 
 def saveShowtimes(cinemaShowtimes):
+    if cinemaShowtimes == None:
+        return
     # 截取showtimes
     cinemaId = cinemaShowtimes['value']['cinemaId']
     cinemaShowtimes = cinemaShowtimes['value']['showtimes']
