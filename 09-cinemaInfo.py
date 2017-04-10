@@ -27,7 +27,7 @@ def crawlCityCinema(cityCinemaDict):
         soup = BeautifulSoup(text, "lxml")
         cinemaInner = soup.find('table', class_='lovetable').find_all('b')
         cinemacinemaPhoneTimeAdd = soup.find('div', class_='ci_title').find_all('p')
-        cimenaRequept = soup.find('div', class_='ci_mon').find_all('dd')
+        cimenaRequeptment = soup.find('div', class_='ci_mon').find_all('i', class_='ico_c_f14')
     except Exception as e:
         print(e)
         return cityCinemaDict
@@ -71,6 +71,11 @@ def crawlCityCinema(cityCinemaDict):
     except Exception as e:
         print('businesshour', e)
         cityCinemaDict['businesshour'] = None
+    if cimenaRequeptment :
+        cityCinemaDict['parking'] = 1
+    else:
+        cityCinemaDict['parking'] = 0
+
     print(cityCinemaDict)
     return cityCinemaDict
     #print(soup)
@@ -80,11 +85,11 @@ def saveCinemainfoIntoDatabase(cityCinemaDict):
     conn.commit()
     try:
         cursor.execute('replace into cinema'
-                           '(CinemaID, CityID, DistrictID, Name, HallSum, SitSum, Address, Tel, BusinessHour)'
-                           'values (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                           '(CinemaID, CityID, DistrictID, Name, HallSum, SitSum, Address, Tel, BusinessHour, Parking)'
+                           'values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
                            [cityCinemaDict['cinemaid'], cityCinemaDict['cityid'], cityCinemaDict['districtid'],
                             cityCinemaDict['name'], cityCinemaDict['hallsum'], cityCinemaDict['sitsum'],
-                            cityCinemaDict['address'], cityCinemaDict['tel'], cityCinemaDict['businesshour']])
+                            cityCinemaDict['address'], cityCinemaDict['tel'], cityCinemaDict['businesshour'], cityCinemaDict['parking']])
     except Exception as e:
         print(e)
         return None
@@ -96,7 +101,6 @@ def excute():
     cursor.execute('select * from cinema')
     cinemaDataList = cursor.fetchall()
     cityCinemaList = []
-    crawlCinemaList = []
     for cityData in cityDataList:
         for cinemaData in cinemaDataList:
             cityCinemaDict = {'cinemaid': None,
@@ -108,7 +112,8 @@ def excute():
                               'sitsum': None,
                               'address': None,
                               'tel': None,
-                              'businesshour':None}
+                              'businesshour':None,
+                              'parking': None}
             if cityData[0] == cinemaData[2] or (cinemaData[2] == 0 and cityData[0] == cinemaData[1]):
                 cityCinemaDict['stringid'] = cityData[2]
                 cityCinemaDict['cinemaid'] = cinemaData[0]
@@ -135,6 +140,10 @@ def excute():
                     cityCinemaDict['businesshour'] = cinemaData[8]
                 else:
                     cityCinemaDict['businesshour'] = None
+                if cinemaData[9]:
+                    cityCinemaDict['parking'] = cinemaData[9]
+                else:
+                    cityCinemaDict['parking'] = None
                 cityCinemaList.append(cityCinemaDict)
 
     for cityCinemaDict in cityCinemaList:
@@ -142,8 +151,10 @@ def excute():
             or cityCinemaDict['sitsum'] == None
             or cityCinemaDict['address'] == None
             or cityCinemaDict['tel'] == None
-            or cityCinemaDict['businesshour'] == None):
-            saveCinemainfoIntoDatabase(crawlCityCinema(cityCinemaDict))
+            or cityCinemaDict['businesshour'] == None
+            or cityCinemaDict['parking'] == None):
+            tempCinemaDict = crawlCityCinema(cityCinemaDict)
+            saveCinemainfoIntoDatabase(tempCinemaDict)
         #saveCinemainfoIntoDatabase(crawlCityCinema(cityCinemaDict))
 def main():
     excute()
