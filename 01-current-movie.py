@@ -366,18 +366,23 @@ def crawMovieScene(i):
 
 def getCrawedMovieSceneDate():
     cursor.execute("select * from movie_scene")
-    data1 = cursor.fetchall()
-    print(data1)
-    if data1 :
-        leastDate = int(data1[0][2])
-        for da in data1:
+    movieSceneTuple = cursor.fetchall()
+    print(movieSceneTuple)
+    if movieSceneTuple :
+        leastDate = int(movieSceneTuple[0][2])
+        for da in movieSceneTuple:
             if int(da[2]) > leastDate:
                 leastDate = int(da[2])
-        print(len(data1))
+        print(len(movieSceneTuple))
         currentDate = MovieUtils.str2date(datetime.now().strftime('%Y-%m-%d'))
         return (leastDate - int(currentDate))
     else:
-        return data1
+        return movieSceneTuple
+
+def getMovieSceneDate():
+    cursor.execute("select * from movie_scene")
+    movieSceneTuple = cursor.fetchall()
+    return movieSceneTuple
 
 def saveMovieSceneInDatabase(cityMovieSceneDataDict):
     print('Saving movie scene # ', cityMovieSceneDataDict['date'],
@@ -387,9 +392,9 @@ def saveMovieSceneInDatabase(cityMovieSceneDataDict):
     try:
         cursor.execute(
             'replace into movie_scene'
-            '(MovieID, CityId, Date, Scene)'
+            '(MovieID, CityName, Date, Scene)'
             'values (%s, %s, %s, %s)',
-            [cityMovieSceneDataDict['movieid'], cityMovieSceneDataDict['cityid'],
+            [cityMovieSceneDataDict['movieid'], cityMovieSceneDataDict['cityname'],
              cityMovieSceneDataDict['date'], cityMovieSceneDataDict['citynum']]
         )
         conn.commit()
@@ -398,6 +403,50 @@ def saveMovieSceneInDatabase(cityMovieSceneDataDict):
         print(e)
     cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
     conn.commit()
+
+def flushMovieSceneInDatabase(cityMovieSceneDataDict):
+    print('Flushing movie scene # ', cityMovieSceneDataDict['date'],
+          cityMovieSceneDataDict['cityname'], cityMovieSceneDataDict['movieid'], ' into data base...')
+    cursor.execute('SET FOREIGN_KEY_CHECKS=0')  # 关闭外键检测
+    conn.commit()
+    try:
+        cursor.execute(
+            'replace into movie_scene'
+            '(MovieID, CityName, Date, Scene)'
+            'values (%s, %s, %s, %s)',
+            [cityMovieSceneDataDict['movieid'], cityMovieSceneDataDict['cityname'],
+             cityMovieSceneDataDict['date'], cityMovieSceneDataDict['citynum']]
+        )
+        conn.commit()
+    except Exception as e:
+        print('Error in saveMovieInDatabase Step 1.')
+        print(e)
+    cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
+    conn.commit()
+
+def flushMovieSceneData(cityMovieSceneDataList):
+    movieSceneTuple = getMovieSceneDate()
+    flushCityDataInMovieSceneList = []
+    for sceneTuple in movieSceneTuple:
+        flushMovieSceneDict = {'movieid': None,
+                               'cityname': None,
+                               'date': None,
+                               'citynum': None}
+        for cityMovieSceneDailyDataList in cityMovieSceneDataList:
+            # print(len(cityMovieSceneDailyDataList))
+            for cityMovieSceneDataDict in cityMovieSceneDailyDataList:
+                try:
+                    if sceneTuple[1] == str(cityMovieSceneDataDict['cityid']):
+                        flushMovieSceneDict['movieid'] = sceneTuple[0]
+                        flushMovieSceneDict['cityname'] = cityMovieSceneDataDict['cityname']
+                        flushMovieSceneDict['date'] = sceneTuple[2]
+                        flushMovieSceneDict['citynum'] = sceneTuple[3]
+                        flushCityDataInMovieSceneList.append(flushMovieSceneDict)
+                except Exception as e:
+                    continue
+    for sceneDict in flushCityDataInMovieSceneList:
+        print(sceneDict)
+        flushMovieSceneInDatabase(sceneDict)
 
 def excute():
     # get movie IDs
@@ -438,7 +487,7 @@ def excute():
         for boxOffice in dailyBoxOffice:
             saveBoxOfficeInDataBase(boxOffice)
     #getMovieScene
-    crawedDays = getCrawedMovieSceneDate()
+    crawedDays = getCrawedMovieSceneDate()#获取服务器上所存数据的最新日期
     cityMovieSceneDataList = []
     if crawedDays:
         if crawedDays >= 2:
@@ -452,8 +501,10 @@ def excute():
     else:
         for i in range(0, 3):
             cityMovieSceneDataList.append(crawMovieScene(i))
+    # 将数据库里面原有的cityid，改为cityname
+    flushMovieSceneData(cityMovieSceneDataList)
     for cityMovieSceneDailyDataList in cityMovieSceneDataList:
-        print(len(cityMovieSceneDailyDataList))
+        #print(len(cityMovieSceneDailyDataList))
         for cityMovieSceneDataDict in cityMovieSceneDailyDataList:
             # print(cityMovieSceneDataDict)
             saveMovieSceneInDatabase(cityMovieSceneDataDict)
