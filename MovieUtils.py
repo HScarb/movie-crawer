@@ -61,8 +61,13 @@ def str2date(str):
     :param str: 待转换字符串
     :return: 转换好的字符串
     '''
-    r = re.match(r'^(\d{4})-(\d{1,2})-(\d{1,2})', str)
-    text = r.group(1)
+    try:
+        r = re.match(r'^(\d{4})-(\d{1,2})-(\d{1,2})', str)
+        text = r.group(1)
+    except Exception as e:
+        print('Error when excute MovieUtil !' )
+        print(e)
+        return None
     for i in [2, 3]:
         if r.group(i).__len__() == 1:
             text = text + '0' + r.group(i)
