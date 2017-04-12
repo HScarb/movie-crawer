@@ -225,7 +225,6 @@ def execute():
             for cinema in cinemas:
                 print('### Crawing cinema #', cinema[0])
                 saveShowtimesAndMovie(getCinemaShowtime(cinema[0], date))
-    carweAndSaveMtimeMovieInfo()
 
     cursor.close()
     conn.close()
