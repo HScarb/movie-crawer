@@ -187,14 +187,20 @@ def saveShowtimesAndMovie(cinemaShowtimes):
     if cinemaShowtimes == None:
         return
     # ========== Save Movies ==========
-    saveMovies(cinemaShowtimes['value']['movies'])
+    try:
+        saveMovies(cinemaShowtimes['value']['movies'])
+    except Exception as e:
+        print('Error in Save mtime movies: ', e)
 
     # ========== Save Showtimes ==========
     # 截取showtimes
-    cinemaId = cinemaShowtimes['value']['cinemaId']
-    cinemaShowtimes = cinemaShowtimes['value']['showtimes']
-    for showtime in cinemaShowtimes:
-        saveShowtime(showtime, cinemaId)
+    try:
+        cinemaId = cinemaShowtimes['value']['cinemaId']
+        cinemaShowtimes = cinemaShowtimes['value']['showtimes']
+        for showtime in cinemaShowtimes:
+            saveShowtime(showtime, cinemaId)
+    except Exception as e:
+        print('Error in save Showtimes: ', e)
 
 def getCinemaList(cityID):
     '''
