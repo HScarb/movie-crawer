@@ -184,13 +184,12 @@ def saveMovie(movieDict):
         conn.commit()
 
 def saveShowtimesAndMovie(cinemaShowtimes):
+    if cinemaShowtimes == None:
+        return
     # ========== Save Movies ==========
     saveMovies(cinemaShowtimes['value']['movies'])
 
     # ========== Save Showtimes ==========
-    # 保存
-    if cinemaShowtimes == None:
-        return
     # 截取showtimes
     cinemaId = cinemaShowtimes['value']['cinemaId']
     cinemaShowtimes = cinemaShowtimes['value']['showtimes']
