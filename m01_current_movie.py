@@ -430,20 +430,24 @@ def flushMovieSceneData(cityMovieSceneDataList):
     for sceneTuple in movieSceneTuple:
         flushMovieSceneDict = {'movieid': None,
                                'cityname': None,
+                               'cityid': None,
                                'date': None,
                                'citynum': None}
+        flag = 0
         for cityMovieSceneDailyDataList in cityMovieSceneDataList:
             # print(len(cityMovieSceneDailyDataList))
             for cityMovieSceneDataDict in cityMovieSceneDailyDataList:
-                try:
-                    if sceneTuple[1] == str(cityMovieSceneDataDict['cityid']):
-                        flushMovieSceneDict['movieid'] = sceneTuple[0]
-                        flushMovieSceneDict['cityname'] = cityMovieSceneDataDict['cityname']
-                        flushMovieSceneDict['date'] = sceneTuple[2]
-                        flushMovieSceneDict['citynum'] = sceneTuple[3]
-                        flushCityDataInMovieSceneList.append(flushMovieSceneDict)
-                except Exception as e:
-                    continue
+                flag = 1
+                if sceneTuple[1] == cityMovieSceneDataDict['cityid']:
+                    flushMovieSceneDict['movieid'] = sceneTuple[0]
+                    flushMovieSceneDict['cityname'] = cityMovieSceneDataDict['cityname']
+                    flushMovieSceneDict['cityid'] = sceneTuple[1]
+                    flushMovieSceneDict['date'] = sceneTuple[2]
+                    flushMovieSceneDict['citynum'] = sceneTuple[3]
+                    flushCityDataInMovieSceneList.append(flushMovieSceneDict)
+                    break
+            if flag == 1:
+                break
     for sceneDict in flushCityDataInMovieSceneList:
         print(sceneDict)
         flushMovieSceneInDatabase(sceneDict)
