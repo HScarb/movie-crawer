@@ -150,6 +150,7 @@ def main():
         saveActorInDatabase(crawCompany(tuple[0]))
     pass
 
+    print('Finish actors and companys!!')
     cursor.close()
     conn.close()
 

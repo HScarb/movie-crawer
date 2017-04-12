@@ -115,7 +115,7 @@
 
 ------------
 
-## 表名称：movue_mtime	时光网影片信息
+## 表名称：movie_mtime	时光网影片信息
 [时光网](http://www.mtime.com/)
 
 	MtimeMovieID	时光网影片ID号	Int    主键	不为空
