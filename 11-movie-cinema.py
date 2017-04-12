@@ -146,7 +146,49 @@ def carweAndSaveMtimeMovieInfo():
             cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
             conn.commit()
 
-def saveShowtimes(cinemaShowtimes):
+def saveMovies(movies):
+    '''
+    传入一个movie list
+    读取数据库中已经存在的movie
+    存入没有存入的movie
+    :param movies: movie list
+    :return:
+    '''
+    cursor.execute('SELECT DISTINCT MtimeMovieID FROM movie_mtime')
+    movieIdList = cursor.fetchall()
+    # craw
+    movieIdList = [tuple[0] for tuple in movieIdList]
+
+    for movie in movies:
+        if movie['movieId'] not in movieIdList:
+            # save movie
+            saveMovie(movie)
+
+
+def saveMovie(movieDict):
+    try:
+        cursor.execute('SET FOREIGN_KEY_CHECKS=0')      # 关闭外键检测
+        cursor.execute(
+            'replace into movie_mtime'
+            '(MtimeMovieID, EName, CName, Type, Length, Director, Year)'
+                'values (%s, %s, %s, %s, %s, %s, %s)',
+            [movieDict['movieId'], movieDict['movieTitleCn'], movieDict['movieTitleEn'],
+             movieDict['property'], movieDict['runtime'][0:-2], movieDict['director'], movieDict['year']]
+        )
+        conn.commit()
+    except Exception as e:
+        print('Error in SaveMtimeMovieInfo.')
+        print(e)
+    finally:
+        cursor.execute('SET FOREIGN_KEY_CHECKS=1')  # 重新开启外键检测
+        conn.commit()
+
+def saveShowtimesAndMovie(cinemaShowtimes):
+    # ========== Save Movies ==========
+    saveMovies(cinemaShowtimes['value']['movies'])
+
+    # ========== Save Showtimes ==========
+    # 保存
     if cinemaShowtimes == None:
         return
     # 截取showtimes
@@ -183,7 +225,7 @@ def execute():
             cinemas = getCinemaList(cityID)
             for cinema in cinemas:
                 print('### Crawing cinema #', cinema[0])
-                saveShowtimes(getCinemaShowtime(cinema[0], date))
+                saveShowtimesAndMovie(getCinemaShowtime(cinema[0], date))
     carweAndSaveMtimeMovieInfo()
 
     cursor.close()
