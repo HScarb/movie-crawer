@@ -88,7 +88,7 @@ def save2db(table, movie_id, movie_name):
     cursor = conn.cursor()
 
     # SQL 语句
-    sql = 'replace into movie_scene (movie_id, movie_name, city, date, scene) values (%s, %s, %s, %s, %s)'
+    sql = 'replace into movie_scene (MovieID58921, Name, City, Date, Scene) values (%s, %s, %s, %s, %s)'
 
     # 按行插入数据库
     for i in range(len(table.index)):
