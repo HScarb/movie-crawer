@@ -83,7 +83,7 @@ def craw_movie_list():
 # 保存数据到数据库,这里只是做一个简单的测试，确定用于工作时请将数据库连接写在配置文件中
 def save2db(table, movie_id, movie_name):
     # 打开数据库连接
-    conn = mysql.connector.connect(user='root', password='wanglixian', database='movie')
+    conn = mysql.connector.connect(**MovieUtils.DBCONFIG)
     # 使用cursor()方法获取操作游标
     cursor = conn.cursor()
 
