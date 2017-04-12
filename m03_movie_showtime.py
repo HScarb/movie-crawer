@@ -39,20 +39,20 @@ def getCinemaShowtime(cinemaId, date):
         return var
     return None
 
-def getMovieInfoFromMtime(mtimeMovieID):
+def getMovieInfoFromMtime(MovieIDMtime):
     '''
     根据时光网的movieID，获得电影的中英文名
-    :param mtimeMovieID: 时光网的movieID
+    :param MovieIDMtime: 时光网的movieID
     :return: 一个dict,包含movieID和中英文名
     '''
     url = 'http://service.library.mtime.com/Movie.api?Ajax_CallBack=true&Ajax_CallBackType=Mtime.Library.Services&' \
-          'Ajax_CallBackMethod=GetOnlineTicketByMovieId&Ajax_CallBackArgument0=' + str(mtimeMovieID)
+          'Ajax_CallBackMethod=GetOnlineTicketByMovieId&Ajax_CallBackArgument0=' + str(MovieIDMtime)
     headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
         }
     text = ''
     dict = {
-        'MovieID' : mtimeMovieID,
+        'MovieID' : MovieIDMtime,
         'CName' : None,
         'EName' : None
     }
@@ -79,7 +79,7 @@ def getMovieInfoFromMtime(mtimeMovieID):
 def saveShowtime(showtime, cinemaID):
     dict = {
         'CinemaID': cinemaID,
-        'MtimeMovieID': None,
+        'MovieIDMtime': None,
         'ID': None,             # 可以用来查该场次座位情况 http://piao.mtime.com/onlineticket/showtime/ID/
         'ShowtimeID': None,
         'HallID': None,
@@ -92,7 +92,7 @@ def saveShowtime(showtime, cinemaID):
         'Version': None
     }
     try:
-        dict['MtimeMovieID'] = showtime['movieId']
+        dict['MovieIDMtime'] = showtime['movieId']
         dict['ID'] = showtime['id']
         dict['ShowtimeID'] = showtime['showtimeId']
         dict['HallID'] = showtime['hallId']
@@ -111,9 +111,9 @@ def saveShowtime(showtime, cinemaID):
     try:
         cursor.execute(
             'replace into showtime'
-            '(CinemaID, MtimeMovieID, ID, ShowtimeID, HallID, SeatCount, HallName, Language, StartTime, EndTime, Price, Version)'
+            '(CinemaID, MovieIDMtime, ID, ShowtimeID, HallID, SeatCount, HallName, Language, StartTime, EndTime, Price, Version)'
             'values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
-            [dict['CinemaID'], dict['MtimeMovieID'], dict['ID'], dict['ShowtimeID'], dict['HallID'], dict['SeatCount'], dict['HallName'],
+            [dict['CinemaID'], dict['MovieIDMtime'], dict['ID'], dict['ShowtimeID'], dict['HallID'], dict['SeatCount'], dict['HallName'],
             dict['Language'], dict['StartTime'], dict['EndTime'], dict['Price'], dict['Version']]
         )
         conn.commit()
@@ -125,7 +125,7 @@ def saveShowtime(showtime, cinemaID):
         conn.commit()
 
 def carweAndSaveMtimeMovieInfo():
-    cursor.execute('SELECT DISTINCT MtimeMovieID FROM showtime')
+    cursor.execute('SELECT DISTINCT MovieIDMtime FROM showtime')
     movieIdList = cursor.fetchall()
     # craw
     for tuple in movieIdList:
@@ -134,7 +134,7 @@ def carweAndSaveMtimeMovieInfo():
             cursor.execute('SET FOREIGN_KEY_CHECKS=0')      # 关闭外键检测
             cursor.execute(
                 'replace into movie_mtime'
-                '(MtimeMovieID, EName, CName)'
+                '(MovieIDMtime, EName, CName)'
                 'values (%s, %s, %s)',
                 [dict['MovieID'], dict['EName'], dict['CName']]
             )
@@ -154,7 +154,7 @@ def saveMovies(movies):
     :param movies: movie list
     :return:
     '''
-    cursor.execute('SELECT DISTINCT MtimeMovieID FROM movie_mtime')
+    cursor.execute('SELECT DISTINCT MovieIDMtime FROM movie_mtime')
     movieIdList = cursor.fetchall()
     # craw
     movieIdList = [tuple[0] for tuple in movieIdList]
@@ -170,7 +170,7 @@ def saveMovie(movieDict):
         cursor.execute('SET FOREIGN_KEY_CHECKS=0')      # 关闭外键检测
         cursor.execute(
             'replace into movie_mtime'
-            '(MtimeMovieID, EName, CName, Type, Length, Director, Year)'
+            '(MovieIDMtime, EName, CName, Type, Length, Director, Year)'
                 'values (%s, %s, %s, %s, %s, %s, %s)',
             [movieDict['movieId'], movieDict['movieTitleCn'], movieDict['movieTitleEn'],
              movieDict['property'], movieDict['runtime'][0:-2], movieDict['director'], movieDict['year']]

@@ -10,7 +10,7 @@ def flashCityMsg(flashDict):
     conn.commit()
     try:
         cursor.execute('replace into city'
-                           '(CityID, ParentID, StringID, CName, EName)'
+                           '(DistrictID, CityID, StringID, CName, EName)'
                            'values (%s, %s, %s, %s, %s)',
                            [flashDict['id'], flashDict['parentid'], flashDict['stringid'], flashDict['cname'], flashDict['ename']])
     except Exception as e:
