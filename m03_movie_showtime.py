@@ -33,7 +33,10 @@ def getCinemaShowtime(cinemaId, date):
     except:
         print('Error when request url=', url)
         return None
-    var = re.match(r'^var GetShowtimesJsonObjectByCinemaResult = (.+);', text).group(1)     # 获取javascript值
+    try:
+        var = re.match(r'^var GetShowtimesJsonObjectByCinemaResult = (.+);', text).group(1)     # 获取javascript值
+    except Exception as e:
+        print('error in var = re.match ' + e)
     if var:
         var = execjs.eval(var)      # 用库处理js值
         return var
