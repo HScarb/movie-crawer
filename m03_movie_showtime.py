@@ -62,7 +62,10 @@ def getMovieInfoFromMtime(MovieIDMtime):
     except:
         print('Error when request url=', url)
         return None
-    var = re.match(r'^var GetOnlineTicketByMovieIdResult = (.+);', text).group(1)
+    try:
+        var = re.match(r'^var GetOnlineTicketByMovieIdResult = (.+);', text).group(1)
+    except Exception as e:
+        print('error in ' + e)
     if var:
         var = execjs.eval(var)
     else:
