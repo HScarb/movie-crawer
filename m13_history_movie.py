@@ -104,19 +104,21 @@ def saveMovieInDatabase(movieDataDict):
     cursor.execute('SET FOREIGN_KEY_CHECKS=1')      # 重新开启外键检测
     conn.commit()
 
-
 def main():
+    # 美area=1,德area=16,中area=50,台湾area=40,英area=25,法area=4, 日area=30,加拿大area=2
+    areaID = ['50', '40', '1', '25', '4', '2', '30']
     text = ''
     MovieList = []
     for year in range(2010,2018):
-        url = 'http://www.cbooo.cn/Mdata/getMdata_movie?area=50&type=0&year=' + str(year) + '&initial=%E5%85%A8%E9%83%A8&pIndex=1'
-        text = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
-        data = json.loads(text)
-        tpage = data['tPage']
-        for page in range(1,tpage+1):
-            MovieList = crawhistoryMovie(year,page)
-            for element in MovieList:
-                saveMovieInDatabase(cm.crawMovie(element))
+        for area in range(0,7):
+            url = 'http://www.cbooo.cn/Mdata/getMdata_movie?area=' + str(areaID[area]) + '&type=0&year=' + str(year) + '&initial=%E5%85%A8%E9%83%A8&pIndex=1'
+            text = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
+            data = json.loads(text)
+            tpage = data['tPage']
+            for page in range(1,tpage+1):
+                MovieList = crawhistoryMovie(year,page)
+                for element in MovieList:
+                    saveMovieInDatabase(cm.crawMovie(element))
 
 
 if __name__ == '__main__':
