@@ -35,8 +35,8 @@ def getCinemaShowtime(cinemaId, date):
         return None
     try:
         var = re.match(r'^var GetShowtimesJsonObjectByCinemaResult = (.+);', text).group(1)     # 获取javascript值
-    except Exception as e:
-        print('error in var = re.match ' + e)
+    except:
+        print('error in var = re.match ')
     if var:
         var = execjs.eval(var)      # 用库处理js值
         return var
