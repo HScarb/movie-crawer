@@ -126,7 +126,10 @@ def crawMovie(movieID):
         elif i == 3:
             movieDataDict['publisher'] = memberList
         i = i + 1
-    print(movieDataDict)
+    try:
+        print(movieDataDict)
+    except:
+        return None
     return movieDataDict
 
 def saveMovieInDatabase(movieDataDict):
