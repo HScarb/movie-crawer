@@ -37,7 +37,10 @@ def crawhistoryMovie(year,page):
     return MovieList
 
 def saveMovieInDatabase(movieDataDict):
-    print('Saving movie # ', movieDataDict['id'], ' into data base...')
+    try:
+        print('Saving movie # ', movieDataDict['id'], ' into data base...')
+    except Exception as e:
+        print('error in saving ' + e)
     cursor.execute('SET FOREIGN_KEY_CHECKS=0')      # 关闭外键检测
     conn.commit()
     try:
