@@ -3,6 +3,7 @@ import requests
 import mysql.connector
 import json
 import m01_current_movie as cm
+import m02_actor_company as ac
 import re
 from bs4 import BeautifulSoup
 
@@ -14,8 +15,8 @@ headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
     }
 
-def crawhistoryMovie(year,page):
-    url = 'http://www.cbooo.cn/Mdata/getMdata_movie?area=50&type=0&year=' + str(year) + '&initial=%E5%85%A8%E9%83%A8&pIndex=' + str(page)
+def crawhistoryMovie(area,year,page):
+    url = 'http://www.cbooo.cn/Mdata/getMdata_movie?area=' + str(area) + '&type=0&year=' + str(year) + '&initial=%E5%85%A8%E9%83%A8&pIndex=' + str(page)
     MovieDict = {
         'ID' : None,
         'tPage' : None
@@ -119,9 +120,12 @@ def main():
             data = json.loads(text)
             tpage = data['tPage']
             for page in range(1,tpage+1):
-                MovieList = crawhistoryMovie(year,page)
+                MovieList = crawhistoryMovie(areaID[area],year,page)
                 for element in MovieList:
-                    saveMovieInDatabase(cm.crawMovie(element))
+                    cursor.execute('select ' + str(element) + ' from movie.actor')
+                    diffList = cursor.fetchall()
+                    if diffList == None:
+                        saveMovieInDatabase(cm.crawMovie(element))
 
 
 if __name__ == '__main__':
