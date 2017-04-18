@@ -61,8 +61,6 @@ def main():
     for city in range(0,13):
         for day in range(1,17):
             saveSceneInDatabase(crawhistoryScene(4,day,cityID[city]))
-        for day in range(15,32):
-            saveSceneInDatabase(crawhistoryScene(1,day,cityID[city]))
         for day in range(1,32):
             saveSceneInDatabase(crawhistoryScene(3,day,cityID[city]))
         for day in range(1,29):
