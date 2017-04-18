@@ -47,7 +47,7 @@ def saveMovieInDatabase(movieDataDict):
     try:
         cursor.execute(
             'replace into movie'
-            '(MovieID, CName, EName, Type, Length, ReleaseTime, Standard, SumBoxOffice)'
+            '(MovieID, MovieCName, MovieEName, MovieType, MovieLength, MovieReleaseTime, MovieStandard, MovieSumBoxOffice)'
             'values (%s, %s, %s, %s, %s, %s, %s, %s)',
             [movieDataDict['id'], movieDataDict['cname'], movieDataDict['ename'],
              movieDataDict['type'], movieDataDict['length'], movieDataDict['releasetime'],
@@ -61,7 +61,7 @@ def saveMovieInDatabase(movieDataDict):
         try:
             cursor.execute(
                 'replace into movie_actor'
-                '(MovieID, ActorID, Rank, Role)'
+                '(MovieActorMovieID, MovieActorActorID, MovieActorRank, MovieActorRole)'
                 'values (%s, %s, %s, %s)',
                 [movieDataDict['id'], person['id'], person['rank'], 'director']
             )
@@ -73,7 +73,7 @@ def saveMovieInDatabase(movieDataDict):
         try:
             cursor.execute(
                 'replace into movie_actor'
-                '(MovieID, ActorID, Rank, Role)'
+                '(MovieActorMovieID, MovieActorActorID, MovieActorRank, MovieActorRole)'
                 'values (%s, %s, %s, %s)',
                 [movieDataDict['id'], person['id'], person['rank'], 'actor']
             )
@@ -85,7 +85,7 @@ def saveMovieInDatabase(movieDataDict):
         try:
             cursor.execute(
                 'replace into movie_company'
-                '(MovieID, CompanyID, Rank, Role)'
+                '(MovieCompanyMovieID, MovieCompanyCompanyID, MovieCompanyRank, MovieCompanyRole)'
                 'values (%s, %s, %s, %s)',
                 [movieDataDict['id'], person['id'], person['rank'], 'producer']
             )
@@ -97,7 +97,7 @@ def saveMovieInDatabase(movieDataDict):
         try:
             cursor.execute(
                 'replace into movie_company'
-                '(MovieID, CompanyID, Rank, Role)'
+                '(MovieCompanyMovieID, MovieCompanyCompanyID, MovieCompanyRank, MovieCompanyRole)'
                 'values (%s, %s, %s, %s)',
                 [movieDataDict['id'], person['id'], person['rank'], 'publisher']
             )
