@@ -15,8 +15,8 @@
 [影院信息](cinemadata.json)
 
 	CinemaID       			影院Id号		Int	主键	不为空
-	CityID	       		城市Id号		Int	主键	不为空
-	DistrictID     		区域Id号		Int
+	CityID	       			城市Id号		Int	主键	不为空
+	DistrictID     			区域Id号		Int
 	CinemaName	        	影院名称		Varchar
 	CinemaHallsum	       		影院厅总数	Int
 	CinemaSitsum	       		影院座位总数	Int
@@ -30,7 +30,7 @@
 
 	DistrictID			地区Id号		Int	主键	不为空
 	CityID				城市Id号		Int
-	StringID			地区字符串码	Varchar
+	CityStringID			地区字符串码	Varchar
 	CityCname			城市中文名	Char
 	CityEname			城市英文名	Char
 
