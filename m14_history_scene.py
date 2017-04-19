@@ -49,7 +49,7 @@ def saveSceneInDatabase(SceneList):
             print('Saving scene # ', scene['MovieID'], 'into data base')
             cursor.execute(
                 'replace into movie_scene'
-                '(MovieID,CityName,Date,Scene)'
+                '(MovieID,SceneCityName,SceneDate,SceneScene)'
                 'values (%s, %s ,%s ,%s)',
                 [scene['MovieID'], scene['CityName'], scene['Date'], scene['Scene']]
             )
