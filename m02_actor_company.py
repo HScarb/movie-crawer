@@ -24,9 +24,9 @@ def crawActor(actorID):
     }
     text = ''
     actorDataDict = {  'ActorID':actorID,
-                       'ActorCName':None,
-                       'ActorEName':None,
-                       'ActorNation':None,
+                       'CName':None,
+                       'EName':None,
+                       'Nation':None,
                        'IsLoad':None}
     print('Crawing actor info: ',url)
     #抓取整个网页
@@ -42,11 +42,11 @@ def crawActor(actorID):
         for element in taxi.stripped_strings:
             actorDataDict['IsLoad'] = True
             if i == 0:
-                actorDataDict['ActorCName'] = element
+                actorDataDict['CName'] = element
             elif i == 1:
-                actorDataDict['ActorEName'] = element
+                actorDataDict['EName'] = element
             elif element[0] == '国':
-                actorDataDict['ActorNation'] = element[3:]
+                actorDataDict['Nation'] = element[3:]
             elif element[0] == '生':
                 pass
             i = i + 1
@@ -69,9 +69,9 @@ def crawCompany(companyID):
     }
     text = ''
     companyDataDict = {     'CompanyID':companyID,
-                            'CompanyCName':None,
-                            'CompanyEName':None,
-                            'CompanyNation':None}
+                            'CName':None,
+                            'EName':None,
+                            'Nation':None}
     print('Crawing company info: ', url)
     #抓取整个网页
     try:
@@ -85,11 +85,11 @@ def crawCompany(companyID):
     try:
         for apple in apples.stripped_strings:
             if i == 0:
-                companyDataDict['CompanyCName'] = apple
+                companyDataDict['CName'] = apple
             elif i == 1:
-                companyDataDict['CompanyNation'] = apple
+                companyDataDict['Nation'] = apple
             elif i == 2:
-                companyDataDict['CompanyEName'] = apple
+                companyDataDict['EName'] = apple
             i = i + 1
         i = 0
     except Exception as a:
@@ -106,7 +106,7 @@ def saveActorInDatabase(actorDataDict):
             'replace into actor'
             '(ActorID, ActorCName, ActorEName, ActorNation)'
             'values(%s, %s, %s, %s)',
-            [actorDataDict['ActorID'],actorDataDict['ActorCName'],actorDataDict['ActorEName'],actorDataDict['ActorNation']]
+            [actorDataDict['ActorID'],actorDataDict['CName'],actorDataDict['EName'],actorDataDict['Nation']]
         )
         conn.commit()
     except Exception as e:
@@ -123,7 +123,7 @@ def saveCompanyDatabase(companyDataDict):
                 'replace into company'
                 '(CompanyID,CompanyCName,CompanyEName,CompanyNation)'
                 'value(%s, %s, %s, %s)',
-                [companyDataDict['CompanyID'],companyDataDict['CompanyCName'],companyDataDict['CompanyEName'],companyDataDict['CompanyNation']]
+                [companyDataDict['CompanyID'],companyDataDict['CName'],companyDataDict['EName'],companyDataDict['Nation']]
         )
         conn.commit()
     except Exception as b:

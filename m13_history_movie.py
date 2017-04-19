@@ -61,7 +61,7 @@ def saveMovieInDatabase(movieDataDict):
         try:
             cursor.execute(
                 'replace into movie_actor'
-                '(MovieActorMovieID, MovieActorActorID, MovieActorRank, MovieActorRole)'
+                '(MovieID, ActorID, ActorRank, ActorRole)'
                 'values (%s, %s, %s, %s)',
                 [movieDataDict['id'], person['id'], person['rank'], 'director']
             )
@@ -73,7 +73,7 @@ def saveMovieInDatabase(movieDataDict):
         try:
             cursor.execute(
                 'replace into movie_actor'
-                '(MovieActorMovieID, MovieActorActorID, MovieActorRank, MovieActorRole)'
+                '(MovieID, ActorID, ActorRank, ActorRole)'
                 'values (%s, %s, %s, %s)',
                 [movieDataDict['id'], person['id'], person['rank'], 'actor']
             )
@@ -85,7 +85,7 @@ def saveMovieInDatabase(movieDataDict):
         try:
             cursor.execute(
                 'replace into movie_company'
-                '(MovieCompanyMovieID, MovieCompanyCompanyID, MovieCompanyRank, MovieCompanyRole)'
+                '(MovieID, CompanyID, CompanyRank, CompanyRole)'
                 'values (%s, %s, %s, %s)',
                 [movieDataDict['id'], person['id'], person['rank'], 'producer']
             )
@@ -97,7 +97,7 @@ def saveMovieInDatabase(movieDataDict):
         try:
             cursor.execute(
                 'replace into movie_company'
-                '(MovieCompanyMovieID, MovieCompanyCompanyID, MovieCompanyRank, MovieCompanyRole)'
+                '(MovieID, CompanyID, CompanyRank, CompanyRole)'
                 'values (%s, %s, %s, %s)',
                 [movieDataDict['id'], person['id'], person['rank'], 'publisher']
             )
