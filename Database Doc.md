@@ -28,9 +28,9 @@
 
 ## 表名称：city	城市表 (来源:Mtime)
 
-	CityDistrictID			地区Id号		Int	主键	不为空
+	DistrictID			地区Id号		Int	主键	不为空
 	CityID				城市Id号		Int
-	CityStringID			地区字符串码	Varchar
+	StringID			地区字符串码	Varchar
 	CityCname			城市中文名	Char
 	CityEname			城市英文名	Char
 
@@ -67,32 +67,32 @@
 ## 表名称：movie_actor	影片演员映射表 (来源:CBO)
 [影人资料库](http://www.cbooo.cn/peoples)
 
-	MovieActorMovieID	    影片Id号	Int	主键	不为空
-	MovieActorActorID	    演员Id号	Int	主键	不为空
-	MovieActorRank	    	    演员列表名次	Int
-	MovieActorRole	      	    影片职位	Char
+	MovieID	    影片Id号	Int	主键	不为空
+	ActorID	    演员Id号	Int	主键	不为空
+	ActorRank	    	    演员列表名次	Int
+	ActorRole	      	    影片职位	Char
 
 ------------
 
 ## 表名称：movie_boxoffice	影片票房表 (来源:CBO)
 [票房信息](http://www.cbooo.cn/BoxOffice/GetDayBoxOffice?num=)
 
-	MovieBoxOfficeMovieID	    影片Id号	Int	主键	不为空
-	MovieBoxOfficeDate	    票房日期	Int	主键	不为空
-	MovieBoxOfficeBoxoffice     房数量	Int
-	MovieBoxOfficeAvgpeople     平均观影人数	Int
+	MovieID	    影片Id号	Int	主键	不为空
+	BoxOfficeDate	    票房日期	Int	主键	不为空
+	Boxoffice     房数量	Int
+	BoxOfficeAvgpeople     平均观影人数	Int
 
 ------------
 
 ## 表名称：movie_cinema	影院-影片表 (来源:Mtime)(未完成)
 [影院信息](cinemadata.json)
 
-	MovieCinemaMovieID		影片Id号		Int	主键	不为空
-	MovieCinemaCinemaID		电影院Id号	Int	主键	不为空
-	MovieCinemaDate			影片上映日期	Int	主键	不为空
-	MovieCinemaScene		放映场次		Int
-	MovieCinemaSumboxoffice		总票房数		Int
-	MovieCinemaSumpeople		总观影人数	Int
+	MovieID		影片Id号		Int	主键	不为空
+	CinemaCinemaID		电影院Id号	Int	主键	不为空
+	CinemaDate			影片上映日期	Int	主键	不为空
+	CinemaScene		放映场次		Int
+	CinemaSumboxoffice		总票房数		Int
+	CinemaSumpeople		总观影人数	Int
 
 ------------
 
@@ -100,39 +100,43 @@
 [影院公司](http://www.cbooo.cn/c/6)
 >注：影院公司的ID号是特殊的，网站把影院资料库归类到影片资料库中，所以查找会有困难
 
-	MovieCompanyMovieID	       影片Id号		Int	主键	不为空
-	MovieCompanyCompanyID          公司Id号		Int	主键	不为空
-	MovieCompanyRank	       公司列表名次	Int
-	MovieCompanyRole	       发行商和制作商	Char
+	MovieID	       影片Id号		Int	主键	不为空
+	CompanyID          公司Id号		Int	主键	不为空
+	CompanyRank	       公司列表名次	Int
+	CompanyRole	       发行商和制作商	Char
 
 ------------
 
 ## 表名称：movie_scene	影片排片表 (来源:CBO)
 [排片信息](http://www.cbooo.cn/Screen/getScreenData?days=)
 
-	MovieSceneMovieID	     影片Id号		Int	主键	不为空
-	MovieSceneCityID	     城市Id号		Int	主键	不为空
-	MovieSceneDate               影片放映日期		Int	主键	不为空
-	MovieSceneScene	     	     影片放映场次数	Int
+	MovieID	     影片Id号		Int	主键	不为空
+	SceneCityName	     城市Id号		Int	主键	不为空
+	SceneDate               影片放映日期		Int	主键	不为空
+	SceneScene	     	     影片放映场次数	Int
 
 ------------
 
 ## 表名称：movie_mtime	时光网影片信息表 (来源:Mtime)
 [时光网](http://www.mtime.com/)
 
-	MovieMtimeMovieIDMtime		时光网影片ID号	Int	主键	不为空
-	MovieMtimeMtimeEName		片英文名		Varchar
-	MovieMtimeMtimeCName		影片中文名	Varchar
+	MovieIDMtime		时光网影片ID号	Int	主键	不为空
+	MovieMtimeEName		影片英文名		Varchar
+	MovieMtimeCName		影片中文名	Varchar
+	MovieMtimeType		影片类型	varchar
+	MovieMtimeLength	影片片场	int
+	MovieMtimeDirector	导演	char
+	MovieMtimeYear	年份	int
 
 ------------
 
 ## 表名称：showtime	时光网放映信息 (来源:Mtime)
 [时光网](http://www.mtime.com/)
 
-	ShowTimeCinemaID	电影院ID号	Int	主键	不为空
-	ShowTimeMovieIDMtime	时光网影片ID号	Int	主键	不为空
-	ShowTimeMtimeID		放映信息ID号	Int	主键	不为空
-	ShowTimeID		排片ID号		Int	主键	不为空
+	CinemaID	电影院ID号	Int	主键	不为空
+	MovieIDMtime	时光网影片ID号	Int	主键	不为空
+	ShowTimeID		放映信息ID号	Int	主键	不为空
+	ShowTimeShowTimeID		排片ID号		Int	主键	不为空
 	ShowTimeHallID		影厅ID号		Int	主键	不为空
 	ShowTimeSeatCount	影厅座位数量	Int
 	ShowTimeHallName	放映厅名称	Char
@@ -147,17 +151,17 @@
 ## 表名称：movie_schedule	影片每日排片 (来源:58921)
 [58921/schedule](http://58921.com/schedule/)
 
-	MovieScheduleMovieID58921	58921网的电影ID号	int	主键	不为空
-	MovieScheduleName58921		影片中文名		varchar		不为空
-	MovieScheduleDate		排片信息日期		int	主键	不为空
-	MovieScheduleCity		排片信息城市		varchar	主键	不为空
-	MovieScheduleScene		排片数			varchar		不为空
+	MovieID58921	58921网的电影ID号	int	主键	不为空
+	Name58921		影片中文名		varchar		不为空
+	ScheduleDate		排片信息日期		int	主键	不为空
+	ScheduleCity		排片信息城市		varchar	主键	不为空
+	ScheduleScene		排片数			varchar		不为空
 
 ------------
 
 ## 表名称：movie_dict	影片字典 (来源:CBO|Mtime|58921)
 
 	MovieDictID		本地ID		int	主键	不为空
-	MovieDictMovieID 	CBO电影ID	int
-	MovieDictMovieIDMtime	时光网电影ID	int
-	MovieDictMovieID58921	58921电影ID	int
+	MovieID 	CBO电影ID	int
+	MovieIDMtime	时光网电影ID	int
+	MovieID58921	58921电影ID	int
