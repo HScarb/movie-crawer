@@ -85,7 +85,7 @@ def saveCinemainfoIntoDatabase(cityCinemaDict):
     conn.commit()
     try:
         cursor.execute('replace into cinema'
-                           '(CinemaID, CityID, DistrictID, Name, HallSum, SitSum, Address, Tel, BusinessHour, Parking)'
+                           '(CinemaID, CityID, DistrictID, CinemaName, CinemaHallSum, CinemaSitSum, CinemaAddress, CinemaTel, CinemaBusinessHour, CinemaParking)'
                            'values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
                            [cityCinemaDict['cinemaid'], cityCinemaDict['cityid'], cityCinemaDict['districtid'],
                             cityCinemaDict['name'], cityCinemaDict['hallsum'], cityCinemaDict['sitsum'],
