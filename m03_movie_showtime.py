@@ -118,7 +118,8 @@ def saveShowtime(showtime, cinemaID):
     try:
         cursor.execute(
             'replace into showtime'
-            '(CinemaID, MovieIDMtime, ID, ShowtimeID, HallID, SeatCount, HallName, Language, StartTime, EndTime, Price, Version)'
+            '(CinemaID, MovieIDMtime, ShowTimeID, ShowTimeShowtimeID, ShowTimeHallID, '
+            'ShowTimeSeatCount, ShowTimeHallName, ShowTimeLanguage, ShowTimeStartTime, ShowTimeEndTime, Price, Version)'
             'values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
             [dict['CinemaID'], dict['MovieIDMtime'], dict['ID'], dict['ShowtimeID'], dict['HallID'], dict['SeatCount'], dict['HallName'],
             dict['Language'], dict['StartTime'], dict['EndTime'], dict['Price'], dict['Version']]
@@ -141,7 +142,7 @@ def carweAndSaveMtimeMovieInfo():
             cursor.execute('SET FOREIGN_KEY_CHECKS=0')      # 关闭外键检测
             cursor.execute(
                 'replace into movie_mtime'
-                '(MovieIDMtime, EName, CName)'
+                '(MovieIDMtime, MovieMtimeEName, MovieMtimeCName)'
                 'values (%s, %s, %s)',
                 [dict['MovieID'], dict['EName'], dict['CName']]
             )
@@ -177,7 +178,8 @@ def saveMovie(movieDict):
         cursor.execute('SET FOREIGN_KEY_CHECKS=0')      # 关闭外键检测
         cursor.execute(
             'replace into movie_mtime'
-            '(MovieIDMtime, EName, CName, Type, Length, Director, Year)'
+            '(MovieIDMtime, MovieMtimeEName, MovieMtimeCName, '
+            'MovieMtimeType, MovieMtimeLength, MovieMtimeDirector, MovieMtimeYear)'
                 'values (%s, %s, %s, %s, %s, %s, %s)',
             [movieDict['movieId'], movieDict['movieTitleCn'], movieDict['movieTitleEn'],
              movieDict['property'], movieDict['runtime'][0:-2], movieDict['director'], movieDict['year']]
