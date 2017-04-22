@@ -19,7 +19,7 @@
 	DistrictID     			区域Id号		Int
 	CinemaName	        	影院名称		Varchar
 	CinemaHallsum	       		影院厅总数	Int
-	CinemaSitsum	       		影院座位总数	Int
+	CinemaSeatsum	       		影院座位总数	Int
 	CinemaAddress	       		影院地址		Varchar
 	CinemaTel            		影院联系电话	Char
 	CinemaBusinesshour   		影院营业时间	Char
@@ -88,7 +88,7 @@
 [影院信息](cinemadata.json)
 
 	MovieID			影片Id号		Int	主键	不为空
-	CinemaCinemaID		电影院Id号	Int	主键	不为空
+	CinemaIDMtime		电影院Id号	Int	主键	不为空
 	CinemaDate		影片上映日期	Int	主键	不为空
 	CinemaScene		放映场次		Int
 	CinemaSumboxoffice	总票房数		Int
@@ -111,7 +111,7 @@
 [排片信息](http://www.cbooo.cn/Screen/getScreenData?days=)
 
 	MovieID	     	     影片Id号		Int	主键	不为空
-	SceneCityName	     城市Id号		Int	主键	不为空
+	CityName	     城市Id号		Int	主键	不为空
 	SceneDate            影片放映日期		Int	主键	不为空
 	SceneScene	     影片放映场次数	Int
 
@@ -121,12 +121,12 @@
 [时光网](http://www.mtime.com/)
 
 	MovieIDMtime		时光网影片ID号	Int	主键	不为空
-	MovieMtimeEName		影片英文名	Varchar
-	MovieMtimeCName		影片中文名	Varchar
-	MovieMtimeType		影片类型		varchar
-	MovieMtimeLength	影片片场		int
-	MovieMtimeDirector	导演		char
-	MovieMtimeYear		年份		int
+	MovieENameMtime		影片英文名	Varchar
+	MovieCNameMtime		影片中文名	Varchar
+	MovieTypeMtime		影片类型		varchar
+	MovieLengthMtime	影片片场		int
+	MovieDirectorMtime	导演		char
+	MovieYearMtime		年份		int
 
 ------------
 
@@ -136,26 +136,26 @@
 	CinemaID		电影院ID号	Int	主键	不为空
 	MovieIDMtime		时光网影片ID号	Int	主键	不为空
 	ShowTimeID		放映信息ID号	Int	主键	不为空
-	ShowTimeShowTimeID	排片ID号		Int	主键	不为空
-	ShowTimeHallID		影厅ID号		Int	主键	不为空
-	ShowTimeSeatCount	影厅座位数量	Int
-	ShowTimeHallName	放映厅名称	Char
+	ShowTimeIDMtime	排片ID号		Int	主键	不为空
+	HallID		影厅ID号		Int	主键	不为空
+	HallSeatCount	影厅座位数量	Int
+	HallName	放映厅名称	Char
 	ShowTimeLanguage	语言		Char
 	ShowTimeStarTime	开始放映时间	Char
 	ShowTimeEndTime		结束时间		Char
-	ShowTimePrice		时光网票价	Int
-	ShowTimeVersion		制式		Char
+	PriceMtime		时光网票价	Int
+	StandardMtime		制式		Char
 	
 ------------
 
 ## 表名称：movie_schedule	影片每日排片 (来源:58921)
 [58921/schedule](http://58921.com/schedule/)
 
-	MovieID58921		58921网的电影ID号        int	主键	不为空
-	Name58921		影片中文名		varchar		不为空
-	ScheduleDate		排片信息日期		int	主键	不为空
-	ScheduleCity		排片信息城市		varchar	主键	不为空
-	ScheduleScene		排片数			varchar		不为空
+	MovieID58921		58921网的电影ID号        int		主键	不为空
+	MovieCName58921		影片中文名		varchar			不为空
+	ScheduleDate		排片信息日期		int		主键	不为空
+	CityName58921		排片信息城市名称		varchar		主键	不为空
+	ScheduleScene		排片数			varchar			不为空
 
 ------------
 
