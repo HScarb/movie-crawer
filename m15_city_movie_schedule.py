@@ -5,6 +5,8 @@ import re
 
 # 默认等待时间
 DEFAULT_TIMEOUT = 10
+# 58921的url
+BASE_URL = 'http://pp.58921.com'
 
 
 # 获取城市列表的爬虫
