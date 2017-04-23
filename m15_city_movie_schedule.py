@@ -121,10 +121,29 @@ def save2db(table, date, movie_id, movie_name, city):
             # 发生错误时回滚
             conn.rollback()
 
+
 def main():
-    craw_city_list(6411)
     # 首页热门影片列表
     movie_list = m04_movie_schedule.craw_movie_list()
+
+    # 按影片循环
+    for i in range(len(movie_list)):
+        # 每个影片的城市列表和影片名字
+        city_list, movie_name = craw_city_list(movie_list[i])
+        # 对每个影片按每个城市循环
+        for j in range(len(city_list)):
+            # 获取日期url列表
+            date_list = craw_movie_date_list(city_list[j])
+            # 获取日期
+            date = date_list[j].split(city_list[j] + '/')[1]
+            # 对每个影片在每个城市按所在城市的排片日期列表循环,保存在table中并写入数据库
+            for k in range(len(date_list)):
+                table = craw_city_movie_schedule(date_list[k])
+                print(table.ix[0][0])
+                print(table.ix[0][1])
+                print(table.ix[0][2])
+                print(table.ix[0][3])
+                save2db(table, date, movie_list[i], movie_name, city_list[j])
 
 
 if __name__ == '__main__':
