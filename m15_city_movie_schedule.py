@@ -64,6 +64,38 @@ def craw_movie_date_list(city):
     return date_list
 
 
+# 获取影片在每个城市具体日期的具体片信息
+def craw_city_movie_schedule(date_url):
+    url = BASE_URL + date_url
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/48.0.2564.116 Safari/537.36 '
+    }
+    html_text = ''
+    # 抓取整个网页
+    try:
+        print('Requesting url: ', url)
+        html_text = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
+    except:
+        print('Error when request url=', url)
+        return None
+
+    # 编码修改，防止出现中文乱码
+    html_text = html_text.encode('latin1').decode('utf-8')
+
+    # 获取图片的url
+    img_urls = re.findall('<img src="(http.*?)"', html_text)
+
+    # 解析图片并将解析结果替换原来的html文本
+    for i in range(len(img_urls)):
+        # MovieUtils.downloadImg(img_urls[i], 'schedule.png')
+        # img_urls[i] = MovieUtils.parseImg('schedule.png')
+        html_text = re.sub('<img src="(http.*?)" />', img_urls[i], html_text, count=1)
+
+    # 利用pandas的read_html函数获取到表格
+    table = pd.read_html(html_text, header=0)[1]
+    return table
+
 def main():
     craw_city_list(6411)
     # 首页热门影片列表
