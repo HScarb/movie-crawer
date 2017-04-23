@@ -3,7 +3,9 @@ import pandas as pd
 import requests
 import re
 from bs4 import BeautifulSoup
+import mysql.connector
 import m04_movie_schedule
+import MovieUtils
 
 # 默认等待时间
 DEFAULT_TIMEOUT = 10
@@ -95,6 +97,29 @@ def craw_city_movie_schedule(date_url):
     # 利用pandas的read_html函数获取到表格
     table = pd.read_html(html_text, header=0)[1]
     return table
+
+
+# 保存到数据库
+def save2db(table, date, movie_id, movie_name, city):
+    # 打开数据库连接
+    conn = mysql.connector.connect(**MovieUtils.DBCONFIG)
+    # 使用cursor()方法获取操作游标
+    cursor = conn.cursor()
+
+    # SQL 语句
+    sql = 'replace into city_movie_schedule (MovieID58921, Name58921, ScheduleDate, ScheduleCity, ScheduleCinema, ' \
+          'Total, Elapsed, Seats, Prime) values (%s, %s, %s, %s, %s, %s, %s, %s, %s) '
+
+    # 按行插入数据库
+    for i in range(len(table.index)):
+        try:
+            # 执行sql语句
+            # cursor.execute(sql, [movie_id, movie_name, date, city, table.ix[i][] table.ix[i][j]])
+            # 提交到数据库执行
+            conn.commit()
+        except:
+            # 发生错误时回滚
+            conn.rollback()
 
 def main():
     craw_city_list(6411)
