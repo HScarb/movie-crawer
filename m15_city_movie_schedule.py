@@ -29,6 +29,10 @@ def craw_city_list(movie_id):
     # 编码修改，防止出现中文乱码
     html_text = html_text.encode('latin1').decode('utf-8')
 
+    # 电影名称
+    soup = BeautifulSoup(html_text, "lxml")
+    movie_name = str(soup.find_all('div', class_="page-header")[0].h1.text).split('排片')[0]
+
     # 获取城市url列表
     city_list = re.findall('<a href="(/film/.*?)" .*?>', html_text)
     return city_list
