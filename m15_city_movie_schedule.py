@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 import re
 from bs4 import BeautifulSoup
+import m04_movie_schedule
 
 # 默认等待时间
 DEFAULT_TIMEOUT = 10
@@ -65,6 +66,8 @@ def craw_movie_date_list(city):
 
 def main():
     craw_city_list(6411)
+    # 首页热门影片列表
+    movie_list = m04_movie_schedule.craw_movie_list()
 
 
 if __name__ == '__main__':
