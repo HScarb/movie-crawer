@@ -2,6 +2,7 @@
 import pandas as pd
 import requests
 import re
+from bs4 import BeautifulSoup
 
 # 默认等待时间
 DEFAULT_TIMEOUT = 10
