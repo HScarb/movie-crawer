@@ -35,7 +35,7 @@ def craw_city_list(movie_id):
 
     # 获取城市url列表
     city_list = re.findall('<a href="(/film/.*?)" .*?>', html_text)
-    return city_list
+    return city_list, movie_name
 
 
 def main():
