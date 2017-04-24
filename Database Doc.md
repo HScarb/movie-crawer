@@ -1,4 +1,5 @@
 [TOC]
+注意：无后缀的只有一种来源
 # Movie
 ## 表名称：actor 演员表 (来源:CBO)
 [影人资料库](http://www.cbooo.cn/peoples)
@@ -87,8 +88,8 @@
 ## 表名称：movie_cinema	影院-影片表 (来源:Mtime)(未完成)
 [影院信息](cinemadata.json)
 
-	MovieID			影片Id号		Int	主键	不为空
-	CinemaIDMtime		电影院Id号	Int	主键	不为空
+	MovieIDMtime		影片Id号		Int	主键	不为空
+	CinemaID		电影院Id号	Int	主键	不为空
 	CinemaDate		影片上映日期	Int	主键	不为空
 	CinemaScene		放映场次		Int
 	CinemaSumboxoffice	总票房数		Int
@@ -136,10 +137,10 @@
 	CinemaID		电影院ID号	Int	主键	不为空
 	MovieIDMtime		时光网影片ID号	Int	主键	不为空
 	ShowTimeID		放映信息ID号	Int	主键	不为空
-	ShowTimeIDMtime	排片ID号		Int	主键	不为空
-	HallID		影厅ID号		Int	主键	不为空
-	HallSeatCount	影厅座位数量	Int
-	HallName	放映厅名称	Char
+	ShowTimeIDMtime		排片ID号		Int	主键	不为空
+	HallID			影厅ID号		Int	主键	不为空
+	HallSeatCount		影厅座位数量	Int
+	HallName		放映厅名称	Char
 	ShowTimeLanguage	语言		Char
 	ShowTimeStarTime	开始放映时间	Char
 	ShowTimeEndTime		结束时间		Char
@@ -161,7 +162,9 @@
 
 ## 表名称：movie_dict	影片字典 (来源:CBO|Mtime|58921)
 
-	MovieDictID	本地ID		int	主键	不为空
-	MovieID 	CBO电影ID	int
-	MovieIDMtime	时光网电影ID	int
-	MovieID58921	58921电影ID	int
+	MovieDictID		本地ID		int	主键	不为空
+	MovieID 		CBO电影ID	int
+	MovieIDMtime		时光网电影ID	int
+	MovieID58921		58921电影ID	int
+	MovieEName		影片英文名	char
+	MovieCName		影片中文名	char
