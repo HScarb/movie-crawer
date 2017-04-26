@@ -119,7 +119,7 @@ def saveShowtime(showtime, cinemaID):
         cursor.execute(
             'replace into showtime'
             '(CinemaID, MovieIDMtime, ShowTimeID, ShowTimeShowtimeID, ShowTimeHallID, '
-            'ShowTimeSeatCount, ShowTimeHallName, ShowTimeLanguage, ShowTimeStartTime, ShowTimeEndTime, Price, Version)'
+            'ShowTimeSeatCount, ShowTimeHallName, ShowTimeLanguage, ShowTimeStartTime, ShowTimeEndTime, ShowTimePrice, ShowTimeVersion)'
             'values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
             [dict['CinemaID'], dict['MovieIDMtime'], dict['ID'], dict['ShowtimeID'], dict['HallID'], dict['SeatCount'], dict['HallName'],
             dict['Language'], dict['StartTime'], dict['EndTime'], dict['Price'], dict['Version']]
