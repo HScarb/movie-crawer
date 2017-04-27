@@ -118,8 +118,8 @@ def saveShowtime(showtime, cinemaID):
     try:
         cursor.execute(
             'replace into showtime'
-            '(CinemaID, MovieIDMtime, ShowTimeID, ShowTimeShowtimeID, ShowTimeHallID, '
-            'ShowTimeSeatCount, ShowTimeHallName, ShowTimeLanguage, ShowTimeStartTime, ShowTimeEndTime, ShowTimePrice, ShowTimeVersion)'
+            '(CinemaID, MovieIDMtime, ShowTimeID, ShowTimeIDMtime, HallID, '
+            'HallSeatCount, HallName, ShowTimeLanguage, ShowTimeStartTime, ShowTimeEndTime, PriceMtime, StandardMtime)'
             'values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
             [dict['CinemaID'], dict['MovieIDMtime'], dict['ID'], dict['ShowtimeID'], dict['HallID'], dict['SeatCount'], dict['HallName'],
             dict['Language'], dict['StartTime'], dict['EndTime'], dict['Price'], dict['Version']]
@@ -175,14 +175,16 @@ def saveMovies(movies):
 
 def saveMovie(movieDict):
     try:
+        movieLength = re.match(r'(\d+)(.)', movieDict['runtime']).group(0).strip()
+        print(movieLength)
         cursor.execute('SET FOREIGN_KEY_CHECKS=0')      # 关闭外键检测
         cursor.execute(
             'replace into movie_mtime'
-            '(MovieIDMtime, MovieMtimeEName, MovieMtimeCName, '
-            'MovieMtimeType, MovieMtimeLength, MovieMtimeDirector, MovieMtimeYear)'
+            '(MovieIDMtime, MovieENameMtime, MovieCNameMtime, '
+            'MovieTypeMtime, MovieLengthMtime, MovieDirectorMtime, MovieYearMtime)'
                 'values (%s, %s, %s, %s, %s, %s, %s)',
             [movieDict['movieId'], movieDict['movieTitleCn'], movieDict['movieTitleEn'],
-             movieDict['property'], movieDict['runtime'][0:-2], movieDict['director'], movieDict['year']]
+             movieDict['property'], movieLength, movieDict['director'], movieDict['year']]
         )
         conn.commit()
     except Exception as e:

@@ -56,12 +56,12 @@
 	MovieEname	  	  影片英文名		Char
 	MovieType	      	  影片类型		Char
 	MovieLength	      	  影片放映长度		Int
-	MovieReleasetime   	  影片首映日期		Int
+	MovieReleaseTime   	  影片首映日期		Int
 	MovieStandard      	  影片制式		Char
-	MovieSumboxoffice  	  票房总数		Int
-	MovieAvgprice      	  平均票价		Int
-	MovieAvgpeople     	  平均观影人数		Int
-	MovieWomindex      	  口碑指数		Float
+	MovieSumBoxOffice  	  票房总数		Int
+	MovieAvgPrice      	  平均票价		Int
+	MovieAvgPeople     	  平均观影人数		Int
+	MovieWomIndex      	  口碑指数		Float
 
 ------------
 
@@ -80,8 +80,8 @@
 
 	MovieID	    	       影片Id号		Int	主键	不为空
 	BoxOfficeDate	       票房日期		Int	主键	不为空
-	Boxoffice     	       房数量		Int
-	BoxOfficeAvgpeople     平均观影人数	Int
+	BoxOffice     	       房数量		Int
+	BoxOfficeAvgPeople     平均观影人数	Int
 
 ------------
 
@@ -92,8 +92,8 @@
 	CinemaID		电影院Id号	Int	主键	不为空
 	CinemaDate		影片上映日期	Int	主键	不为空
 	CinemaScene		放映场次		Int
-	CinemaSumboxoffice	总票房数		Int
-	CinemaSumpeople		总观影人数	Int
+	CinemaSumBoxOffice	总票房数		Int
+	CinemaSumPeople		总观影人数	Int
 
 ------------
 
