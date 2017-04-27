@@ -142,7 +142,7 @@ def carweAndSaveMtimeMovieInfo():
             cursor.execute('SET FOREIGN_KEY_CHECKS=0')      # 关闭外键检测
             cursor.execute(
                 'replace into movie_mtime'
-                '(MovieIDMtime, MovieMtimeEName, MovieMtimeCName)'
+                '(MovieIDMtime, MovieENameMtime, MovieCNameMtime)'
                 'values (%s, %s, %s)',
                 [dict['MovieID'], dict['EName'], dict['CName']]
             )

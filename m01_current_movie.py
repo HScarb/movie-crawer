@@ -397,7 +397,7 @@ def saveMovieSceneInDatabase(cityMovieSceneDataDict):
     try:
         cursor.execute(
             'replace into movie_scene'
-            '(MovieID, SceneCityName, SceneDate, SceneScene)'
+            '(MovieID, CityName, SceneDate, Scene)'
             'values (%s, %s, %s, %s)',
             [cityMovieSceneDataDict['movieid'], cityMovieSceneDataDict['cityname'],
              cityMovieSceneDataDict['date'], cityMovieSceneDataDict['citynum']]
@@ -417,7 +417,7 @@ def flushMovieSceneInDatabase(cityMovieSceneDataDict):
     try:
         cursor.execute(
             'replace into movie_scene'
-            '(MovieID, SceneCityName, SceneDate, SceneScene)'
+            '(MovieID, CityName, SceneDate, Scene)'
             'values (%s, %s, %s, %s)',
             [cityMovieSceneDataDict['movieid'], cityMovieSceneDataDict['cityname'],
              cityMovieSceneDataDict['date'], cityMovieSceneDataDict['citynum']]
