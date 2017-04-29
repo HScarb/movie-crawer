@@ -99,8 +99,12 @@ def craw_city_movie_schedule(date_url):
                                   '.png', '0')
 
     # 利用pandas的read_html函数获取到表格
-    table = pd.read_html(html_text, header=0)[1]
-    return table
+    try:
+        table = pd.read_html(html_text, header=0)[1]
+        return table
+    except Exception as e:
+        print(e)
+        return None
 
 
 # 保存到数据库
