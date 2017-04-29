@@ -155,7 +155,6 @@ def main():
                     save2db(table, date, movie_list[i], movie_name, city)
                 except Exception as e:
                     print(e)
-                    return 
 
 
 if __name__ == '__main__':
