@@ -94,6 +94,10 @@ def craw_city_movie_schedule(date_url):
         # img_urls[i] = MovieUtils.parseImg('schedule.png')
         html_text = re.sub('<img src="(http.*?)" />', img_urls[i], html_text, count=1)
 
+    # 替换空数据的图片地址为0
+    html_text = html_text.replace('http://img.58921.com/sites/all/movie/files/protec/e05aef8dd160e4ae29b79b9a45106c3e'
+                                  '.png', '0')
+
     # 利用pandas的read_html函数获取到表格
     table = pd.read_html(html_text, header=0)[1]
     return table
