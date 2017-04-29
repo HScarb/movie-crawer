@@ -118,10 +118,11 @@ def save2db(table, date, movie_id, movie_name, city):
     for i in range(len(table.index)):
         try:
             # 执行sql语句
-            # cursor.execute(sql, [movie_id, movie_name, date, city, table.ix[i][] table.ix[i][j]])
+            cursor.execute(sql, [movie_id, movie_name, date, city, table.ix[i][0], table.ix[i][1], str(table.ix[i][2]), str(table.ix[i][3]), str(table.ix[i][4])])
             # 提交到数据库执行
             conn.commit()
-        except:
+        except Exception as e:
+            print(e)
             # 发生错误时回滚
             conn.rollback()
 
