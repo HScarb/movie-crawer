@@ -150,9 +150,12 @@ def main():
             for k in range(len(date_list)):
                 # 获取日期
                 date = date_list[k].split('/')[4]
-
-                table = craw_city_movie_schedule(date_list[k]).fillna(0)
-                save2db(table, date, movie_list[i], movie_name, city)
+                try:
+                    table = craw_city_movie_schedule(date_list[k]).fillna(0)
+                    save2db(table, date, movie_list[i], movie_name, city)
+                except Exception as e:
+                    print(e)
+                    return 
 
 
 if __name__ == '__main__':
