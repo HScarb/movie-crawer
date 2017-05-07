@@ -100,6 +100,8 @@ def craw_city_movie_schedule(date_url):
     # 替换空数据的图片地址为0
     html_text = html_text.replace('http://img.58921.com/sites/all/movie/files/protec/e05aef8dd160e4ae29b79b9a45106c3e'
                                   '.png', '0')
+    html_text = html_text.replace('http://img.58921.com/sites/all/movie/files/protec/35058983a08f30f8175e430b4bdb2139'
+                                  '.png', '0')
 
     # 利用pandas的read_html函数获取到表格
     try:
