@@ -88,8 +88,8 @@ def save2db(table, movie_id, movie_name):
     cursor = conn.cursor()
 
     # SQL 语句
-    sql = 'replace into movie_schedule (MovieID58921, MovieCName58921, ScheduleDate, CityName58921, ScheduleScene) values (' \
-          '%s, %s, %s, %s, %s) '
+    sql = 'replace into movie_schedule (MovieID58921, MovieCName58921, ScheduleDate, CityName58921, ScheduleScene) ' \
+          'values (%s, %s, %s, %s, %s) '
 
     # 按行插入数据库
     for i in range(len(table.index)):
@@ -98,7 +98,7 @@ def save2db(table, movie_id, movie_name):
         for j in range(1, len(table.columns)):
             try:
                 # 执行sql语句
-                cursor.execute(sql, [movie_id, movie_name, table.columns[j], date, table.ix[i][j]])
+                cursor.execute(sql, [movie_id, movie_name, date, table.columns[j], table.ix[i][j]])
                 # 提交到数据库执行
                 conn.commit()
             except:
