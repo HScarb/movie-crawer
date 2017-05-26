@@ -17,41 +17,41 @@ DBCONFIG = {
 
 # 要爬的一线、二线城市
 CRAWING_CITIES = [
-    290,    # beijing
-    292,    # shanghai
-    365,    # guangzhou
-    880,    # chengdu
-    974,    # hangzhou
-    293,    # tianjin
-    628,    # nanjing
-    291,    # chongqing
-    561,    # wuhan
-    791,    # xian
-    805,    # jibnan
-    829,    # qingdao
-    991,    # ningbo
-    323,    # xiamen
-    729,    # dalian
-    528,    # haerbin
-    722,    # shenyang
-    693,    # changchun
-    598,    # changsha
-    328,    # fuzhou
-    489,    # zhengzhou
-    453,    # shijiazhuang
-    1332,   # suzhou
-    373,    # foshan
-    843,    # yantai
-    371,    # dongguan
-    854,    # taiyuan
-    662,    # wuxi
-    295,    # hefei
-    674,    # nanchang
-    411,    # nanning
-    950,    # kunming
-    1001,   # wenzhou
-    851,    # zibo
-    480,    # tangshan
+    290,    # beijing北京
+    292,    # shanghai上海
+    365,    # guangzhou广州
+    880,    # chengdu成都
+    974,    # hangzhou杭州
+    293,    # tianjin天津
+    628,    # nanjing南京
+    291,    # chongqing重庆
+    561,    # wuhan武汉
+    791,    # xian西安
+    805,    # jinan济南
+    829,    # qingdao青岛
+    991,    # ningbo宁波
+    323,    # xiamen厦门
+    729,    # dalian大连
+    528,    # haerbin哈尔滨
+    722,    # shenyang沈阳
+    693,    # changchun长春
+    598,    # changsha长沙
+    328,    # fuzhou福州
+    489,    # zhengzhou郑州
+    453,    # shijiazhuang石家庄
+    1332,   # suzhou苏州
+    373,    # foshan佛山
+    843,    # yantai烟台
+    371,    # dongguan东莞
+    854,    # taiyuan太原
+    662,    # wuxi无锡
+    295,    # hefei合肥
+    674,    # nanchang南昌
+    411,    # nanning南宁
+    950,    # kunming昆明
+    1001,   # wenzhou温州
+    851,    # zibo淄博
+    480,    # tangshan唐山
 ]
 
 def str2date(str):
