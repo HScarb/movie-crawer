@@ -1,0 +1,317 @@
+﻿
+/* =============================================================
+   GENERAL STYLES
+ ============================================================ */
+body {
+    font-family: 'Open Sans', sans-serif;
+        line-height:30px;
+        font-size:16px;
+}
+
+section {
+    padding-bottom:80px;
+    padding-top:75px;
+}
+ 
+.hr-set {
+    border-top:2px solid #fff;
+    max-width:250px;
+}
+h3 {
+    padding:15px 5px;
+    font-weight:900;
+    text-transform:uppercase;
+}
+h4 {
+    padding:15px 5px;
+    font-weight:900;
+    text-transform:uppercase;
+}
+.icon-custom-1 {
+    background-color: #fff;
+padding: 25px;
+border-radius: 10px;
+cursor:pointer;
+}
+.icon-custom-2 {
+      background-color: #49CD7D;
+padding: 25px;
+border-radius:50%;
+width:100px;
+height:100px;
+cursor:pointer;
+}
+.icon-custom-1:hover {
+     background-color: #000;
+}
+.icon-custom-2:hover {
+     background-color: #000;
+}
+.color-1 {
+    color: #49CD7D;
+}
+.color-2 {
+    color: #fff;
+}
+.p-top-row {
+    padding-top:40px;
+}
+
+ /* =============================================================
+   MESU STYLES 
+ ============================================================ */
+
+.navbar-inverse .navbar-brand,.navbar-inverse .navbar-brand:hover {
+color: #FFF;
+font-size: 35px;
+letter-spacing: 5px;
+font-weight: 900;
+background-color:rgba(39, 174, 96, 1);
+padding-bottom: 60px;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+border-color: rgba(39, 174, 96, 1);
+}
+.navbar-inverse {
+border-color: rgba(39, 174, 96, 1);
+}
+.navbar-fixed-top {
+top: 0;
+border-width: 0 0 0px;
+}
+.set-links {
+    padding: 15px 20px 10px 20px;
+}
+.navbar-inverse .navbar-nav > li > a {
+    color:#fff;
+    font-weight:900;
+}
+.navbar-inverse .navbar-nav > li > a:hover {
+    color:rgba(100, 255, 150, 1);
+}
+.active-menu-item {
+    color:rgba(39, 174, 96, 1)!important;
+}
+.navbar-brand small {
+    font-size:12px;
+    font-weight:normal;
+    letter-spacing:1px;
+}
+.copyrights{
+	text-indent:-9999px;
+	height:0;
+	line-height:0;
+	font-size:0;
+	overflow:hidden;
+}
+  /* =============================================================
+   HOME SECTION STYLES -IN HOME / INDEX.HTML 
+ ============================================================ */
+#home-sec {
+padding: 0;
+-webkit-background-size: cover;
+background-size: cover;
+-moz-background-size:cover;
+color:#fff;
+}
+
+    #home-sec .overlay {
+        background-color:#27ae60;
+        min-height:400px;
+    }
+    #home-sec h1 {
+        padding-top:150px;
+        font-weight:900;
+    }
+#home-sec p {
+    padding:10px;
+}
+/* =============================================================
+   SEARCH DOMAIN SECTION STYLES  -IN HOME / INDEX.HTML 
+ ============================================================ */
+#search-domain {
+    padding-bottom:50px;
+    padding-top:50px;
+}
+.input-cls {
+    height: 50px;
+    margin-left: 100px;
+    border: 3px solid #27ae60;
+    font-size:18px;
+    /*color:#2EB1D0;*/
+    padding-left:20px;
+    border-radius:0px;
+    -webkit-border-radius:0px;
+    -moz-border-radius:0px;
+}
+.btn-set {
+    margin-left: 60px;
+    height: 50px;
+    font-size:18px;
+    border: 3px #fff;
+    border-radius:0px;
+    -webkit-border-radius:0px;
+    -moz-border-radius:0px;
+}
+/* =============================================================
+   SERVICES SECTION STYLES  -IN HOME / INDEX.HTML 
+ ============================================================ */
+
+#services-sec {
+    background-color:#202020;
+    color:#fff;
+}
+
+   /* =============================================================
+   CLIENT TESTIMONIAL SECTION STYLES  -IN HOME / INDEX.HTML 
+ ============================================================ */
+#testimonial-sec {
+  background-color:#43698E;
+}
+
+.carousel-indicators .active {
+width: 25px;
+height: 25px;
+background-color: #fff;
+}
+.carousel-indicators li {
+width: 25px;
+height: 25px;
+border: 1px solid #fff;
+}
+#carousel-example .slide-custom {
+    min-height:300px;
+    padding:20px;
+    line-height:30px;
+}
+
+#carousel-example h1, h2 {
+    color:#000;
+}
+#carousel-example h4 {
+    line-height:30px;
+    font-size:14px;
+    color: #fff;
+}
+#carousel-example h4 i{
+   padding:5px;
+}
+#carousel-example .pad-top {
+     padding-top:80px;
+}
+#carousel-example {
+    margin-top:50px;
+
+}
+
+#carousel-example .user-img {
+border: 5px solid #49CD7D;
+overflow: hidden;
+border-radius: 50%;
+display: inline-block;
+margin-left:20px;
+}
+
+#carousel-example .img-u {
+   max-height: 90px;
+max-width: 90px;
+
+}
+
+#carousel-example .c-black {
+    color:#49CD7D;
+    font-style: italic;
+font-size: 20px;
+padding: 5px;
+}
+/* =============================================================
+   FEATURES SECTION STYLES  -IN HOME / INDEX.HTML 
+ ============================================================ */
+#features-sec {
+    background-color:#EFEFEF;
+}
+/* =============================================================
+   FOOTER SECTION STYLES
+ ============================================================ */
+#footer-sec {
+    background-color:#121212;
+    padding-bottom:30px;
+    padding-top:30px;
+    color: #DFD1D1;
+}
+.social-links a,.social-links a:hover{
+    color:#fff;
+    text-decoration:none;
+}
+
+.social-links a i {
+    background-color:#000;
+    padding:15px 20px;
+    margin:5px;
+}
+.copy-txt {
+    background-color:#202020;
+    padding:15px;
+    color:#7C7C7C;
+}
+
+.set-foot {
+    text-align:right;
+    padding-right:50px;
+}
+
+/* =============================================================
+   PAGE HEADLINE STYLES
+ ============================================================ */
+.headline-sec {
+padding: 0;
+-webkit-background-size: cover;
+background-size: cover;
+-moz-background-size:cover;
+color:#fff;
+}
+.headline-sec .overlay {
+        background-color:rgba(39, 174, 96, 1);
+        min-height:170px;
+    }
+    .headline-sec h3 {
+        padding-top:100px;
+        font-weight:900;
+        padding-left:100px;
+    }
+
+     /* =============================================================
+   PRICING STYLES --pricing.html page
+ ============================================================ */
+
+#pricing-sec h3 {
+   color:#2784DF;
+}
+.pricing-div ul{
+    padding-top:30px;
+    list-style:none;
+    
+    
+}
+
+    .pricing-div ul li {
+        padding-left:0px;
+        padding-bottom:20px;
+        
+    }
+        .pricing-div ul li i {
+            padding-right:10px;
+        }
+.pricing-div  .price {
+    font-size:30px;
+    font-weight:800;
+    display:block;
+}
+.set-wth {
+    max-width:400px;
+}
+
+/*.form-control{
+    width: auto;
+}*/

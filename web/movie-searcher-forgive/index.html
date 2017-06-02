@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>Movie Searcher</title>
+    <!-- BOOTSTRAP CORE STYLE CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- BOOTSTRAP 2 STYLE CSS -->
+    <!--<link href="assets/css/bootstrap.min.css" rel="stylesheet" />-->
+     <!-- FONTAWESOME STYLE CSS -->
+     <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE CSS -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+</head>
+<body > 
+    <div class="navbar navbar-inverse navbar-fixed-top " >
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse move-me">
+                <ul class="nav navbar-nav navbar-right set-links">
+                    <li><a href="index.html" class="active-menu-item">HOME</a></li>
+                    <!--<li><a href="about.html">ABOUT</a></li>
+                    <li><a href="pricing.html">PRICING</a></li>
+                    <li><a href="#stats-download">CONTACT</a></li>-->
+                    <li><a href="showtime.html">SHOWTIME</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--MENU SECTION END-->
+    <section id="home-sec">
+        <div class="overlay text-center">
+            <h1 >Movie Searcher</h1>
+            <hr class="hr-set"/>
+            <p>Search movie name </p>
+
+            <div id="search-domin" class="container">
+                <div class="row" style="max-width:800px;position:relative;padding:0 20px;margin:16px auto 124px">
+                    <div class="col-md-8">
+                         <input id="search-input" type="text" class="form-control input-cls"    />
+                    </div>
+                    <div class="col-md-2" style="width:1%">
+                        <input id="search-btn" type="button" class="btn btn-info btn-lg btn-set"  value="SEARCH" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--HOME SECTION END-->
+<!--     <section id="search-domain" >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                     <input type="text" class="form-control input-cls"    />
+                </div>
+                <div class="col-md-4">
+                    <input type="button" class="btn btn-info btn-lg btn-set"  value="SEARCH DOMAIN" />
+                </div>
+            </div>
+        </div>
+    </section> -->
+     <!--SEARCH SECTION END-->
+    <!--SERVICES SECTION END-->
+	<section id="clients-sec">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" style="min-height:800px;">
+                    <div class="list-group packges" id="search-results" style="display: block">
+                        <a href="/" class="package list-group-item" batget="_blank">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h4>加勒比海盜</h4>
+                                    <span>年份:2017</span>
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="package-description">
+                                        test
+                                    </p>
+                                </div>
+                                <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
+                                    <span>
+                                        
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </section>
+    <!-- 底部分页按钮 -->
+    <div id="bottomTab"></div>
+    <!--CLIENTS SECTION END-->
+    <!--<div class="copyrights">Collect from <a href="http://www.cssmoban.com/"  title="网站模板">网站模板</a></div>
+    <div id="testimonial-sec">
+   
+        <div class="container">
+              <div class="row ">
+            <div class="col-md-12">
+                <div id="carousel-example" class="carousel slide" data-ride="carousel">
+
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel-example" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel-example" data-slide-to="1"></li>
+                        <li data-target="#carousel-example" data-slide-to="2"></li>
+                    </ol>
+
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <div class="container center">
+                                <div class="col-md-6 col-md-offset-3 slide-custom">
+                                   
+                                    <h4><i class="fa fa-quote-left"></i> Lorem ipsum dolor sit amet, consectetur adipiscing elit onec molestie non sem vel condimentum. <i class="fa fa-quote-right"></i></h4>
+                                     <div class="user-img pull-right">
+						<img src="assets/img/user.gif" alt="" class="img-u image-responsive"  />
+					</div>
+                                    <h5 class="pull-right"><strong class="c-black">Lorem Dolor</strong></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="container center">
+                                <div class="col-md-6 col-md-offset-3 slide-custom">
+                                    <h4> <i class="fa fa-quote-left"></i> Aenean faucibus luctus enim. Duis quis sem risu suspend lacinia elementum nunc. <i class="fa fa-quote-right"></i></h4>
+                                         <div class="user-img pull-right">
+						<img src="assets/img/user2.png" alt="" class="img-u image-responsive"  />
+					</div>
+                                    <h5 class="pull-right"><strong class="c-black">Faucibus luctus</strong></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="container center">
+                                <div class="col-md-6 col-md-offset-3 slide-custom">
+                                    <h4><i class="fa fa-quote-left"></i>Sed ultricies, libero ut adipiscing a egestas dui metus a arcu condimentum. <i class="fa fa-quote-right"></i></h4>
+                                        <div class="user-img pull-right">
+						<img src="assets/img/user.gif" alt="" class="img-u image-responsive"  />
+					</div>
+                                    <h5 class="pull-right"><strong class="c-black">Sed ultricies</strong></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+         </div>-->
+    <!--TESTIMONIAL SECTION END-->
+    <!--<section id="features-sec"  >
+        <div class="container">
+           
+            <div class="row text-center" >
+<div class="col-md-3">
+    <i class="fa fa-comments-o fa-3x icon-custom-2 color-2"></i>
+    <h4>24x7 SUPPORT</h4>
+    <p>
+        Nunc at viverra risus. 
+        In euismod quam ac dictum varius. 
+    </p>
+
+</div>
+                <div class="col-md-3">
+                     <i class="fa fa-rocket fa-3x icon-custom-2 color-2"></i>
+    <h4>Ultra Fast </h4>
+                     <p>
+        Nunc at viverra risus. 
+        In euismod quam ac dictum varius. 
+    </p>
+                </div>
+                <div class="col-md-3">
+                     <i class="fa fa-bars fa-3x icon-custom-2 color-2"></i>
+    <h4>Fast Response</h4>
+                     <p>
+        Nunc at viverra risus. 
+        In euismod quam ac dictum varius. 
+    </p>
+                </div>
+                <div class="col-md-3">
+                     <i class="fa fa-table fa-3x icon-custom-2 color-2"></i>
+    <h4>Customizable</h4>
+                     <p>
+        Nunc at viverra risus. 
+        In euismod quam ac dictum varius. 
+    </p>
+                </div>
+            </div>
+        </div>
+    </section>-->
+     <!--FEATURES SECTION END-->
+    <!--<section id="clients-sec">
+        <div class="container">
+            <div class="row">
+<div class="col-md-12">
+    <img src="assets/img/clients.png" alt="" class="img-rounded img-responsive" />
+</div>
+
+               
+            </div>
+        </div>
+    </section>-->
+    <!--CLIENTS SECTION END-->
+    <!--<section id="footer-sec" >
+        <div class="container">
+            <div class="row">
+<div class="col-md-4">
+   <h4>ABOUT COMPANY</h4>
+    <p style="padding-right:50px;">
+        Nunc at viverra risus. 
+        In euismod quam ac dictum varius.
+         Nunc at viverra risus. 
+        In euismod quam ac dictum varius.
+         Nunc at viverra risus. 
+        In euismod quam ac dictum varius.
+         Nunc at viverra risus. 
+         Nunc at viverra risus. <a href="about.html">more..</a>
+    </p>
+</div>
+                <div class="col-md-4">
+       <h4>PHYSICAL LOCATION </h4>
+                    <h5>345/DC, New York State,</h5>
+                     <h5>The Lane Tower Road,</h5>
+                    <h5>United States-201-900-590.</h5>
+                    <br />
+                    <h5><strong>Email:</strong> info@domain.com</h5>
+                      <h5><strong>Call:</strong> +1-908-78-55-5555</h5>
+                   
+</div>
+                <div class="col-md-4">
+      <h4>SOCIAL LINKS</h4>
+                    <div class="social-links">
+
+                    
+                    <a href="#" > <i class="fa fa-facebook fa-2x" ></i></a>
+                         <a href="#" > <i class="fa fa-twitter fa-2x" ></i></a>
+                         <a href="#" > <i class="fa fa-linkedin fa-2x" ></i></a>
+                         <a href="#" > <i class="fa fa-google-plus fa-2x" ></i></a>
+                         <a href="#" > <i class="fa fa-github fa-2x" ></i></a>
+                         <a href="#" > <i class="fa fa-digg fa-2x" ></i></a>
+                         <a href="#" > <i class="fa fa-dropbox fa-2x" ></i></a>
+                   </div>
+
+</div>
+               
+            </div>
+               
+        </div>
+    </section>-->
+    <!--FOOTER SECTION END-->
+    <div class="copy-txt">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 set-foot" >
+                    &copy 2014 your domain | All rights reserved | <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">movie-crawler</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">cbo,mtime,58921</a> 
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- COPY TEXT SECTION END-->
+    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+    <!-- CORE JQUERY  -->
+    <script src="assets/js/jquery-1.11.1.js"></script>
+    <!-- BOOTSTRAP SCRIPTS  -->
+    <script src="assets/js/bootstrap.js"></script>
+    <!-- CUSTOM SCRIPTS  -->
+    <script src="assets/js/custom.js"></script>
+
+    <script src="assets/js/bootstrap-paginator.min.js"></script>
+
+    <script type="text/javascript">
+        var PAGESIZE = 10;
+        var current_page = 1;
+        var pageOptions = {
+            currentPage: 1,
+            totalPages: 9,
+            size: "large",
+            alignment: "center",
+            itemTexts: function (type, page, current) {
+                switch (type) {
+                    case "first":
+                        return "<<";
+                    case "prev":
+                        return "<";
+                    case "next":
+                        return ">";
+                    case "last":
+                        return ">>";
+                    case "page":
+                        return  page;
+                }
+            },
+            onPageClicked: function(e, originalEvent, type, page){
+                var param = $("#search-input").val();
+                search(param, page, PAGESIZE);
+            }
+        }
+        //获取当前项目的路径
+        var urlRootContext = (function () {
+            var strPath = window.document.location.pathname;
+            var postPath = strPath.substring(0, strPath.substr(1).indexOf('/') + 1);
+            return postPath;
+        })();
+
+        //var DEFAULTPATH = "http://localhost:8080"
+        var DEFAULTPATH = "http://115.28.48.229:8080/movie_searcher"
+
+        function search(name, page, page_num){
+            current_page = page;
+            var url = DEFAULTPATH + "/movie";
+            var reqParams = {'name': name, 'page': page, 'page_num': page_num};
+            $(function(){
+                $.ajax({
+                    url: url,
+                    data: reqParams,
+                    async: false,
+                    dataType: "json",
+                    success: function(data){
+                        console.log(data["dataList"])
+                        //console.log(data[0]['data'].length);
+
+                        var newPageOptions = {
+                            currentPage: current_page,
+                            totalPages: data['pages'],
+                            size: "large",
+                            alignment: "center",
+                            itemTexts: function(type, page, current){
+                                switch (type) {
+                                    case "first":
+                                        return "<<";
+                                    case "prev":
+                                        return "<";
+                                    case "next":
+                                        return ">";
+                                    case "last":
+                                        return ">>";
+                                    case "page":
+                                        return  page;
+                                }
+                            },
+                            onPageClicked: function(e, originalEvent, type, page){
+                                var name = $("#search-input").val(); //取内容
+                                search(name,page,PAGESIZE);//默认每页最多10条
+                            }
+                        }
+                        $('#bottomTab').bootstrapPaginator("setOptions",newPageOptions); //重新设置总页面数目
+                        
+                        $("#search-results").empty();
+                        
+                        if (data["dataList"].length > 0)
+                        {
+                            var i = 0;
+                            $(data['dataList']).each(function(k, v){
+                                console.log(v);
+                                var url = encodeURI("./showtime.html?id="+ v['movieidmtime'] + "&name=" + encodeURI(v['moviecnamemtime']));
+                                var a = "<a href='" + url
+                                    + "' class = 'package list-group-item'>"
+
+                                    + "<div class='row'>"
+                                        + "<div class='col-md-3'>"
+                                        + "<h4>" + v['moviecnamemtime'] + "</h4>"
+                                        + "<h5>" + v['movieenamemtime'] +"</h5>"
+                                        + "</div>"
+
+                                        + "<div class='col-md-9'>"
+                                        + "<p class='package-description'>"
+                                            + v['movieyearmtime'] + "</p>"
+                                        + "<p>导演: "+ v["moviedirectormtime"] +"</p>"
+                                        + "</div>"
+                                    + "</div>"
+                                    + "</a>";
+                                $("#search-results").append(a);
+                                
+                                i++;
+                            })
+                        }
+
+                        
+                    },
+                    error: function(e){
+                        alert("查询失败: " + e);
+                    }
+                });
+            });
+        }
+
+        $(function(){
+            //生成底部分页栏
+            $('#bottomTab').bootstrapPaginator(pageOptions);
+
+            search("", 1, PAGESIZE);
+
+            $("#search-btn").bind("click",function(){
+                var name = $("#search-input").val();
+                search(name, 1, PAGESIZE);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>IT & HOSTING TEMPLATE</title>
+    <!-- BOOTSTRAP CORE STYLE CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+     <!-- FONTAWESOME STYLE CSS -->
+     <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE CSS -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="assets/style/list.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/style/manhuaDate.1.0.css"/>
+	
+	<link rel="stylesheet" href="assets/css/shijian.css"/>
+	
+	<!-- COPY TEXT SECTION END-->
+    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+    <!-- CORE JQUERY  -->
+    <script src="assets/js/jquery-1.8.3.min.js"></script>
+    <!-- BOOTSTRAP SCRIPTS  -->
+    <script src="assets/js/bootstrap.js"></script>
+    <!-- CUSTOM SCRIPTS  -->
+    <script src="assets/js/custom.js"></script>
+    
+    <script type="text/javascript" src="assets/js/slimtable.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquer_shijian.js"></script>
+    
+    <script type="text/javascript" src="assets/js/bootstrap-paginator.min.js"></script>
+
+    <!--<script type="text/javascript" src="assets/js/jsjava-2.0.js"></script>-->
+</head>
+<body > 
+   
+        <div class="navbar navbar-inverse navbar-fixed-top " >
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse move-me">
+                <ul class="nav navbar-nav navbar-right set-links">
+                    <li><a href="index.html" >HOME</a></li>
+                     <!--<li><a href="about.html">ABOUT</a></li>
+                   <li><a href="pricing.html">PRICING</a></li>
+                     <li><a href="#stats-download">CONTACT</a></li>-->
+                    <li><a href="showtime.html" class="active-menu-item">SHOWTIME</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <!--MENU SECTION END-->
+    <section class="headline-sec">
+        <div class="overlay ">
+            <h3 id="page-title">排片查询 <i class="fa fa-angle-double-right "></i></h3>
+        </div>
+    </section>
+    <!--HOME SECTION END-->
+        <div class="container">
+            <div id="" class="row">
+                <div class="screen-top">
+                            <span>城市：
+                                <select id="cityall" class="form-control" style="width: auto;">
+                                    <option id="city" value="">默认</option>
+                                    <option id="city" value="290">北京</option>
+                                    <option id="city" value="292">上海</option>
+                                    <option id="city" value="365">广州</option>
+                                    <option id="city" value="880">成都</option>
+                                    <option id="city" value="974">杭州</option>
+                                    <option id="city" value="293">天津</option>
+                                    <option id="city" value="628">南京</option>
+                                    <option id="city" value="291">重庆</option>
+                                    <option id="city" value="561">武汉</option>
+                                    <option id="city" value="791">西安</option>
+                                    <option id="city" value="805">济南</option>
+                                    <option id="city" value="829">青岛</option>
+                                    <option id="city" value="991">宁波</option>
+                                    <option id="city" value="323">厦门</option>
+                                    <option id="city" value="729">大连</option>
+                                    <option id="city" value="528">哈尔滨</option>
+                                    <option id="city" value="722">沈阳</option>
+                                    <option id="city" value="693">长春</option>
+                                    <option id="city" value="598">长沙</option>
+                                    <option id="city" value="328">福州</option>
+                                    <option id="city" value="489">郑州</option>
+                                    <option id="city" value="453">石家庄</option>
+                                    <option id="city" value="1332">苏州</option>
+                                    <option id="city" value="373">佛山</option>
+                                    <option id="city" value="843">烟台</option>
+                                    <option id="city" value="371">东莞</option>
+                                    <option id="city" value="854">太原</option>
+                                    <option id="city" value="662">无锡</option>
+                                    <option id="city" value="295">合肥</option>
+                                    <option id="city" value="674">南昌</option>
+                                    <option id="city" value="411">南宁</option>
+                                    <option id="city" value="950">昆明</option>
+                                    <option id="city" value="1001">温州</option>
+                                    <option id="city" value="851">淄博</option>
+                                    <option id="city" value="480">唐山</option>
+                                </select>
+                            </span>
+                            <span>地区：
+                                <select id="disall" class="form-control" style="width: auto;">
+                                    <option id="district" value="">默认</option>
+                                </select></span>
+                            <span>影院：
+                                <select id="cinall" class="form-control" style="width: auto;">
+                                    <option id="cinema" value="">默认</option>
+                                </select>
+                            </span>
+                            <span>日期：
+                                <input type="text"  id="input1" class="form-control" style="width: auto;" value=""/>
+                            </span>
+                            <button href="#" class="btn btn-success" id="submit-btn"/>搜索</button>
+                </div>
+                <br>
+                <div class="col-md-12" style="min-height:800px;">
+                    <table id="exampletable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>影片</th>
+                                <th>城市</th>
+                                <th>影院</th>
+                                <th>影厅</th>
+                                <th>座位总数</th>
+                                <th>语言</th>
+                                <th>开始时间</th>
+                                <th>结束</th>
+                                <th>制式</th>
+                                <th>价格</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <tr id="test">
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <button id="next-btn" type="button" class="btn btn-success btn-lg btn-block">加载下一页</button>
+                </div>
+            </div>
+        </div>
+
+    <!-- 底部分页按钮 -->
+    <div id="bottomTab"></div>
+
+     <!--FOOTER SECTION END-->
+    <div class="copy-txt">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 set-foot" >
+                    &copy 2014 your domain | All rights reserved | <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">movie-crawler</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">cbo,mtime,58921</a> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<script type="text/javascript">
+//var DEFAULTPATH = "http://localhost:8080"
+var DEFAULTPATH = "http://115.28.48.229:8080/movie_searcher"
+var PAGESIZE = 20;
+var g_moviename = "";
+var g_district = "";
+var g_cinema = "";
+var g_scrollend = true;
+var current_page=1;
+
+
+function parseTime(timeStr)
+{
+    var date = new Date();
+    date.setTime(Date.parse(timeStr));
+
+    return date.toLocaleString();
+}
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+function unique(array){ 
+	var n = [array[0]]; //结果数组 
+	//从第二项开始遍历 
+	for(var i = 1; i < array.length; i++) { 
+		//如果当前数组的第i项在当前数组中第一次出现的位置不是i， 
+		//那么表示第i项是重复的，忽略掉。否则存入结果数组 
+		if (array.indexOf(array[i]) == i) n.push(array[i]); 
+	} 
+	return n; 
+}
+
+
+var g_movieid=GetQueryString("id");
+g_moviename = decodeURI(GetQueryString("name"));
+var name="《"+ g_moviename +"》 排片";
+$("#page-title").text(name);
+
+$("#inf").replaceWith("<font size=8 id=\"inf\">"+name+"</font>");
+var page=1;
+var page_num=20;
+
+var Ajax = function(obj){
+
+        $.ajax({
+            url: obj.url,
+            data:obj.oData,
+            type:"POST",
+            dataType:"JSON",
+			async:true,
+            success:function(res){    		
+                    obj.fn(res);
+                    //console.log("$$$$$$$$$$$$");
+					//console.log(obj.oData);
+            },
+            error:function(e){
+              //console.log(e);
+			  //console.log(obj.oData);
+			  //console.log(e.responseText);
+			  lock=1;			  
+            },
+        });
+		}
+		
+		$(".citylist").remove();
+		$(".cinemalist").remove();
+		
+		$("#cityall").on("change",function(){
+		Ajax({
+			url: DEFAULTPATH + "/district",
+			oData : {'city_id':$("#cityall").val()},
+			fn: function(res){
+				var num=res.length;
+				//console.log(res);
+                g_district = $("#cityall option:selected").text();   // 获取选中的值
+				$(".citylist").remove();
+				$(".cinemalist").remove();
+				for(var i=0;i<num;i++)
+				{	
+                    $("#disall").append("<option class=\"citylist\" value="+res[i]['districtid']+">"+res[i]['citycname']+"</option>");
+				}									
+			}
+		})
+		})
+		
+		$("#disall").on("change",function(){
+		Ajax({
+			url: DEFAULTPATH + "/cinema",
+			oData : {'district_id':$("#disall").val(), 'city_id': $('#cityall').val()},
+			fn: function(res){
+				var num=res.length;
+				//console.log(res);
+                g_district = $("#disall option:selected").text();   // 获取选中的值
+                $(".cinemalist").remove();
+				for(var i=0;i<num;i++)
+				{   
+                    $("#cinall").append("<option class=\"cinemalist\" value="+res[i]['cinemaid']+">"+res[i]['cinemaname']+"</option>");
+                    //$("<option class=\"cinemalist\" value="+res[i]['cinemaid']+">"+res[i]['cinemaname']+"</option>").insertAfter('#cinema');							   
+				}									
+			}
+		})
+		})
+		
+        $("#cinall").on("change",function(){
+            g_cinema = $("#cinall option:selected").text();         // 获取选中的值
+        })
+		
+
+        $("#submit-btn").on("click",function(){
+            current_page = 1;
+            $("#next-btn").removeAttr("disabled");
+            $(".testlist").remove();
+            showtime();
+        })
+		function showtime(){
+           Ajax({
+			url: DEFAULTPATH + "/showtimep",
+			oData : {'movie_id':g_movieid,'page':current_page,'page_num':PAGESIZE,'city_id':$("#cityall").val(),'district_id':$("#disall").val(),'cinema_id':$("#cinall").val(),'time_start':$("#input1").val()},
+			fn: function(res){
+                //console.log(res);
+                current_page++;
+                console.log(current_page);
+                //res = res["dataList"];
+				var num=res.length;
+                if (num < PAGESIZE)
+                {
+                    $('#next-btn').attr('disabled',"true");         //添加disabled属性
+                }
+                
+				//$(".testlist").remove();
+				for(var i=0;i<num;i++)
+				{
+				        var  a = "<tr class=\"testlist\">\
+						    <td>"+g_moviename+"</td>\
+							<td>"+res[i]['citycname']+"</td>\
+							<td>"+res[i]['cinemaname']+"</td>\
+							<td>"+res[i]['hallname']+"</td>\
+							<td>"+res[i]['hallseatcount']+"</td>\
+							<td>"+res[i]['showtimelanguage']+"</td>\
+							<td>"+parseTime(res[i]['showtimestarttime'])+"</td>\
+							<td>"+res[i]['showtimeendtime']+"</td>\
+							<td>"+res[i]['standardmtime']+"</td>\
+							<td>"+res[i]['pricemtime']+"</td>\
+							</tr";
+                        $("#table-body").append(a);
+				}	
+				//$("#exampletable").slimtable();
+			}
+		})
+        }
+
+		
+$("#input1").shijian({
+			y:10//当前年份+10
+		})
+
+$("#input2").shijian({
+			y:10//当前年份+10
+		})
+
+    // $(document).ready(function(){  
+    //     var range = 50;             //距下边界长度/单位px  
+    //     var elemt = 500;           //插入元素高度/单位px  
+    //     var maxnum = 20;            //设置加载最多次数  
+    //     var num = 1;  
+    //     var totalheight = 0;   
+    //     $(window).scroll(function(){  
+    //         var srollPos = $(window).scrollTop();    //滚动条距顶部距离(页面超出窗口的高度)  
+              
+    //         //console.log("滚动条到顶部的垂直高度: "+$(document).scrollTop());  
+    //         //console.log("页面的文档高度 ："+$(document).height());  
+    //         //console.log('浏览器的高度：'+$(window).height());  
+              
+    //         totalheight = parseFloat($(window).height()) + parseFloat(srollPos);  
+    //         if(($(document).height()-range) <= totalheight  && !g_scrollend) {  
+    //             showtime();
+    //         }  
+    //     });  
+    // });
+    $("#next-btn").bind("click",function(){
+                showtime();
+            });
+</script>
