@@ -400,7 +400,7 @@ def saveMovieSceneInDatabase(cityMovieSceneDataDict):
             '(MovieID, CityName, SceneDate, Scene)'
             'values (%s, %s, %s, %s)',
             [cityMovieSceneDataDict['movieid'], cityMovieSceneDataDict['cityname'],
-             cityMovieSceneDataDict['date'], cityMovieSceneDataDict['citynum']]
+             cityMovieSceneDataDict['date'], cityMovieSceneDataDict['sumnum']]
         )
         conn.commit()
     except Exception as e:
@@ -420,7 +420,7 @@ def flushMovieSceneInDatabase(cityMovieSceneDataDict):
             '(MovieID, CityName, SceneDate, Scene)'
             'values (%s, %s, %s, %s)',
             [cityMovieSceneDataDict['movieid'], cityMovieSceneDataDict['cityname'],
-             cityMovieSceneDataDict['date'], cityMovieSceneDataDict['citynum']]
+             cityMovieSceneDataDict['date'], cityMovieSceneDataDict['sumnum']]
         )
         conn.commit()
     except Exception as e:
@@ -437,7 +437,7 @@ def flushMovieSceneData(cityMovieSceneDataList):
                                'cityname': None,
                                'cityid': None,
                                'date': None,
-                               'citynum': None}
+                               'sumnum': None}
         flag = 0
         for cityMovieSceneDailyDataList in cityMovieSceneDataList:
             # print(len(cityMovieSceneDailyDataList))
@@ -448,7 +448,7 @@ def flushMovieSceneData(cityMovieSceneDataList):
                     flushMovieSceneDict['cityname'] = cityMovieSceneDataDict['cityname']
                     flushMovieSceneDict['cityid'] = sceneTuple[1]
                     flushMovieSceneDict['date'] = sceneTuple[2]
-                    flushMovieSceneDict['citynum'] = sceneTuple[3]
+                    flushMovieSceneDict['sumnum'] = sceneTuple[3]
                     flushCityDataInMovieSceneList.append(flushMovieSceneDict)
                     break
             if flag == 1:
