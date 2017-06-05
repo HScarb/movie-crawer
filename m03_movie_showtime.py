@@ -175,7 +175,12 @@ def saveMovies(movies):
 
 def saveMovie(movieDict):
     try:
-        movieLength = re.match(r'(\d+)(.)', movieDict['runtime']).group(0).strip()
+        movieLength = None
+        try:
+            movieLength = int(re.sub('\D', "", movieDict['runtime']))
+        except:
+            pass
+        # movieLength = re.match(r'(\d+)(.)', movieDict['runtime'].strip()).group(0).strip()
         print(movieLength)
         cursor.execute('SET FOREIGN_KEY_CHECKS=0')      # 关闭外键检测
         cursor.execute(
@@ -183,7 +188,7 @@ def saveMovie(movieDict):
             '(MovieIDMtime, MovieENameMtime, MovieCNameMtime, '
             'MovieTypeMtime, MovieLengthMtime, MovieDirectorMtime, MovieYearMtime)'
                 'values (%s, %s, %s, %s, %s, %s, %s)',
-            [movieDict['movieId'], movieDict['movieTitleCn'], movieDict['movieTitleEn'],
+            [movieDict['movieId'], movieDict['movieTitleEn'], movieDict['movieTitleCn'],
              movieDict['property'], movieLength, movieDict['director'], movieDict['year']]
         )
         conn.commit()

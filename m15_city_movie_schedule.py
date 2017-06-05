@@ -6,11 +6,14 @@ from bs4 import BeautifulSoup
 import mysql.connector
 import m04_movie_schedule
 import MovieUtils
+import time
 
 # 默认等待时间
 DEFAULT_TIMEOUT = 10
 # 58921的url
 BASE_URL = 'http://pp.58921.com'
+# 当日时间
+current_date = str(time.strftime('%Y%m%d', time.localtime(time.time())))
 
 
 # 获取城市列表的爬虫
@@ -97,6 +100,8 @@ def craw_city_movie_schedule(date_url):
     # 替换空数据的图片地址为0
     html_text = html_text.replace('http://img.58921.com/sites/all/movie/files/protec/e05aef8dd160e4ae29b79b9a45106c3e'
                                   '.png', '0')
+    html_text = html_text.replace('http://img.58921.com/sites/all/movie/files/protec/35058983a08f30f8175e430b4bdb2139'
+                                  '.png', '0')
 
     # 利用pandas的read_html函数获取到表格
     try:
@@ -122,7 +127,8 @@ def save2db(table, date, movie_id, movie_name, city):
     for i in range(len(table.index)):
         try:
             # 执行sql语句
-            cursor.execute(sql, [movie_id, movie_name, date, city, table.ix[i][0], table.ix[i][1], str(table.ix[i][2]), str(table.ix[i][3]), str(table.ix[i][4])])
+            cursor.execute(sql, [movie_id, movie_name, date, city, table.ix[i][0], table.ix[i][1], str(table.ix[i][2]),
+                                 str(table.ix[i][3]), str(table.ix[i][4])])
             # 提交到数据库执行
             conn.commit()
         except Exception as e:
@@ -135,6 +141,27 @@ def main():
     # 首页热门影片列表
     movie_list = m04_movie_schedule.craw_movie_list()
 
+    # # 按影片循环
+    # for i in range(len(movie_list)):
+    #     # 每个影片的城市列表和影片名字
+    #     city_list, movie_name = craw_city_list(movie_list[i])
+    #     # 对每个影片按每个城市循环
+    #     for j in range(len(city_list)):
+    #         # 获取城市
+    #         city = city_list[j].split('/')[3]
+    #         # 获取日期url列表
+    #         date_list = craw_movie_date_list(city_list[j])
+    #
+    #         # 对每个影片在每个城市按所在城市的排片日期列表循环,保存在table中并写入数据库
+    #         for k in range(len(date_list)):
+    #             # 获取日期
+    #             date = date_list[k].split('/')[4]
+    #             try:
+    #                 table = craw_city_movie_schedule(date_list[k]).fillna(0)
+    #                 save2db(table, date, movie_list[i], movie_name, city)
+    #             except Exception as e:
+    #                 print(e)
+    print(current_date)
     # 按影片循环
     for i in range(len(movie_list)):
         # 每个影片的城市列表和影片名字
@@ -143,18 +170,12 @@ def main():
         for j in range(len(city_list)):
             # 获取城市
             city = city_list[j].split('/')[3]
-            # 获取日期url列表
-            date_list = craw_movie_date_list(city_list[j])
-
-            # 对每个影片在每个城市按所在城市的排片日期列表循环,保存在table中并写入数据库
-            for k in range(len(date_list)):
-                # 获取日期
-                date = date_list[k].split('/')[4]
-                try:
-                    table = craw_city_movie_schedule(date_list[k]).fillna(0)
-                    save2db(table, date, movie_list[i], movie_name, city)
-                except Exception as e:
-                    print(e)
+            date_url = '/film/' + movie_list[i] + '/' + city + '/' + current_date
+            try:
+                table = craw_city_movie_schedule(date_url).fillna(0)
+                save2db(table, current_date, movie_list[i], movie_name, city)
+            except Exception as e:
+                print(e)
 
 
 if __name__ == '__main__':
