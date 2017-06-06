@@ -498,9 +498,18 @@ def excute():
     #getMovieScene
     crawedDays = getCrawedMovieSceneDate()#获取服务器上所存数据的最新日期
     cityMovieSceneDataList = []
-    
-    for i in range(0, 3):
-        cityMovieSceneDataList.append(crawMovieScene(i))
+    if crawedDays:
+        if crawedDays >= 2:
+            cityMovieSceneDataList.append(crawMovieScene(2))
+        elif crawedDays <= 0:
+            for i in range(0, 3):
+                cityMovieSceneDataList.append(crawMovieScene(i))
+        else:
+            for i in range(crawedDays, 3):
+                cityMovieSceneDataList.append(crawMovieScene(i))
+    else:
+        for i in range(0, 3):
+            cityMovieSceneDataList.append(crawMovieScene(i))
     # 将数据库里面原有的cityid，改为cityname
     flushMovieSceneData(cityMovieSceneDataList)
     for cityMovieSceneDailyDataList in cityMovieSceneDataList:
