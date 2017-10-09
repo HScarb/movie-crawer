@@ -73,18 +73,22 @@ def saveMovieInDatabase(movieDataDict):
     except Exception as f:
         print('Error in director')
         print(f)
-    for person in movieDataDict['actor']:
-        try:
-            cursor.execute(
-                'replace into movie_actor'
-                '(MovieID, ActorID, ActorRank, ActorRole)'
-                'values (%s, %s, %s, %s)',
-                [movieDataDict['id'], person['id'], person['rank'], 'actor']
-            )
-            conn.commit()
-        except Exception as e:
-            print('Error in saveMovieInDatabase Step 3 actor.')
-            print(e)
+    try:
+        for person in movieDataDict['actor']:
+            try:
+                cursor.execute(
+                    'replace into movie_actor'
+                    '(MovieID, ActorID, ActorRank, ActorRole)'
+                    'values (%s, %s, %s, %s)',
+                    [movieDataDict['id'], person['id'], person['rank'], 'actor']
+                )
+                conn.commit()
+            except Exception as e:
+                print('Error in saveMovieInDatabase Step 3 actor.')
+                print(e)
+    except Exception as f:
+        print('Error in actor')
+        print(f)
     for person in movieDataDict['producer']:
         try:
             cursor.execute(
@@ -128,8 +132,8 @@ def main():
                 for element in MovieList:
                     cursor.execute('select ' + str(element) + ' from movie.actor')
                     diffList = cursor.fetchall()
-                    if diffList == None:
-                        saveMovieInDatabase(cm.crawMovie(element))
+                    ## if diffList == None:
+                    saveMovieInDatabase(cm.crawMovie(element))
 
 
 if __name__ == '__main__':
