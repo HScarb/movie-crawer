@@ -57,18 +57,22 @@ def saveMovieInDatabase(movieDataDict):
     except Exception as e:
         print('Error in saveMovieInDatabase Step 1.')
         print(e)
-    for person in movieDataDict['director']:
-        try:
-            cursor.execute(
-                'replace into movie_actor'
-                '(MovieID, ActorID, ActorRank, ActorRole)'
-                'values (%s, %s, %s, %s)',
-                [movieDataDict['id'], person['id'], person['rank'], 'director']
-            )
-            conn.commit()
-        except Exception as e:
-            print('Error in saveMovieInDatabase Step 2 director.')
-            print(e)
+    try:
+        for person in movieDataDict['director']:
+            try:
+                cursor.execute(
+                    'replace into movie_actor'
+                    '(MovieID, ActorID, ActorRank, ActorRole)'
+                    'values (%s, %s, %s, %s)',
+                    [movieDataDict['id'], person['id'], person['rank'], 'director']
+                )
+                conn.commit()
+            except Exception as e:
+                print('Error in saveMovieInDatabase Step 2 director.')
+                print(e)
+    except Exception as f:
+        print('Error in director')
+        print(f)
     for person in movieDataDict['actor']:
         try:
             cursor.execute(
@@ -113,7 +117,7 @@ def main():
     areaID = ['50', '40', '1', '25', '4', '2', '30']
     text = ''
     MovieList = []
-    for year in range(2010,2018):
+    for year in range(2015,2018):
         for area in range(0,7):
             url = 'http://www.cbooo.cn/Mdata/getMdata_movie?area=' + str(areaID[area]) + '&type=0&year=' + str(year) + '&initial=%E5%85%A8%E9%83%A8&pIndex=1'
             text = requests.get(url, headers=headers, timeout=DEFAULT_TIMEOUT).text
