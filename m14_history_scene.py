@@ -11,7 +11,10 @@ def crawhistoryScene(month,day,city):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
     }
-    url = 'http://ebotapp.entgroup.cn/Schedule/GetRowPiece_MovieByShowCount?http://ebotapp.entgroup.cn/Schedule/GetRowPiece_MovieByShowCount?' + 'CinemaID=&PageIndex=1&PageSize=50&_ServicePrice=&_Date=2017-' + str(month) +'-'+ str(day) +'&_DateSort=Day&_sDate=2017-' + str(month) + '-'+ str(day) +'&_eDate=2017-' + str(month) +'-'+ str(day) +'&_Line=&_City='+ str(city) +'&_CityLevel=&_ScreenFormat=&_ShowType=&RowPieceType=1'
+    url = 'http://ebotapp.entgroup.cn/Schedule/GetRowPiece_MovieByShowCount?http://ebotapp.entgroup.cn/Schedule/GetRowPiece_MovieByShowCount?' + \
+          'CinemaID=&PageIndex=1&PageSize=50&_ServicePrice=&_Date=2017-' + str(month) +'-'+ str(day) +'&_DateSort=Day&_sDate=2017-' + \
+          str(month) + '-'+ str(day) +'&_eDate=2017-' + str(month) +'-'+ str(day) +'&_Line=&_City='+ str(city) +\
+          '&_CityLevel=&_ScreenFormat=&_ShowType=&RowPieceType=1'
     # 75上海，18北京，200广州，202深圳，241成都，90杭州，77南京，172武汉，346天津，239重庆，139青岛，186长沙，119厦门
     CityDict = {
         '75' : '上海市','18' : '北京市','200' : '广州市','202' : '深圳市','241' : '成都市','90' : '杭州市','77' : '南京市','172' : '武汉市',
