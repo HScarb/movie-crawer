@@ -90,7 +90,13 @@ def crawMovie(movieID):
         elif element[0] == '类':
             movieDataDict['type'] = element[3:]
         elif element[0] == '片':
-            movieDataDict['length'] = element.replace('\r','').replace('\n','').replace(' ', '')[3:-3]
+            txt = element.replace('\r','').replace('\n','').replace(' ', '')
+            if str.find(txt, "min"):
+                movieDataDict['length'] = txt[3:-3]
+            elif str.find(txt, "分钟"):
+                movieDataDict['length'] = txt[3:-2]
+            else:
+                movieDataDict['length'] = 0
         elif element[0] == '上':
             # 需要处理字符串成日期的形式
             movieDataDict['releasetime'] = MovieUtils.str2date(element[5:-4])
