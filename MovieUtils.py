@@ -6,14 +6,23 @@ from urllib import request
 # except ImportError:
 #     from PIL import Image
 # import pytesseract
+# DBCONFIG = {
+#     'host': '106.14.26.144',
+#     'user': 'movie',
+#     'password': 'movie',
+#     'port':3306,
+#     'database': 'movie',
+#     'charset': 'utf8'
+# }
 DBCONFIG = {
-    'host': '106.14.26.144',
-    'user': 'movie',
-    'password': 'movie',
+    'host': '47.104.98.40',
+    'user': 'root',
+    'password': 'roothdu2017',
     'port':3306,
     'database': 'movie',
     'charset': 'utf8'
 }
+
 
 # 要爬的一线、二线城市
 CRAWING_CITIES = [
